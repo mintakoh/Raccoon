@@ -95,5 +95,7 @@ public:
 
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	void LoadMap(CDC* dc, CDC* memdc, CDC* objectdc);
+	void CheckCollision();
+	void CheckCollision_Enemy();
 };
 

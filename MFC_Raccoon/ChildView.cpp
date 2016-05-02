@@ -446,3 +446,14 @@ void CChildView::LoadMap(CDC* dc, CDC* memdc, CDC* objectdc)
 		}
 	}
 }
+
+
+void CChildView::CheckCollision()
+{
+
+}
+
+void CChildView::CheckCollision_Enemy()
+{
+
+}
