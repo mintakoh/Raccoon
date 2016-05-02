@@ -62,6 +62,13 @@ CChildView::CChildView()
 	_LeftLongJump[14] = { -5, 5, 2 };
 	_LeftLongJump[15] = { -5, 6, 2 };
 	_LeftLongJump[16] = { -5, 6, 3 };
+
+	_hMapEle[0].LoadBitmapW(IDB_MAP_A);
+	_hMapEle[1].LoadBitmapW(IDB_MAP_B);
+	_hMapEle[2].LoadBitmapW(IDB_MAP_C);
+	_hMapEle[3].LoadBitmapW(IDB_MAP_D);
+	_hMapEle[4].LoadBitmapW(IDB_MAP_E);
+	_hMapEle[5].LoadBitmapW(IDB_MAP_F);
 }
 
 CChildView::~CChildView()
@@ -255,13 +262,6 @@ void CChildView::GamePlay()
 
 	// ¸Ê ÀÛ¾÷
 	CBitmap _hMap;
-	CBitmap _hMapEle[6];
-	_hMapEle[0].LoadBitmapW(IDB_MAP_A);
-	_hMapEle[1].LoadBitmapW(IDB_MAP_B);
-	_hMapEle[2].LoadBitmapW(IDB_MAP_C);
-	_hMapEle[3].LoadBitmapW(IDB_MAP_D);
-	_hMapEle[4].LoadBitmapW(IDB_MAP_E);
-	_hMapEle[5].LoadBitmapW(IDB_MAP_F);
 
 	CDC memdc, objectdc;
 	memdc.CreateCompatibleDC(&dc);
