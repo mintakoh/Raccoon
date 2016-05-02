@@ -4,6 +4,7 @@
 
 
 #pragma once
+#include "afxwin.h"
 
 
 struct Raccoon
@@ -98,5 +99,58 @@ public:
 	void CheckCollision();
 	void CheckCollision_Enemy();
 	void Init();
+
+	//먹은 과일 수
+	char		_iEat;
+
+	//먹은 아이템의 점수 표시 시간 
+	char		_ScoreShow;
+
+	// 남은 너구리 수
+	char		_iLive;
+
+	// 남은 시간
+	int			_iTime;
+
+	// 점수
+	int			_iScore;
+
+	// 숫자
+	CBitmap		_hDigit;
+	CBitmap		_hDigit_sm;
+
+	//과일
+	CBitmap		_hFruit[4];
+
+	// 항아리
+	CBitmap		_hPot;
+
+	// 먹은 과일이나 항아리 점수 증가폭 (2배씩 증가)
+	int			_iItemScoreRate;
+
+	// 적
+	CBitmap		_hEnemyRight;
+	CBitmap		_hEnemyLeft;
+	CBitmap		_hEnemyRightRed;
+	CBitmap		_hEnemyLeftRed;
+
+	//뱀
+	CBitmap		_hSnakeLeft;
+	CBitmap		_hSnakeRight;
+
+	// 너구리 이미지 
+	CBitmap		_hLeft;
+	CBitmap		_hRight;
+	CBitmap		_hUpDown;
+	CBitmap		_hStand;
+	CBitmap		_hLeftJump;
+	CBitmap		_hRightJump;
+	CBitmap		_hDrop;
+	CBitmap		_hDie;
+
+	// 점프를 보여줄때 필요한 카운터
+	char _JumpFrame;
+	// 너구리가 죽어서 떨어질때 음악 연주 상태
+	BOOL _bIsDrop_Sound;
 };
 

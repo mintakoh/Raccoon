@@ -18,6 +18,14 @@ CChildView::CChildView()
 	, _iAni(0)
 	, _iLevel(1)
 	, _EnemyCount(0)
+	, _iEat(0)
+	, _ScoreShow(0)
+	, _iLive(0)
+	, _iTime(0)
+	, _iScore(0)
+	, _iItemScoreRate(0)
+	, _JumpFrame(0)
+	, _bIsDrop_Sound(FALSE)
 {
 	// 제자리 점프 
 	_StandJump[0] = { 1, -5, 0 };
@@ -235,72 +243,388 @@ void CChildView::GameIntro()
 
 void CChildView::GamePlay()
 {
-	CClientDC dc(this);
-	
-	HRSRC hRSrc = FindResource(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_MAP), _T("TEXT"));
-	DWORD size = SizeofResource(AfxGetInstanceHandle(), hRSrc);
-	HGLOBAL hMem = LoadResource(AfxGetInstanceHandle(), hRSrc);
-	PVOID ptr = LockResource(hMem);
-	char *str = (char*)malloc(size + 1);
-	memcpy(str, ptr, size);
-	str[size] = 0;
-	int m_index = 0;
-	m_index += 913 * (_iLevel - 1) + 3;
-	char ch;
+	//CRect crt;
+	//CClientDC hdc(this);
+	//CDC hMemDC;
+	//hMemDC.CreateCompatibleDC(&hdc);
+	//HBITMAP OldBit;
+	//HPEN MyPen, OldPen;
+	//HBRUSH MyBrush, OldBrush;
+
+	//char i;
+
+	//GetClientRect(&crt);
+	//hdc = GetDC(_pGame->GetWindow());
+
+	//if (_hBit == NULL)
+	//	_hBit = CreateCompatibleBitmap(hdc, crt.right, crt.bottom);
+
+	//OldBit = (HBITMAP)SelectObject(hMemDC, _hBit);
+
+	//// 시간 바를 표시할 브러시와 펜 
+	//MyPen = CreatePen(PS_SOLID, 0, RGB(0, 0, 0));
+	//OldPen = (HPEN)SelectObject(hMemDC, MyPen);
+
+	//MyBrush = CreateSolidBrush(RGB(25, 184, 5));
+	//OldBrush = (HBRUSH)SelectObject(hMemDC, MyBrush);
+
+	////에니메이션 구현을 위해 	
+	////너구리가 죽으면 움직임을 멈추는 것들은 _iTime을 기준으로 에니메이션
+	////너구리가 죽으면서 하는 움직임은 _iAni을 이용 	
+	//_iAni++;
+
+	//// Play종료 조건 
+
+	//// 과일 다 먹음 
+	//// _ScoreShow == 1 을 한 이유는 마지막으로 먹은 과일 점수 까지 보여주려고 
+	//if (_iEat == 8 && _ScoreShow == 1) {
+	//	Sleep(500);
+	//	_iAni = 0;
+	//	_GameState = 2;
+	//}
+	//// 너구리 죽음 	
+	//if (_Rac.state == 11) {
+	//	//PlaySound(NULL, _hInstance, 0);
+	//	//PlaySound(MAKEINTRESOURCE(IDR_RAC_DIE), _hInstance, SND_RESOURCE | SND_ASYNC);
+	//	Sleep(1500);
+	//	if (_iLive == 0) { // 마지막 너구리가 죽으면 
+	//		Init();
+	//		_GameState = 3;	//gameover
+	//	}
+	//	else {
+	//		_iLive--;
+	//		Init();
+	//		LoadMap();
+	//	}
+	//}
 
 
-	static int i, j;
+	//// 남은 시간	
+	//// 너구리가 떨어지거나 죽으면 시간은 멈춘다.
+	//if (_iAni % 5 == 0 && _Rac.state != 10 && _Rac.state != 11) {
+	//	_iTime--;
+	//	if (_iTime == 0)
+	//		_Rac.state = 10;	//너구리 죽음 		
+	//}
 
-	for (i = 0; i < 26; i++)
-	{
-		for (j = 0; j < 35; j++){
-			ch = str[m_index++];
-			if (ch != '\n')
-				_cMap[i][j] = ch;
-		}
-	}
+	//// 맵(처음 시작 할때 맵 전체를 한번 그린다.)
+	//if (_iAni == 1)
+	//	DrawBitmap(hMemDC, 0, 0, _hMap, FALSE);
+	//else {
+	//	//너구리 주위  
+	//	DrawBitmap(hMemDC, _Rac.x - 5, _Rac.y - 5, _hMap, FALSE, _Rac.x - 5, _Rac.y - 5, _Rac.x + 55, _Rac.y + 55);
+	//	//적 주위 
+	//	for (i = 0; i <_EnemyCount; i++)
+	//		DrawBitmap(hMemDC, _Ene[i].x - 2, _Ene[i].y + 5, _hMap, FALSE, _Ene[i].x - 2, _Ene[i].y + 5, _Ene[i].x + 52, _Ene[i].y + 48);
+	//}
 
-	// 맵 작업
-	CBitmap _hMap;
 
-	CDC memdc, objectdc;
-	memdc.CreateCompatibleDC(&dc);
-	objectdc.CreateCompatibleDC(&memdc);
+	//// 점수 표시 (이전과 변화가 있을 때만 그린다.)
+	///*	static int Score;
+	//if (_iScore != Score || _iAni == 1){
+	//DrawBitmap(hMemDC, 20, 50, _hMap, FALSE, 20, 50, 106, 75);
+	//DrawDigit(hMemDC, 25, 50, _iScore, _hDigit, 7);
+	//Score = _iScore;
+	//} */
 
-	CRect rect;
-	GetClientRect(&rect);
+	//static int Score;
+	//if (_iScore != Score || _iAni == 1){
+	//	DrawBitmap(hMemDC, 200, 50, _hMap, FALSE, 200, 50, 300, 75);
+	//	DrawDigit(hMemDC, 205, 50, _iScore, _hDigit, 7);
+	//	Score = _iScore;
+	//}
+	////너구리 위치
+	//DrawBitmap(hMemDC, 300, 50, _hMap, FALSE, 300, 50, 420, 75);
+	//DrawDigit(hMemDC, 305, 50, _Rac.x, _hDigit, 7);
+	//DrawDigit(hMemDC, 360, 50, _Rac.y, _hDigit, 7);
 
-	_hMap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
-	memdc.SelectObject(&_hMap);
+	//// 시간 바 표시 
+	//if (_iAni % 50 == 0 || _iAni == 1) {
+	//	DrawBitmap(hMemDC, 600 - _iTime, 25, _hMap, FALSE, 200, 0, 250, 25);
+	//	Rectangle(hMemDC, 650 - _iTime, 25, 650, 50);
+	//}
 
-	char index = 0;
-	for (i = 0; i < 26; i++){
-		for (j = 0; j < 33; j++){
-			if (_cMap[i][j] >= 'A' && _cMap[i][j] <= 'F'){
-				objectdc.SelectObject(_hMapEle[_cMap[i][j] - 65]);
-				memdc.TransparentBlt(j * 25, i * 25, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
-			}
-			else if (_cMap[i][j] >= 'G' && _cMap[i][j] <= 'L'){
-				_Ene[_EnemyCount].x = j * 25;
-				_Ene[_EnemyCount].y = i * 25 - 25;
-				_Ene[_EnemyCount].type = TRUE;
-				_Ene[_EnemyCount].state = (_cMap[i][j] - 'G') % 2;
-				_Ene[_EnemyCount].alpha = 255;
-				if (_Ene[_EnemyCount].state)
-					_Ene[_EnemyCount].speed = (2 + (_cMap[i][j] - 'G') / 2)* (-1);
-				else
-					_Ene[_EnemyCount].speed = 2 + (_cMap[i][j] - 'G') / 2;
-				_EnemyCount++;
-			}
-			else if (_cMap[i][j] >= 'M'){
-				_Item[index].x = j * 25;
-				_Item[index].y = i * 25 - 26;
-				_Item[index].ch = _cMap[i][j];
-				index++;
-			}
-		}
-	}
-	dc.BitBlt(0, 0, rect.Width(), rect.Height(), &memdc, 0, 0, SRCCOPY);
+	////먹은 과일 수 (이전과 변화가 있을 때만 그린다.)
+	//static char Eat;
+	//if (_iEat != Eat) {
+	//	for (i = 0; i < _iEat; i++)
+	//		DrawBitmap(hMemDC, 750, 490 - (i * 55), _hFruit[_iLevel - 1], FALSE);
+	//	Eat = _iEat;
+	//}
+
+	//// 항아리 & 과일 표시 
+	//for (i = 0; i < 12; i++) {
+	//	//항아리 
+	//	if (_Item[i].ch == 'M' || _Item[i].ch == 'N' || _Item[i].ch == 'O')
+	//		DrawBitmap(hMemDC, _Item[i].x, _Item[i].y, _hPot, FALSE);
+	//	//과일 
+	//	else if (_Item[i].ch >= 'Q')
+	//		DrawBitmap(hMemDC, _Item[i].x, _Item[i].y, _hFruit[_iLevel - 1], FALSE);
+	//	//너구리가 먹은 것에 대한 점수 표시 
+	//	//너구리가 먹으면 *로 대치하고 점수를 표시한다음에 .로 바꿈
+	//	else if (_Item[i].ch == '*') {
+	//		//과일 지우고 점수 표시 
+	//		if (_ScoreShow == 0)
+	//			DrawBitmap(hMemDC, _Item[i].x, _Item[i].y, _hMap, FALSE, 200, 0, 250, 50);
+	//		DrawDigit(hMemDC, _Item[i].x, _Item[i].y + 25, _iItemScoreRate, _hDigit_sm);
+
+	//		//점수를 10프레임 동안 보여짐 			
+	//		if (++_ScoreShow == 11) {
+	//			DrawBitmap(hMemDC, _Item[i].x, _Item[i].y + 25, _hMap, FALSE, 200, 0, 240, 14);
+	//			_Item[i].ch = '.';
+	//			_ScoreShow = 0;
+	//		}
+	//	}
+	//	else if (_Item[i].ch == '#') {
+	//		DrawBitmap(hMemDC, _Item[i].x, _Item[i].y, _hMap, FALSE, 200, 0, 250, 50);
+	//		_Item[i].ch = '.';
+	//	}
+	//}
+
+	////적 표시 
+	////뱀과 일반적인 적을 따로 그리는 이유는 투명 효과(Alpha) 때문에.	
+
+	//for (i = 0; i <_EnemyCount; i++) {
+
+	//	//뱀
+	//	if (_Ene[i].type == FALSE) {
+
+	//		//너구리가 살아있고 (너구리가 죽으면 화면이 멈춰야 되므로)
+	//		//알파 값이 255가 되면 뱀은 움직인다.
+	//		if (_Rac.state != 10 && _Rac.state != 11 && _Ene[i].alpha == 255) _Ene[i].x += _Ene[i].speed;
+
+	//		if (_Ene[i].x <= 30) {	//왼쪽 끝
+	//			_Ene[i].x = 30;
+	//			_Ene[i].speed *= -1;
+	//			_Ene[i].state = !_Ene[i].state;
+	//		}
+	//		else if (_Ene[i].x >= 670) { //오른쪽 끝
+	//			_Ene[i].x = 670;
+	//			_Ene[i].speed *= -1;
+	//			_Ene[i].state = !_Ene[i].state;
+	//		}
+
+	//		if (_Ene[i].state == FALSE) //방향(오른쪽을 보고 있을때)
+	//			if (_Ene[i].alpha != 255) {
+	//				_Ene[i].alpha += 5;	//선명하게
+	//				DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hMap, FALSE, 200, 0, 250, 50); //검은색으로 기존의 것을 지우기 (200,0 ~ 250,50은 검정색)
+	//				DrawBitmapAlpha(hMemDC, _Ene[i].x, _Ene[i].y, _hSnakeRight, _Ene[i].alpha, (_iAni / 5 % 2) * 50, 0, (_iAni / 5 % 2 + 1) * 50, 50);
+	//			}
+	//			else
+	//				DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hSnakeRight, TRUE, (_iAni / 5 % 2) * 50, 0, (_iAni / 5 % 2 + 1) * 50, 50);
+	//		else if (_Ene[i].alpha != 255) {
+	//			_Ene[i].alpha += 5;	//선명하게  
+	//			DrawBitmapAlpha(hMemDC, _Ene[i].x, _Ene[i].y, _hSnakeLeft, _Ene[i].alpha, (_iAni / 5 % 2) * 50, 0, (_iAni / 5 % 2 + 1) * 50, 50);
+	//		}
+	//		else // 방향(왼쪽을 보고 있을때)
+	//			DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hSnakeLeft, TRUE, (_iAni / 5 % 2) * 50, 0, (_iAni / 5 % 2 + 1) * 50, 50);
+	//	}
+	//}
+
+
+
+	////일반적인 적 
+	//for (i = 0; i <_EnemyCount; i++) {
+
+	//	if (_Ene[i].type == TRUE) {
+
+	//		if (_Rac.state != 10 && _Rac.state != 11) _Ene[i].x += _Ene[i].speed;
+
+	//		if (_Ene[i].x <= 30) {
+	//			_Ene[i].x = 30;
+	//			_Ene[i].speed *= -1;
+	//			_Ene[i].state = !_Ene[i].state;
+	//		}
+	//		else if (_Ene[i].x >= 670) {
+	//			_Ene[i].x = 670;
+	//			_Ene[i].speed *= -1;
+	//			_Ene[i].state = !_Ene[i].state;
+	//		}
+
+	//		if (_Ene[i].speed == 4 || _Ene[i].speed == -4) { // 속도가 4인 적은 빨간색, 나머지는 초록색 
+	//			if (_Ene[i].state == FALSE) //방향
+	//				DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hEnemyRightRed, TRUE, (_iAni % 2) * 50, 0, (_iAni % 2 + 1) * 50, 50);
+	//			else
+	//				DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hEnemyLeftRed, TRUE, (_iAni % 2) * 50, 0, (_iAni % 2 + 1) * 50, 50);
+	//		}
+	//		else {
+	//			if (_Ene[i].state == FALSE) //방향
+	//				DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hEnemyRight, TRUE, (_iAni % 2) * 50, 0, (_iAni % 2 + 1) * 50, 50);
+	//			else
+	//				DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hEnemyLeft, TRUE, (_iAni % 2) * 50, 0, (_iAni % 2 + 1) * 50, 50);
+	//		}
+	//	}
+	//}
+
+	////적 충돌 감지 
+	//CheckCollision_Enemy();
+
+	////너구리 
+	//switch (_Rac.state) {
+	//case 1:
+	//	DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hStand, TRUE, 0, 0, 50, 50);
+	//	break;
+
+	//case 2:
+	//	DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hLeft, TRUE, _Rac.step * 50, 0, (_Rac.step + 1) * 50, 50);
+	//	break;
+
+	//case 3:
+	//	DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hRight, TRUE, _Rac.step * 50, 0, (_Rac.step + 1) * 50, 50);
+	//	break;
+
+	//case 4:
+	//	DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hUpDown, TRUE, _Rac.step * 50, 0, (_Rac.step + 1) * 50, 50);
+	//	break;
+
+	//case 5:
+	//	// 점프 패턴을 읽어 와서 그림 
+	//	_Rac.x += _StandJump[_JumpFrame].x;
+	//	_Rac.y += _StandJump[_JumpFrame].y;
+
+	//	DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hStand, TRUE, (_StandJump[_JumpFrame].frame) * 50, 0,
+	//		(_StandJump[_JumpFrame].frame + 1) * 50, 50);
+
+	//	_JumpFrame++;
+
+	//	if (_JumpFrame == 10) {
+	//		_JumpFrame = 0;	//초기화 
+	//		_Rac.state = 1;	//착지 하면 다시 1상태로 
+	//	}
+	//	break;
+
+	//case 6:
+	//	//화면 왼쪽 끝이므로 화면 밖으로 안나가게 
+	//	if (_Rac.x >= 30)
+	//		_Rac.x += _LeftShortJump[_JumpFrame].x;
+	//	_Rac.y += _LeftShortJump[_JumpFrame].y;
+
+	//	DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hLeftJump, TRUE, (_LeftShortJump[_JumpFrame].frame) * 50, 0,
+	//		(_LeftShortJump[_JumpFrame].frame + 1) * 50, 50);
+
+	//	_JumpFrame++;
+
+	//	if (_JumpFrame == 11) {
+	//		_JumpFrame = 0;
+	//		_Rac.state = 2;
+	//		//충돌 검사 
+	//		//이 프로그램은 화살표키로 움직일때 충동 검사를 (압정, 낭떠러지)한다.
+	//		//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
+	//		//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
+	//		//따라서 착지하면 충돌검사를 한다.
+	//		CheckCollision();
+	//	}
+
+	//	break;
+
+	//case 7:
+	//	//화면 왼쪽 끝이므로 화면 밖으로 안나가게 
+	//	if (_Rac.x >= 30)
+	//		_Rac.x += _LeftLongJump[_JumpFrame].x;
+	//	_Rac.y += _LeftLongJump[_JumpFrame].y;
+
+	//	DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hLeftJump, TRUE, (_LeftLongJump[_JumpFrame].frame) * 50, 0,
+	//		(_LeftLongJump[_JumpFrame].frame + 1) * 50, 50);
+
+	//	_JumpFrame++;
+
+	//	if (_JumpFrame == 17) {
+	//		_JumpFrame = 0;
+	//		_Rac.state = 2;
+	//		//충돌 검사 
+	//		//이 프로그램은 화살표키로 움직일때 충동 검사를 (압정, 낭떠러지)한다.
+	//		//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
+	//		//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
+	//		//따라서 착지하면 충돌검사를 한다.
+	//		CheckCollision();
+	//	}
+	//	break;
+
+	//case 8:
+	//	//오른쪽 경계면 
+	//	//1층은 y좌표 775, 2층이상은 y좌표 670 
+	//	if (_Rac.x <= 670 || (_Rac.x <= 775 && _Rac.y >= 530))
+	//		_Rac.x -= _LeftShortJump[_JumpFrame].x;
+	//	_Rac.y += _LeftShortJump[_JumpFrame].y;
+
+	//	DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hRightJump, TRUE, (_LeftShortJump[_JumpFrame].frame) * 50, 0,
+	//		(_LeftShortJump[_JumpFrame].frame + 1) * 50, 50);
+
+	//	_JumpFrame++;
+
+	//	if (_JumpFrame == 11) {
+	//		_JumpFrame = 0;
+	//		_Rac.state = 3;
+	//		//충돌 검사 
+	//		//이 프로그램은 화살표키로 움직일때 충동 검사를 (압정, 낭떠러지)한다.
+	//		//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
+	//		//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
+	//		//따라서 착지하면 충돌검사를 한다.
+	//		CheckCollision();
+
+	//	}
+
+	//	break;
+
+	//case 9:
+	//	//오른쪽 경계면 
+	//	//1층은 y좌표 775, 2층이상은 y좌표 670 
+	//	if (_Rac.x <= 670 || (_Rac.x <= 775 && _Rac.y >= 530))
+	//		_Rac.x -= _LeftLongJump[_JumpFrame].x;
+	//	_Rac.y += _LeftLongJump[_JumpFrame].y;
+
+	//	DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hRightJump, TRUE, (_LeftLongJump[_JumpFrame].frame) * 50, 0,
+	//		(_LeftLongJump[_JumpFrame].frame + 1) * 50, 50);
+
+	//	_JumpFrame++;
+
+	//	if (_JumpFrame == 17) {
+	//		_JumpFrame = 0;
+	//		_Rac.state = 3;
+	//		//충돌 검사 
+	//		//이 프로그램은 화살표키로 움직일때 충동 검사를 (압정, 낭떠러지)한다.
+	//		//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
+	//		//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
+	//		//따라서 착지하면 충돌검사를 한다.
+	//		CheckCollision();
+	//	}
+
+	//	break;
+
+	//case 10: //떨어지는 너구리  
+	//	if (_bIsDrop_Sound == FALSE) {
+	//		//PlaySound(NULL, _hInstance, 0);
+	//		//PlaySound(MAKEINTRESOURCE(IDR_RAC_DROP), _hInstance, SND_RESOURCE | SND_ASYNC);
+	//		_bIsDrop_Sound = TRUE;
+	//	}
+
+	//	if (_Rac.y >= 578) {
+	//		_Rac.y = 578;
+	//		//다 떨어진 상태
+	//		DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hDie, TRUE);
+	//		_Rac.state = 11;
+	//	}
+	//	else {
+	//		_Rac.y += 5;
+	//		//덜 떨어진 상태 
+	//		DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hDrop, TRUE, (_iAni / 2 % 6) * 50, 0,
+	//			(_iAni / 2 % 6 + 1) * 50, 50);
+	//	}
+	//	break;
+
+	//case 11: //너구리 떨어진 상태 				
+	//	break;
+
+	//}
+
+	//SelectObject(hMemDC, OldBrush);
+	//SelectObject(hMemDC, OldPen);
+	//SelectObject(hMemDC, OldBit);
+	//DeleteObject(MyBrush);
+	//DeleteObject(MyPen);
+	//DeleteDC(hMemDC);
+	//ReleaseDC(_pGame->GetWindow(), hdc);
+	//InvalidateRect(_pGame->GetWindow(), NULL, FALSE);
 
 }
 
