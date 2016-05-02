@@ -22,14 +22,12 @@ CChildView::CChildView()
 
 CChildView::~CChildView()
 {
-	delete m_painter;
 }
 
 
 BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_PAINT()
 	ON_WM_KEYDOWN()
-	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
 
@@ -319,16 +317,4 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		break;
 	}
 	CWnd::OnKeyDown(nChar, nRepCnt, nFlags);
-}
-
-
-int CChildView::OnCreate(LPCREATESTRUCT lpCreateStruct)
-{
-	if (CWnd::OnCreate(lpCreateStruct) == -1)
-		return -1;
-
-	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
-	m_painter = new CPainter(this);
-
-	return 0;
 }
