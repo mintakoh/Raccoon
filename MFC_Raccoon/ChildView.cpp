@@ -234,7 +234,7 @@ void CChildView::GameIntro()
 		memdc.TransparentBlt(720, 450, 50, 50, &objectdc, 0, 0, 50, 50, RGB(0, 0, 0));
 	}
 
-	if (_iAni >= 171) {
+	if (_iAni == 171) {
 		objectdc.SelectObject(_hLets);
 		memdc.BitBlt(220, 120, 455, 218, &objectdc, 0, 0, SRCCOPY);
 	}
