@@ -745,12 +745,14 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			//음악 종료 함수 호출 
 
 			//초기화 작업.
-			// _iLevel = 1;
-			// _iLive = LIVE;
-			// _iScore = 0;
-			// init();
-			// LoadMap();
+			_iLevel = 1;
+			_iLive = LIVE;
+			_iScore = 0;
+			Init();
+			//LoadMap();
 			_GameState = 1;
+			//스페이스를 조금 길게 누르면 게임이 시작하자 마자 너구리가 점프하므로 
+			//이를 방지 하기 위해 
 			Sleep(100);
 		}
 		break;
