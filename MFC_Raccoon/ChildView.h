@@ -69,6 +69,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	void GameCycle();
+	void GameIntro();
+	void GamePlay();
 	bool _bIsDrawAll;
 	char _GameState;
 	int _iAni;
