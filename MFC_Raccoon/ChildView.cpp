@@ -492,12 +492,12 @@ void CChildView::CheckCollision()
 				(xx2 > x1 && xx2 < x2 && yy1 > y1 && yy1 < y2) ||
 				(xx2 > x1 && xx2 < x2 && yy2 > y1 && yy2 < y2)){
 
-				//PlaySound
+				//TODO : PlaySound
 
-				if (_Item[i].ch >= 'Q') _iEat++;
+				//TODO : if (_Item[i].ch >= 'Q') _iEat++;
 
 				if (_Item[i].ch == 'N' || _Item[i].ch == 'M'){
-					//PlaySound
+					//TODO : PlaySound
 
 					_Ene[_EnemyCount].x = _Item[i].x;
 					_Ene[_EnemyCount].y = _Item[i].y;
@@ -521,13 +521,12 @@ void CChildView::CheckCollision()
 					//나중에 점수 표시하고 '.'으로 교체
 					_Item[i].ch = '*';
 					//점수 계산
-					_iItemScoreRate *= 2;
-					_iScore += _iItemScoreRate;
+					//TODO : _iItemScoreRate *= 2;
+					//TODO : _iScore += _iItemScoreRate;
 				}
 			}
 		}
 	}
-
 }
 
 void CChildView::CheckCollision_Enemy()
