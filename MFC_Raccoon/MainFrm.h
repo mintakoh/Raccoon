@@ -4,6 +4,7 @@
 
 #pragma once
 #include "ChildView.h"
+#include "Painter.h"
 
 class CMainFrame : public CFrameWnd
 {
