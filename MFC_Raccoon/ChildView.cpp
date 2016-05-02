@@ -17,7 +17,54 @@ CChildView::CChildView()
 	, _GameState(0)
 	, _iAni(0)
 	, _iLevel(1)
+	, _EnemyCount(0)
 {
+	jump	_StandJump[10] = {
+		{ 1,  -5, 0 },
+		{ 1,  -5, 0 },
+		{ -1, -5, 0 },
+		{ -1, -5, 1 },
+		{ -1, -5, 1 },
+		{ -1, -5, 1 },
+		{ 1,  -5, 1 },
+		{ 1,  -5, 0 },
+		{ 0,  -5, 0 },
+		{ 0,  -5, 0 }
+	};
+
+	jump	_LeftShortJump[11] = {
+		{ -5, -5, 0 },
+		{ -5, -4, 0 },
+		{ -5, -4, 1 },
+		{ -5, -4, 1 },
+		{ -5, -3, 1 },
+		{  0,  0, 1 },
+		{ -5,  3, 2 },
+		{ -5,  4, 2 },
+		{ -5,  4, 2 },
+		{ -5,  4, 2 },
+		{ -5,  5, 3 }
+	};
+
+	jump	_LeftLongJump[17] = {
+		{ -5, -6, 0 },
+		{ -5, -6, 0 },
+		{ -5, -5, 0 },
+		{ -5, -5, 1 },
+		{ -5, -4, 1 },
+		{ -5, -3, 1 },
+		{ -5, -2, 1 },
+		{ -5, -1, 1 },
+		{  0,  0, 1 },
+		{ -5, 1, 2 },
+		{ -5, 2, 2 },
+		{ -5, 3, 2 },
+		{ -5, 4, 2 },
+		{ -5, 5, 2 },
+		{ -5, 5, 2 },
+		{ -5, 6, 2 },
+		{ -5, 6, 3 }
+	};
 }
 
 CChildView::~CChildView()
@@ -233,10 +280,27 @@ void CChildView::OnPaint()
 					memdc.TransparentBlt(j * 25, i * 25, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
 				}
 				else if (_cMap[i][j] >= 'G' && _cMap[i][j] <= 'L'){
-
+					_Ene[_EnemyCount].x = j * 25;
+					_Ene[_EnemyCount].y = i * 25 - 25;
+					_Ene[_EnemyCount].type = TRUE;
+					_Ene[_EnemyCount].state = (_cMap[i][j] - 'G') % 2;
+					_Ene[_EnemyCount].alpha = 255;
+					if (_Ene[_EnemyCount].state)
+						_Ene[_EnemyCount].speed = (2 + (_cMap[i][j] - 'G') / 2)* (-1);
+					else
+						_Ene[_EnemyCount].speed = 2 + (_cMap[i][j] - 'G') / 2;
+					_EnemyCount++;
+				}
+				else if (_cMap[i][j] >= 'M'){
+					_Item[index].x = j * 25;
+					_Item[index].y = i * 25 - 26;
+					_Item[index].ch = _cMap[i][j];
+					index++;
 				}
 			}
 		}
+
+
 	}
 
 
