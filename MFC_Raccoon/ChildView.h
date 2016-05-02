@@ -97,5 +97,6 @@ public:
 	void LoadMap(CDC* dc, CDC* memdc, CDC* objectdc);
 	void CheckCollision();
 	void CheckCollision_Enemy();
+	void Init();
 };
 
