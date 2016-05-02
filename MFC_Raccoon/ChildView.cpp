@@ -450,12 +450,128 @@ void CChildView::LoadMap(CDC* dc, CDC* memdc, CDC* objectdc)
 
 void CChildView::CheckCollision()
 {
+	static int x1, y1, x2, y2;
+	static int xx1, yy1, xx2, yy2;
+
+	if (_Rac.state == 2 || _Rac.state == 6 || _Rac.state == 7){
+		x1 = _Rac.x + 10;
+		y1 = _Rac.y + 5;
+		x2 = _Rac.x + 30;
+		y2 = _Rac.y + 45;
+	}
+	else{
+		x1 = _Rac.x + 20;
+		y1 = _Rac.y + 5;
+		x2 = _Rac.x + 40;
+		y2 = _Rac.y + 40;
+	}
+
+	if (_Rac.state == 2 || _Rac.state == 3){
+		if (_cMap[y2 / 25][x1 / 25] == 'E' || _cMap[y2 / 25 + 1][x1 / 25] == '.'){
+			xx1 = (x1 / 25 * 25) + 5;
+			xx2 = ((x1 / 25 + 1) * 25) - 5;
+			if ((xx1 > x1 && xx1 <x2) || (xx2 > x1 && xx2 < x2)){
+				_Rac.state = 10;
+				return;
+			}
+		}
+	}
+
+	//과일, 항아리 충돌 검사
+	char i;
+
+	for (i = 0; i < 12; i++){
+		if (_Item[i].ch >= 'M'){
+			xx1 = _Item[i].x + 10;
+			yy1 = _Item[i].y + 30;
+			xx2 = _Item[i].x + 40;
+			yy2 = _Item[i].y + 40;
+
+			if ((xx1 > x1 && xx1 < x2 && yy1 > y1 && yy1 < y2) ||
+				(xx1 > x1 && xx1 < x2 && yy2 > y1 && yy2 < y2) ||
+				(xx2 > x1 && xx2 < x2 && yy1 > y1 && yy1 < y2) ||
+				(xx2 > x1 && xx2 < x2 && yy2 > y1 && yy2 < y2)){
+
+				//PlaySound
+
+				if (_Item[i].ch >= 'Q') _iEat++;
+
+				if (_Item[i].ch == 'N' || _Item[i].ch == 'M'){
+					//PlaySound
+
+					_Ene[_EnemyCount].x = _Item[i].x;
+					_Ene[_EnemyCount].y = _Item[i].y;
+					_Ene[_EnemyCount].type = FALSE;
+					_Ene[_EnemyCount].alpha = 10;
+
+					if (_Item[i].ch == 'N'){
+						_Ene[_EnemyCount].state = TRUE;
+						_Ene[_EnemyCount].speed = -1;
+					}
+					else{
+						_Ene[_EnemyCount].state = FALSE;
+						_Ene[_EnemyCount].speed = 1;
+					}
+
+					_Item[i].ch = '.';
+					_EnemyCount++;
+				}
+				else{
+					//점수 표시 준비
+					//나중에 점수 표시하고 '.'으로 교체
+					_Item[i].ch = '*';
+					//점수 계산
+					_iItemScoreRate *= 2;
+					_iScore += _iItemScoreRate;
+				}
+			}
+		}
+	}
 
 }
 
 void CChildView::CheckCollision_Enemy()
 {
+	static int x1, y1, x2, y2;
+	static int xx1, yy1, xx2, yy2;
 
+	if (_Rac.state == 2 || _Rac.state == 6 || _Rac.state == 7){
+		x1 = _Rac.x + 10;
+		y1 = _Rac.y + 5;
+		x2 = _Rac.x + 30;
+		y2 = _Rac.y + 45;
+	}
+	else if (_Rac.state == 3 || _Rac.state == 8 || _Rac.state == 9){
+		x1 = _Rac.x + 20;
+		y1 = _Rac.y + 5;
+		x2 = _Rac.x + 40;
+		y2 = _Rac.y + 45;
+	}
+	else{
+		x1 = _Rac.x + 5;
+		y1 = _Rac.y + 5;
+		x2 = _Rac.x + 40;
+		y2 = _Rac.y + 45;
+	}
+
+	char i;
+
+	for (i = 0; i < _EnemyCount; i++){
+		if (_Ene[i].alpha == 255){
+			xx1 = _Ene[i].x + 7;
+			yy1 = _Ene[i].y + 5;
+			xx2 = _Ene[i].x + 43;
+			yy2 = _Ene[i].y + 50;
+
+			if ((xx1 > x1 && xx1 < x2 && yy1 > y1 && yy1 < y2) ||
+				(xx1 > x1 && xx1 < x2 && yy2 > y1 && yy2 < y2) ||
+				(xx2 > x1 && xx2 < x2 && yy1 > y1 && yy1 < y2) ||
+				(xx2 > x1 && xx2 < x2 && yy2 > y1 && yy2 < y2)){
+
+				_Rac.state = 10;
+			}
+		}
+	}
 }
 
 void CChildView::Init()
