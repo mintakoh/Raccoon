@@ -62,6 +62,17 @@ CChildView::CChildView()
 	_LeftLongJump[14] = { -5, 5, 2 };
 	_LeftLongJump[15] = { -5, 6, 2 };
 	_LeftLongJump[16] = { -5, 6, 3 };
+
+
+
+
+	_hMapEle[0].LoadBitmapW(IDB_MAP_A);
+	_hMapEle[1].LoadBitmapW(IDB_MAP_B);
+	_hMapEle[2].LoadBitmapW(IDB_MAP_C);
+	_hMapEle[3].LoadBitmapW(IDB_MAP_D);
+	_hMapEle[4].LoadBitmapW(IDB_MAP_E);
+	_hMapEle[5].LoadBitmapW(IDB_MAP_F);
+
 }
 
 CChildView::~CChildView()
@@ -103,7 +114,7 @@ void CChildView::OnPaint()
 		_iAni++;
 
 	//게임 화면(인트로 -> 게임화면(맵)) 전환
-	if (_iAni >= 1000)
+	if (_iAni == 1000)
 		_GameState = 1;
 
 
@@ -111,7 +122,7 @@ void CChildView::OnPaint()
 	memdc.CreateCompatibleDC(&dc);
 	objectdc.CreateCompatibleDC(&memdc);
 
-	CRect rect;
+
 	GetClientRect(&rect);
 
 	CBitmap screen;
@@ -131,43 +142,10 @@ void CChildView::OnPaint()
 	_hLets.LoadBitmapW(IDB_LETS);
 
 
-	// 맵 작업
-	CBitmap _hMap;
-	CBitmap _hMapEle[6];
-	_hMapEle[0].LoadBitmapW(IDB_MAP_A);
-	_hMapEle[1].LoadBitmapW(IDB_MAP_B);
-	_hMapEle[2].LoadBitmapW(IDB_MAP_C);
-	_hMapEle[3].LoadBitmapW(IDB_MAP_D);
-	_hMapEle[4].LoadBitmapW(IDB_MAP_E);
-	_hMapEle[5].LoadBitmapW(IDB_MAP_F);
-
-
-	HRSRC hRSrc = FindResource(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_MAP), _T("TEXT"));
-	DWORD size = SizeofResource(AfxGetInstanceHandle(), hRSrc);
-	HGLOBAL hMem = LoadResource(AfxGetInstanceHandle(), hRSrc);
-	PVOID ptr = LockResource(hMem);
-	char *str = (char*)malloc(size + 1);
-	memcpy(str, ptr, size);
-	str[size] = 0;
-	int m_index = 0;
-	m_index += 913 * (_iLevel - 1) + 3;
-	char ch;
+	// 맵 작업 LoadMap()으로 이동;
 	
 
-	static int i, j;
-
-	for (i = 0; i < 26; i++)
-	{
-		for (j = 0; j < 35; j++){
-			ch = str[m_index++];
-			if (ch != '\n')
-				_cMap[i][j] = ch;
-		}
-	}
 	
-	_hMap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
-	memdc.SelectObject(&_hMap);
-
 
 
 
@@ -268,35 +246,8 @@ void CChildView::OnPaint()
 
 	else if (_GameState == 1){
 
-		char index = 0;
-
-		for (i = 0; i < 26; i++){
-			for (j = 0; j < 33; j++){
-				if (_cMap[i][j] >= 'A' && _cMap[i][j] <= 'F'){
-					objectdc.SelectObject(_hMapEle[_cMap[i][j] - 65]);
-					memdc.TransparentBlt(j * 25, i * 25, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
-				}
-				else if (_cMap[i][j] >= 'G' && _cMap[i][j] <= 'L'){
-					_Ene[_EnemyCount].x = j * 25;
-					_Ene[_EnemyCount].y = i * 25 - 25;
-					_Ene[_EnemyCount].type = TRUE;
-					_Ene[_EnemyCount].state = (_cMap[i][j] - 'G') % 2;
-					_Ene[_EnemyCount].alpha = 255;
-					if (_Ene[_EnemyCount].state)
-						_Ene[_EnemyCount].speed = (2 + (_cMap[i][j] - 'G') / 2)* (-1);
-					else
-						_Ene[_EnemyCount].speed = 2 + (_cMap[i][j] - 'G') / 2;
-					_EnemyCount++;
-				}
-				else if (_cMap[i][j] >= 'M'){
-					_Item[index].x = j * 25;
-					_Item[index].y = i * 25 - 26;
-					_Item[index].ch = _cMap[i][j];
-					index++;
-				}
-			}
-		}
-
+		
+		LoadMap(&dc, &memdc, &objectdc);
 
 	}
 
@@ -378,4 +329,65 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		break;
 	}
 	CWnd::OnKeyDown(nChar, nRepCnt, nFlags);
+}
+
+
+void CChildView::LoadMap(CDC* dc, CDC* memdc, CDC* objectdc)
+{
+	HRSRC hRSrc = FindResource(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_MAP), _T("TEXT"));
+	DWORD size = SizeofResource(AfxGetInstanceHandle(), hRSrc);
+	HGLOBAL hMem = LoadResource(AfxGetInstanceHandle(), hRSrc);
+	PVOID ptr = LockResource(hMem);
+	char *str = (char*)malloc(size + 1);
+	memcpy(str, ptr, size);
+	str[size] = 0;
+	int m_index = 0;
+	m_index += 913 * (_iLevel - 1) + 3;
+	char ch;
+
+
+	static int i, j;
+
+	for (i = 0; i < 26; i++)
+	{
+		for (j = 0; j < 35; j++){
+			ch = str[m_index++];
+			if (ch != '\n')
+				_cMap[i][j] = ch;
+		}
+	}
+
+	_hMap.CreateCompatibleBitmap(dc, rect.Width(), rect.Height());
+	memdc->SelectObject(&_hMap);
+
+
+
+	char index = 0;
+
+	for (i = 0; i < 26; i++){
+		for (j = 0; j < 33; j++){
+			if (_cMap[i][j] >= 'A' && _cMap[i][j] <= 'F'){
+				objectdc->SelectObject(_hMapEle[_cMap[i][j] - 65]);
+				memdc->TransparentBlt(j * 25, i * 25, 25, 25, objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
+			}
+			else if (_cMap[i][j] >= 'G' && _cMap[i][j] <= 'L'){
+				_Ene[_EnemyCount].x = j * 25;
+				_Ene[_EnemyCount].y = i * 25 - 25;
+				_Ene[_EnemyCount].type = TRUE;
+				_Ene[_EnemyCount].state = (_cMap[i][j] - 'G') % 2;
+				_Ene[_EnemyCount].alpha = 255;
+				if (_Ene[_EnemyCount].state)
+					_Ene[_EnemyCount].speed = (2 + (_cMap[i][j] - 'G') / 2)* (-1);
+				else
+					_Ene[_EnemyCount].speed = 2 + (_cMap[i][j] - 'G') / 2;
+				_EnemyCount++;
+			}
+			else if (_cMap[i][j] >= 'M'){
+				_Item[index].x = j * 25;
+				_Item[index].y = i * 25 - 26;
+				_Item[index].ch = _cMap[i][j];
+				index++;
+			}
+		}
+	}
 }
