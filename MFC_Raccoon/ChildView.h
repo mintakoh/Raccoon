@@ -39,5 +39,6 @@ public:
 	int _iAni;
 	char _iLevel;
 	char _cMap[26][33];
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
 

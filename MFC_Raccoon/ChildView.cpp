@@ -27,6 +27,7 @@ CChildView::~CChildView()
 
 BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_PAINT()
+	ON_WM_KEYDOWN()
 END_MESSAGE_MAP()
 
 
@@ -126,25 +127,9 @@ void CChildView::OnPaint()
 
 
 
-	if (_GameState == 1){
-
-		char index = 0;
-
-		for (i = 0; i < 26; i++){
-			for (j = 0; j < 33; j++){
-				if (_cMap[i][j] >= 'A' && _cMap[i][j] <= 'F'){
-					objectdc.SelectObject(_hMapEle[_cMap[i][j] - 65]);
-					memdc.TransparentBlt(j * 25, i * 25, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
-				}
-				else if (_cMap[i][j] >= 'G' && _cMap[i][j] <= 'L'){
-
-				}
-			}
-		}
-	}
 	
 
-	else if (_GameState == 0){
+	if (_GameState == 0){
 		//인트로
 		CBrush backBrush;
 		backBrush.CreateSolidBrush(RGB(0, 0, 0));
@@ -237,6 +222,25 @@ void CChildView::OnPaint()
 		}
 	}
 
+	else if (_GameState == 1){
+
+		char index = 0;
+
+		for (i = 0; i < 26; i++){
+			for (j = 0; j < 33; j++){
+				if (_cMap[i][j] >= 'A' && _cMap[i][j] <= 'F'){
+					objectdc.SelectObject(_hMapEle[_cMap[i][j] - 65]);
+					memdc.TransparentBlt(j * 25, i * 25, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
+				}
+				else if (_cMap[i][j] >= 'G' && _cMap[i][j] <= 'L'){
+
+				}
+			}
+		}
+	}
+
+
+
 	dc.BitBlt(0, 0, rect.Width(), rect.Height(), &memdc, 0, 0, SRCCOPY);
 	
 	// 그리기 메시지에 대해서는 CWnd::OnPaint()를 호출하지 마십시오.
@@ -266,4 +270,28 @@ void CChildView::GameCycle()
 		//GameOver();
 		break;
 	}
+}
+
+
+void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	switch (_GameState)
+	{
+	case 0:
+		if (nChar == VK_SPACE){
+			//인트로 음악 종료
+			//초기화 작업.
+			// _iLevel = 1;
+			// _iLive = LIVE;
+			// -iScore = 0;
+			// init();
+			// LoadMap();
+			_GameState = 1;
+			Sleep(100);
+			Invalidate(false);
+		}
+		break;
+	}
+	CWnd::OnKeyDown(nChar, nRepCnt, nFlags);
 }
