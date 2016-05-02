@@ -68,6 +68,8 @@ protected:
 	afx_msg void OnPaint();
 	DECLARE_MESSAGE_MAP()
 public:
+	CRect rect;
+	
 	void GameCycle();
 	void GameIntro();
 	void GamePlay();
@@ -78,6 +80,12 @@ public:
 	char _cMap[26][33];
 	char _EnemyCount;
 
+
+	CBitmap _hMap;
+	CBitmap _hMapEle[6];
+
+
+
 	Raccoon _Rac;
 	Enemy	_Ene[7];
 	Item	_Item[12];
@@ -86,5 +94,6 @@ public:
 	jump	_LeftLongJump[17];
 
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	void LoadMap(CDC* dc, CDC* memdc, CDC* objectdc);
 };
 
