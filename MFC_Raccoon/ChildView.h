@@ -7,6 +7,13 @@
 #include "afxwin.h"
 
 
+// 처음에 주어지는 너구리 수 
+#define	LIVE		7
+
+// 마지막 레벨 
+#define LAST_LEVEL	4
+
+//너구리
 struct Raccoon
 {
 	int x;			//x좌표
@@ -17,6 +24,7 @@ struct Raccoon
 	char speedy;	//y속도
 };
 
+//적 (적과 뱀을 같이 처리, 차이는 적은 알파값을 사용하지 않는다, 뱀만 사용)
 struct Enemy
 {
 	int x;			//x좌표
@@ -27,6 +35,7 @@ struct Enemy
 	bool type;		//일반적인 적, 뱀
 };
 
+//과일, 항아리 
 struct Item
 {
 	int x;
@@ -34,11 +43,12 @@ struct Item
 	char ch;
 };
 
+//점프할때 좌표  
 struct jump
 {
 	char x;
 	char y;
-	char frame;
+	char frame; //스프라이트중에서 어떤 부분을 보여줄 건인가?
 };
 
 

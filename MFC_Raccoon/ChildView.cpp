@@ -752,7 +752,6 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			// LoadMap();
 			_GameState = 1;
 			Sleep(100);
-			Invalidate(false);
 		}
 		break;
 
