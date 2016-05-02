@@ -16,6 +16,7 @@ CChildView::CChildView()
 	: _bIsDrawAll(false)
 	, _GameState(0)
 	, _iAni(0)
+	, _iLevel(1)
 {
 }
 
@@ -56,6 +57,11 @@ void CChildView::OnPaint()
 	else
 		_iAni++;
 
+	//게임 화면(인트로 -> 게임화면(맵)) 전환
+	if (_iAni >= 1000)
+		_GameState = 1;
+
+
 	CDC memdc, objectdc;
 	memdc.CreateCompatibleDC(&dc);
 	objectdc.CreateCompatibleDC(&memdc);
@@ -80,97 +86,159 @@ void CChildView::OnPaint()
 	_hLets.LoadBitmapW(IDB_LETS);
 
 
-	CBrush backBrush;
-	backBrush.CreateSolidBrush(RGB(0, 0, 0));
-	if (_iAni == 1)
-		memdc.FillRect(&rect, &backBrush);
-	else {
-		memdc.FillRect(CRect(120, 430, 900, 500), &backBrush);
+	// 맵 작업
+	CBitmap _hMap;
+	CBitmap _hMapEle[6];
+	_hMapEle[0].LoadBitmapW(IDB_MAP_A);
+	_hMapEle[1].LoadBitmapW(IDB_MAP_B);
+	_hMapEle[2].LoadBitmapW(IDB_MAP_C);
+	_hMapEle[3].LoadBitmapW(IDB_MAP_D);
+	_hMapEle[4].LoadBitmapW(IDB_MAP_E);
+	_hMapEle[5].LoadBitmapW(IDB_MAP_F);
+
+
+	HRSRC hRSrc = FindResource(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_MAP), _T("TEXT"));
+	DWORD size = SizeofResource(AfxGetInstanceHandle(), hRSrc);
+	HGLOBAL hMem = LoadResource(AfxGetInstanceHandle(), hRSrc);
+	PVOID ptr = LockResource(hMem);
+	char *str = (char*)malloc(size + 1);
+	memcpy(str, ptr, size);
+	str[size] = 0;
+	int m_index = 0;
+	m_index += 913 * (_iLevel - 1) + 3;
+	char ch;
+	
+
+	static int i, j;
+
+	for (i = 0; i < 26; i++)
+	{
+		for (j = 0; j < 35; j++){
+			ch = str[m_index++];
+			if (ch != '\n')
+				_cMap[i][j] = ch;
+		}
 	}
+	
+	_hMap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
+	memdc.SelectObject(&_hMap);
 
-	static BOOL b;		//애니메이션 효과를 위해 	
-	//너구리 줄서 와서 자리 잡기 까지 
-	if (_iAni <= 171) {
 
-		b = !b;
-		objectdc.SelectObject(_hLeft);
 
-		if (_iAni <= 50) 
-			memdc.TransparentBlt(970 - _iAni * 5, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0,0,0));
-		else
-			memdc.TransparentBlt(720, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0,0,0));
 
-		if (_iAni >= 50 && _iAni <= 70) 
-			memdc.TransparentBlt(970 - _iAni * 5, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0,0,0));
-		else if (_iAni >= 70) 
-			memdc.TransparentBlt(620, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0,0,0));
+	if (_GameState == 1){
 
-		if (_iAni >= 70 && _iAni <= 90) 
-			memdc.TransparentBlt(970 - _iAni * 5, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0,0,0));
-		else if (_iAni >= 90) 
-			memdc.TransparentBlt(520, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0,0,0));
-		
-		if (_iAni >= 90 && _iAni <= 110)
-			memdc.TransparentBlt(970 - _iAni * 5, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0,0,0));
-		else if (_iAni >= 110)
-			memdc.TransparentBlt(420, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0,0,0));
+		char index = 0;
 
-		if (_iAni >= 110 && _iAni <= 130)
-			memdc.TransparentBlt(970 - _iAni * 5, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0,0,0));
-		else if (_iAni >= 130)
-			memdc.TransparentBlt(320, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0,0,0));
+		for (i = 0; i < 26; i++){
+			for (j = 0; j < 33; j++){
+				if (_cMap[i][j] >= 'A' && _cMap[i][j] <= 'F'){
+					objectdc.SelectObject(_hMapEle[_cMap[i][j] - 65]);
+					memdc.TransparentBlt(j * 25, i * 25, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
+				}
+				else if (_cMap[i][j] >= 'G' && _cMap[i][j] <= 'L'){
 
-		if (_iAni >= 130 && _iAni <= 150)
-			memdc.TransparentBlt(970 - _iAni * 5, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0,0,0));
-		else if (_iAni >= 150)
-			memdc.TransparentBlt(220, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0,0,0));
-
-		if (_iAni >= 150 && _iAni <= 170)
-			memdc.TransparentBlt(970 - _iAni * 5, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0,0,0));
-		else if (_iAni >= 170)
-			memdc.TransparentBlt(120, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0,0,0));
-
-		//너구리 몸 흔들기 -> Dance ㅡㅡ;;
+				}
+			}
+		}
 	}
-	else if (_iAni < 437) {
-		objectdc.SelectObject(&_hStand);
-		for (int i = 120; i <= 520; i += 100)
-			memdc.TransparentBlt(i, 450, 50, 50, &objectdc, (_iAni / 19 % 2) * 50, 0, 50, 50, RGB(0,0,0));
-		
-		if (_iAni < 250)
-			memdc.TransparentBlt(620, 450, 50, 50, &objectdc, (1 - _iAni / 19 % 2) * 50, 0, 50, 50, RGB(0,0,0));
-		else
-			memdc.TransparentBlt(620, 450, 50, 50, &objectdc, (_iAni / 19 % 2) * 50, 0, 50, 50, RGB(0,0,0));
+	
 
-		if (_iAni > 220 && _iAni < 255) {
-			objectdc.SelectObject(_hSurprise);
-			memdc.TransparentBlt(640, 435, 29, 21, &objectdc, 0, 0, 29, 21, RGB(0,0,0));
+	else if (_GameState == 0){
+		//인트로
+		CBrush backBrush;
+		backBrush.CreateSolidBrush(RGB(0, 0, 0));
+		if (_iAni == 1)
+			memdc.FillRect(&rect, &backBrush);
+		else {
+			memdc.FillRect(CRect(120, 430, 900, 500), &backBrush);
 		}
 
-		objectdc.SelectObject(_hStand);
-		memdc.TransparentBlt(720, 450, 50, 50, &objectdc, (_iAni / 19 % 2) * 50, 0, 50, 50, RGB(0,0,0));
-	}
-	else {
-		objectdc.SelectObject(_hRight);
-		for (int i = 120; i <= 520; i += 100)
-			memdc.TransparentBlt(i, 450, 50, 50, &objectdc, 0, 0, 50, 50, RGB(0,0,0));
+		static BOOL b;		//애니메이션 효과를 위해 	
+		//너구리 줄서 와서 자리 잡기 까지 
+		if (_iAni <= 171) {
 
-		objectdc.SelectObject(_hStand);
-		memdc.TransparentBlt(620, 450, 50, 50, &objectdc, 0, 0, 50, 50, RGB(0,0,0));
+			b = !b;
+			objectdc.SelectObject(_hLeft);
 
-		objectdc.SelectObject(_hSurprise);
-		memdc.TransparentBlt(640, 435, 29, 21, &objectdc, 0, 0, 29, 21, RGB(0,0,0));
+			if (_iAni <= 50)
+				memdc.TransparentBlt(970 - _iAni * 5, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0, 0, 0));
+			else
+				memdc.TransparentBlt(720, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0, 0, 0));
 
-		objectdc.SelectObject(_hLeft);
-		memdc.TransparentBlt(720, 450, 50, 50, &objectdc, 0, 0, 50, 50, RGB(0,0,0));
-	}
+			if (_iAni >= 50 && _iAni <= 70)
+				memdc.TransparentBlt(970 - _iAni * 5, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0, 0, 0));
+			else if (_iAni >= 70)
+				memdc.TransparentBlt(620, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0, 0, 0));
 
-	if (_iAni >= 171) {
-		objectdc.SelectObject(_hLets);
-		memdc.BitBlt(220, 120, 455, 218, &objectdc, 0, 0, SRCCOPY);
+			if (_iAni >= 70 && _iAni <= 90)
+				memdc.TransparentBlt(970 - _iAni * 5, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0, 0, 0));
+			else if (_iAni >= 90)
+				memdc.TransparentBlt(520, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0, 0, 0));
+
+			if (_iAni >= 90 && _iAni <= 110)
+				memdc.TransparentBlt(970 - _iAni * 5, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0, 0, 0));
+			else if (_iAni >= 110)
+				memdc.TransparentBlt(420, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0, 0, 0));
+
+			if (_iAni >= 110 && _iAni <= 130)
+				memdc.TransparentBlt(970 - _iAni * 5, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0, 0, 0));
+			else if (_iAni >= 130)
+				memdc.TransparentBlt(320, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0, 0, 0));
+
+			if (_iAni >= 130 && _iAni <= 150)
+				memdc.TransparentBlt(970 - _iAni * 5, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0, 0, 0));
+			else if (_iAni >= 150)
+				memdc.TransparentBlt(220, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0, 0, 0));
+
+			if (_iAni >= 150 && _iAni <= 170)
+				memdc.TransparentBlt(970 - _iAni * 5, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0, 0, 0));
+			else if (_iAni >= 170)
+				memdc.TransparentBlt(120, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0, 0, 0));
+
+			//너구리 몸 흔들기 -> Dance ㅡㅡ;;
+		}
+		else if (_iAni < 437) {
+			objectdc.SelectObject(&_hStand);
+			for (int i = 120; i <= 520; i += 100)
+				memdc.TransparentBlt(i, 450, 50, 50, &objectdc, (_iAni / 19 % 2) * 50, 0, 50, 50, RGB(0, 0, 0));
+
+			if (_iAni < 250)
+				memdc.TransparentBlt(620, 450, 50, 50, &objectdc, (1 - _iAni / 19 % 2) * 50, 0, 50, 50, RGB(0, 0, 0));
+			else
+				memdc.TransparentBlt(620, 450, 50, 50, &objectdc, (_iAni / 19 % 2) * 50, 0, 50, 50, RGB(0, 0, 0));
+
+			if (_iAni > 220 && _iAni < 255) {
+				objectdc.SelectObject(_hSurprise);
+				memdc.TransparentBlt(640, 435, 29, 21, &objectdc, 0, 0, 29, 21, RGB(0, 0, 0));
+			}
+
+			objectdc.SelectObject(_hStand);
+			memdc.TransparentBlt(720, 450, 50, 50, &objectdc, (_iAni / 19 % 2) * 50, 0, 50, 50, RGB(0, 0, 0));
+		}
+		else {
+			objectdc.SelectObject(_hRight);
+			for (int i = 120; i <= 520; i += 100)
+				memdc.TransparentBlt(i, 450, 50, 50, &objectdc, 0, 0, 50, 50, RGB(0, 0, 0));
+
+			objectdc.SelectObject(_hStand);
+			memdc.TransparentBlt(620, 450, 50, 50, &objectdc, 0, 0, 50, 50, RGB(0, 0, 0));
+
+			objectdc.SelectObject(_hSurprise);
+			memdc.TransparentBlt(640, 435, 29, 21, &objectdc, 0, 0, 29, 21, RGB(0, 0, 0));
+
+			objectdc.SelectObject(_hLeft);
+			memdc.TransparentBlt(720, 450, 50, 50, &objectdc, 0, 0, 50, 50, RGB(0, 0, 0));
+		}
+
+		if (_iAni >= 171) {
+			objectdc.SelectObject(_hLets);
+			memdc.BitBlt(220, 120, 455, 218, &objectdc, 0, 0, SRCCOPY);
+		}
 	}
 
 	dc.BitBlt(0, 0, rect.Width(), rect.Height(), &memdc, 0, 0, SRCCOPY);
+	
 	// 그리기 메시지에 대해서는 CWnd::OnPaint()를 호출하지 마십시오.
 }
 

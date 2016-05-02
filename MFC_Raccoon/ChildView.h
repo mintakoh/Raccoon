@@ -37,5 +37,7 @@ public:
 	bool _bIsDrawAll;
 	char _GameState;
 	int _iAni;
+	char _iLevel;
+	char _cMap[26][33];
 };
 
