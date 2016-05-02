@@ -71,12 +71,29 @@ CChildView::CChildView()
 	_LeftLongJump[15] = { -5, 6, 2 };
 	_LeftLongJump[16] = { -5, 6, 3 };
 
+
+
+	//이미지 처리
 	_hMapEle[0].LoadBitmapW(IDB_MAP_A);
 	_hMapEle[1].LoadBitmapW(IDB_MAP_B);
 	_hMapEle[2].LoadBitmapW(IDB_MAP_C);
 	_hMapEle[3].LoadBitmapW(IDB_MAP_D);
 	_hMapEle[4].LoadBitmapW(IDB_MAP_E);
 	_hMapEle[5].LoadBitmapW(IDB_MAP_F);
+
+	_hLeft.LoadBitmapW(IDB_LEFT);
+	_hStand.LoadBitmapW(IDB_STAND);
+	_hRight.LoadBitmapW(IDB_RIGHT);
+	_hSurprise.LoadBitmapW(IDB_SURPRISE);
+	_hLets.LoadBitmapW(IDB_LETS);
+
+	_hFruit[0].LoadBitmapW(IDB_MAP_Q);
+	_hFruit[1].LoadBitmapW(IDB_MAP_R);
+	_hFruit[2].LoadBitmapW(IDB_MAP_S);
+	_hFruit[3].LoadBitmapW(IDB_MAP_T);
+
+	_hScore.LoadBitmapW(IDB_SCORE);
+
 }
 
 CChildView::~CChildView()
@@ -126,7 +143,6 @@ void CChildView::GameIntro()
 	memdc.CreateCompatibleDC(&dc);
 	objectdc.CreateCompatibleDC(&memdc);
 
-	CRect rect;
 	GetClientRect(&rect);
 
 	CBitmap screen;
@@ -134,16 +150,8 @@ void CChildView::GameIntro()
 
 	memdc.SelectObject(&screen);
 
-	CBitmap _hLeft;
-	_hLeft.LoadBitmapW(IDB_LEFT);
-	CBitmap _hStand;
-	_hStand.LoadBitmapW(IDB_STAND);
-	CBitmap _hRight;
-	_hRight.LoadBitmapW(IDB_RIGHT);
-	CBitmap _hSurprise;
-	_hSurprise.LoadBitmapW(IDB_SURPRISE);
-	CBitmap _hLets;
-	_hLets.LoadBitmapW(IDB_LETS);
+	
+	
 
 
 	//인트로
@@ -650,6 +658,8 @@ void CChildView::GameCycle()
 	case 1:
 		_bIsDrawAll = FALSE;
 		GamePlay();
+		//LoadMap()구현 되었는지 확인하려고, 나중에 지울것
+		//LoadMap();
 		break;
 
 	case 2:
@@ -711,8 +721,15 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	CWnd::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 
-void CChildView::LoadMap(CDC* dc, CDC* memdc, CDC* objectdc)
+void CChildView::LoadMap()
 {
+	CClientDC dc(this);
+	CDC memdc, objectdc;
+	memdc.CreateCompatibleDC(&dc);
+	objectdc.CreateCompatibleDC(&memdc);
+
+	GetClientRect(&rect);
+
 	HRSRC hRSrc = FindResource(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_MAP), _T("TEXT"));
 	DWORD size = SizeofResource(AfxGetInstanceHandle(), hRSrc);
 	HGLOBAL hMem = LoadResource(AfxGetInstanceHandle(), hRSrc);
@@ -736,18 +753,16 @@ void CChildView::LoadMap(CDC* dc, CDC* memdc, CDC* objectdc)
 		}
 	}
 
-	_hMap.CreateCompatibleBitmap(dc, rect.Width(), rect.Height());
-	memdc->SelectObject(&_hMap);
-
-
+	_hMap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
+	memdc.SelectObject(&_hMap);
 
 	char index = 0;
 
 	for (i = 0; i < 26; i++){
 		for (j = 0; j < 33; j++){
 			if (_cMap[i][j] >= 'A' && _cMap[i][j] <= 'F'){
-				objectdc->SelectObject(_hMapEle[_cMap[i][j] - 65]);
-				memdc->TransparentBlt(j * 25, i * 25, 25, 25, objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
+				objectdc.SelectObject(_hMapEle[_cMap[i][j] - 65]);
+				memdc.TransparentBlt(j * 25, i * 25, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
 			}
 			else if (_cMap[i][j] >= 'G' && _cMap[i][j] <= 'L'){
 				_Ene[_EnemyCount].x = j * 25;
@@ -769,6 +784,34 @@ void CChildView::LoadMap(CDC* dc, CDC* memdc, CDC* objectdc)
 			}
 		}
 	}
+	
+	// 과일 (게임 상단에 현재 레벨을 알수 있는 과일들)
+	// 당근 , 앵두 ... 
+	for (i = 0; i < _iLevel; i++)
+	{
+		objectdc.SelectObject(&_hFruit[i]);
+		memdc.TransparentBlt((670 - (_iLevel - 1) * 55) + i * 55, 70, 51, 51, &objectdc, 0, 0, 51, 51, RGB(0, 0, 0));
+	}
+	
+
+	// 'SCORE'
+	objectdc.SelectObject(&_hScore);
+	memdc.TransparentBlt(25, 25, 75, 23, &objectdc, 0, 0, 75, 23, RGB(0, 0, 0));
+
+	// 남은 너구리 수
+	for (i = 0; i < _iLive; i++)
+	{
+		objectdc.SelectObject(&_hStand);
+		memdc.BitBlt(840, 600 - (i * 55), 50, 50, &objectdc, 50, 50, SRCCOPY);
+	}
+
+	free(str);
+
+	/*확인작업용 
+	// TODO: 나중에 지울 것!!
+	dc.BitBlt(0, 0, rect.Width(), rect.Height(), &memdc, 0, 0, SRCCOPY);
+	_GameState = 2;
+	*/
 }
 
 
@@ -818,7 +861,7 @@ void CChildView::CheckCollision()
 
 				//TODO : PlaySound
 
-				//TODO : if (_Item[i].ch >= 'Q') _iEat++;
+				if (_Item[i].ch >= 'Q') _iEat++;
 
 				if (_Item[i].ch == 'N' || _Item[i].ch == 'M'){
 					//TODO : PlaySound
@@ -845,8 +888,8 @@ void CChildView::CheckCollision()
 					//나중에 점수 표시하고 '.'으로 교체
 					_Item[i].ch = '*';
 					//점수 계산
-					//TODO : _iItemScoreRate *= 2;
-					//TODO : _iScore += _iItemScoreRate;
+					_iItemScoreRate *= 2;
+					_iScore += _iItemScoreRate;
 				}
 			}
 		}

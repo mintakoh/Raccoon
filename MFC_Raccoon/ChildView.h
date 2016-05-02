@@ -82,9 +82,17 @@ public:
 	char _EnemyCount;
 
 
+	
+	CBitmap _hSurprise;
+	CBitmap _hLets;
+
+
+	// 기본 맵 구성 이미지 
 	CBitmap _hMap;
 	CBitmap _hMapEle[6];
 
+	// 'SCORE'
+	CBitmap		_hScore;
 
 
 	Raccoon _Rac;
@@ -95,7 +103,7 @@ public:
 	jump	_LeftLongJump[17];
 
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-	void LoadMap(CDC* dc, CDC* memdc, CDC* objectdc);
+	void LoadMap();
 	void CheckCollision();
 	void CheckCollision_Enemy();
 	void Init();
