@@ -280,14 +280,37 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	{
 	case 0:
 		if (nChar == VK_SPACE){
-			//인트로 음악 종료
+			//음악 종료 함수 호출 
+
 			//초기화 작업.
 			// _iLevel = 1;
 			// _iLive = LIVE;
-			// -iScore = 0;
+			// _iScore = 0;
 			// init();
 			// LoadMap();
 			_GameState = 1;
+			Sleep(100);
+			Invalidate(false);
+		}
+		break;
+
+	//게임 플레이 도중
+	case 1:
+		//너구리 상태(_Rac.state)에 대해 switch 문 작성. 오토마다 그림 참고.
+		break;
+		
+	//레벨 클리어 ( 내용 없음 )
+	case 2:
+		break;
+
+	//Game Over
+	case 3:
+		if (nChar == VK_SPACE){
+			//음악 종료 함수 호출
+
+			//초기화 작업.
+			// _iAni = 0;
+			_GameState = 0;
 			Sleep(100);
 			Invalidate(false);
 		}
