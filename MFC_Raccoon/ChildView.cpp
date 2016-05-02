@@ -956,14 +956,14 @@ void CChildView::Init()
 	_Rac.y = 578;			//너구리의 시작 위치 
 	_Rac.speedx = 5;		//너구리 이동 속도 
 	_Rac.speedy = 5;		//너구리 이동 속도 
-	//_iTime = 500;			//게임 제한 시간 
-	//_iItemScoreRate = 5;	//아이템 점수, 2배씩 곱해지면서 증가 
-	//_iEat = 0;				//먹은 과일수 
+	_iTime = 500;			//게임 제한 시간 
+	_iItemScoreRate = 5;	//아이템 점수, 2배씩 곱해지면서 증가 
+	_iEat = 0;				//먹은 과일수 
 	_iAni = 0;				//애니메이션 효과를 위해 
-	//_bIsDrop_Sound = FALSE;	//너구리가 떨어질때 나는 소리 상태 
+	_bIsDrop_Sound = FALSE;	//너구리가 떨어질때 나는 소리 상태 
 
 	_EnemyCount = 0;		//적의 숫자 
 
-	//_ScoreShow = 0;			//먹은 과일 점수 표시 시간 
-	//_JumpFrame = 0;			//점프를 보여 줄때 필요 (카운터)
+	_ScoreShow = 0;			//먹은 과일 점수 표시 시간 
+	_JumpFrame = 0;			//점프를 보여 줄때 필요 (카운터)
 }
