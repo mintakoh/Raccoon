@@ -108,6 +108,9 @@ public:
 	void CheckCollision_Enemy();
 	void Init();
 
+	//더블 버퍼링을 위해  
+	CBitmap		_cBit;
+
 	//먹은 과일 수
 	char		_iEat;
 

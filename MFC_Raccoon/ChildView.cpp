@@ -138,21 +138,15 @@ void CChildView::GameIntro()
 	if (_iAni >= 1000)
 		_GameState = 1;
 
-
 	CDC memdc, objectdc;
 	memdc.CreateCompatibleDC(&dc);
 	objectdc.CreateCompatibleDC(&memdc);
 
 	GetClientRect(&rect);
-
-	CBitmap screen;
-	screen.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
-
-	memdc.SelectObject(&screen);
-
 	
-	
-
+	if (_cBit.m_hObject == NULL)
+		_cBit.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
+	memdc.SelectObject(&_cBit);
 
 	//인트로
 	CBrush backBrush;
@@ -244,9 +238,8 @@ void CChildView::GameIntro()
 		objectdc.SelectObject(_hLets);
 		memdc.BitBlt(220, 120, 455, 218, &objectdc, 0, 0, SRCCOPY);
 	}
-	
 
-	dc.BitBlt(0, 0, rect.Width(), rect.Height(), &memdc, 0, 0, SRCCOPY);
+	Invalidate(false);
 }
 
 void CChildView::GamePlay()
@@ -641,7 +634,22 @@ void CChildView::OnPaint()
 	CPaintDC dc(this); // 그리기를 위한 디바이스 컨텍스트입니다.
 	
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	CDC memdc;
+	memdc.CreateCompatibleDC(&dc);
+	memdc.SelectObject(&_cBit);
 
+	CRect rect;
+	GetClientRect(&rect);
+
+	switch (_GameState) {
+	case 0:
+		// 171은 너구리가 자리를 다 잡고 춤추기 시작하는 시점 
+		if (_bIsDrawAll == TRUE || _iAni == 1 || _iAni == 171)
+			dc.BitBlt(0, 0, rect.Width(), rect.Height(), &memdc, 0, 0, SRCCOPY);
+		else
+			dc.BitBlt(120, 430, 780, 70, &memdc, 120, 430, SRCCOPY);
+		break;
+	}
 
 	// 그리기 메시지에 대해서는 CWnd::OnPaint()를 호출하지 마십시오.
 }
