@@ -386,3 +386,63 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 	CWnd::OnKeyDown(nChar, nRepCnt, nFlags);
 }
+
+void CChildView::LoadMap(CDC* dc, CDC* memdc, CDC* objectdc)
+{
+	HRSRC hRSrc = FindResource(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_MAP), _T("TEXT"));
+	DWORD size = SizeofResource(AfxGetInstanceHandle(), hRSrc);
+	HGLOBAL hMem = LoadResource(AfxGetInstanceHandle(), hRSrc);
+	PVOID ptr = LockResource(hMem);
+	char *str = (char*)malloc(size + 1);
+	memcpy(str, ptr, size);
+	str[size] = 0;
+	int m_index = 0;
+	m_index += 913 * (_iLevel - 1) + 3;
+	char ch;
+
+
+	static int i, j;
+
+	for (i = 0; i < 26; i++)
+	{
+		for (j = 0; j < 35; j++){
+			ch = str[m_index++];
+			if (ch != '\n')
+				_cMap[i][j] = ch;
+		}
+	}
+
+	_hMap.CreateCompatibleBitmap(dc, rect.Width(), rect.Height());
+	memdc->SelectObject(&_hMap);
+
+
+
+	char index = 0;
+
+	for (i = 0; i < 26; i++){
+		for (j = 0; j < 33; j++){
+			if (_cMap[i][j] >= 'A' && _cMap[i][j] <= 'F'){
+				objectdc->SelectObject(_hMapEle[_cMap[i][j] - 65]);
+				memdc->TransparentBlt(j * 25, i * 25, 25, 25, objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
+			}
+			else if (_cMap[i][j] >= 'G' && _cMap[i][j] <= 'L'){
+				_Ene[_EnemyCount].x = j * 25;
+				_Ene[_EnemyCount].y = i * 25 - 25;
+				_Ene[_EnemyCount].type = TRUE;
+				_Ene[_EnemyCount].state = (_cMap[i][j] - 'G') % 2;
+				_Ene[_EnemyCount].alpha = 255;
+				if (_Ene[_EnemyCount].state)
+					_Ene[_EnemyCount].speed = (2 + (_cMap[i][j] - 'G') / 2)* (-1);
+				else
+					_Ene[_EnemyCount].speed = 2 + (_cMap[i][j] - 'G') / 2;
+				_EnemyCount++;
+			}
+			else if (_cMap[i][j] >= 'M'){
+				_Item[index].x = j * 25;
+				_Item[index].y = i * 25 - 26;
+				_Item[index].ch = _cMap[i][j];
+				index++;
+			}
+		}
+	}
+}
