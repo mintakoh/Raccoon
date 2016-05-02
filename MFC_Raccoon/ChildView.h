@@ -6,6 +6,41 @@
 #pragma once
 
 
+struct Raccoon
+{
+	int x;			//x좌표
+	int y;			//y좌표
+	char state;		//너구리상태 (오토마다 참조)
+	bool step;		//움직일때 애니메이션
+	char speedx;	//x속도
+	char speedy;	//y속도
+};
+
+struct Enemy
+{
+	int x;			//x좌표
+	int y;			//y좌표
+	int alpha;		//뱀 희미하다 선명하게
+	char speed;		//속도
+	bool state;		//방향(좌우)
+	bool type;		//일반적인 적, 뱀
+};
+
+struct Item
+{
+	int x;
+	int y;
+	char ch;
+};
+
+struct jump
+{
+	char x;
+	char y;
+	char frame;
+};
+
+
 // CChildView 창
 
 class CChildView : public CWnd
@@ -41,45 +76,12 @@ public:
 	char _cMap[26][33];
 	char _EnemyCount;
 
-	struct Raccoon
-	{
-		int x;			//x좌표
-		int y;			//y좌표
-		char state;		//너구리상태 (오토마다 참조)
-		bool step;		//움직일때 애니메이션
-		char speedx;	//x속도
-		char speedy;	//y속도
-	};
-
-	struct Enemy
-	{
-		int x;			//x좌표
-		int y;			//y좌표
-		int alpha;		//뱀 희미하다 선명하게
-		char speed;		//속도
-		bool state;		//방향(좌우)
-		bool type;		//일반적인 적, 뱀
-	};
-
-	struct Item
-	{
-		int x;
-		int y;
-		char ch;
-	};
-
-	struct jump
-	{
-		char x;
-		char y;
-		char frame;
-	};
-
 	Raccoon _Rac;
 	Enemy	_Ene[7];
 	Item	_Item[12];
-
-
+	jump	_StandJump[10];
+	jump	_LeftShortJump[11];
+	jump	_LeftLongJump[17];
 
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
