@@ -189,9 +189,6 @@ public:
 	// 너구리가 죽어서 떨어질때 음악 연주 상태
 	BOOL _bIsDrop_Sound;
 
-	//게임오버때 나오는 문구
-	CBitmap _gameover;
-	
 
 };
 

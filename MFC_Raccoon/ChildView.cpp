@@ -110,7 +110,6 @@ CChildView::CChildView()
 	_hLets.LoadBitmapW(IDB_LETS);
 	//SCORE
 	_hScore.LoadBitmapW(IDB_SCORE);
-	_hDigit.LoadBitmapW(IDB_DIGIT);
 	//GAMEOVER
 	_hGameOver.LoadBitmapW(IDB_GAMEOVER);
 	//BONUS
