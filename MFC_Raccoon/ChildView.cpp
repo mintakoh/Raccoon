@@ -1156,7 +1156,7 @@ void CChildView::LoadMap()
 	for (i = 0; i < _iLive; i++)
 	{
 		objectdc.SelectObject(&_hStand);
-		memdc.BitBlt(840, 600 - (i * 55), 50, 50, &objectdc, 50, 50, SRCCOPY);
+		memdc.BitBlt(840, 600 - (i * 55), 50, 50, &objectdc, 0, 0, SRCCOPY);
 	}
 
 	free(str);
