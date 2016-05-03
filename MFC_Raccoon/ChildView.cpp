@@ -355,12 +355,16 @@ void CChildView::GamePlay()
 
 	else {
 		//呈备府 林困  
+		objectdc.SelectObject(&_hMap);
 		memdc.BitBlt(_Rac.x - 5, _Rac.y - 5, 60, 60, &objectdc, _Rac.x - 5, _Rac.y - 5, SRCCOPY);
 //		DrawBitmap(hMemDC, _Rac.x - 5, _Rac.y - 5, _hMap, FALSE, _Rac.x - 5, _Rac.y - 5, _Rac.x + 55, _Rac.y + 55);
 		//利 林困 
 		for (i = 0; i < _EnemyCount; i++)
+		{
+			objectdc.SelectObject(&_hMap);
 			memdc.BitBlt(_Ene[i].x - 2, _Ene[i].y + 5, 54, 53, &objectdc, _Ene[i].x - 2, _Ene[i].y + 5, SRCCOPY);
 			//DrawBitmap(hMemDC, _Ene[i].x - 2, _Ene[i].y + 5, _hMap, FALSE, _Ene[i].x - 2, _Ene[i].y + 5, _Ene[i].x + 52, _Ene[i].y + 48);
+		}
 	}
 
 
@@ -375,6 +379,7 @@ void CChildView::GamePlay()
 
 	static int Score;
 	if (_iScore != Score || _iAni == 1){
+		objectdc.SelectObject(&_hMap);
 		memdc.BitBlt(200, 50, 100, 25, &objectdc, 200, 50, SRCCOPY);
 		//DrawBitmap(hMemDC, 200, 50, _hMap, FALSE, 200, 50, 300, 75);
 		DrawDigit(memdc, 205, 50, _iScore, _hDigit, 7);
@@ -529,14 +534,18 @@ void CChildView::GamePlay()
 				if (_Ene[i].state == FALSE) //规氢
 				{
 					objectdc.SelectObject(&_hEnemyRightRed);
-					memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni % 2) * 50, 0, SRCCOPY);
+					BITMAP info;
+					_hEnemyRightRed.GetBitmap(&info);
+					memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni % 2) * 50, 0, info.bmWidth/2, info.bmHeight, RGB(0, 0, 0));
 					//DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hEnemyRightRed, TRUE, (_iAni % 2) * 50, 0, (_iAni % 2 + 1) * 50, 50);
 				}
 					
 				else
 				{
 					objectdc.SelectObject(&_hEnemyLeftRed);
-					memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni % 2) * 50, 0, SRCCOPY);
+					BITMAP info;
+					_hEnemyLeftRed.GetBitmap(&info);
+					memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni % 2) * 50, 0, info.bmWidth/2, info.bmHeight, RGB(0, 0, 0));
 					//DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hEnemyLeftRed, TRUE, (_iAni % 2) * 50, 0, (_iAni % 2 + 1) * 50, 50);
 				}
 			}
@@ -544,13 +553,17 @@ void CChildView::GamePlay()
 				if (_Ene[i].state == FALSE) //规氢
 				{
 					objectdc.SelectObject(&_hEnemyRight);
-					memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni % 2) * 50, 0, SRCCOPY);
+					BITMAP info;
+					_hEnemyRight.GetBitmap(&info);
+					memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni % 2) * 50, 0, info.bmWidth/2, info.bmHeight, RGB(0, 0, 0));
 					//DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hEnemyRight, TRUE, (_iAni % 2) * 50, 0, (_iAni % 2 + 1) * 50, 50);
 				}
 				else
 				{
 					objectdc.SelectObject(&_hEnemyLeft);
-					memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni % 2) * 50, 0, SRCCOPY);
+					BITMAP info;
+					_hEnemyLeft.GetBitmap(&info);
+					memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni % 2) * 50, 0, info.bmWidth/2, info.bmHeight, RGB(0, 0, 0));
 					//DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hEnemyLeft, TRUE, (_iAni % 2) * 50, 0, (_iAni % 2 + 1) * 50, 50);
 				}
 			}
