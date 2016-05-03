@@ -92,19 +92,6 @@ public:
 	char _EnemyCount;
 
 
-	
-	CBitmap _hSurprise;
-	CBitmap _hLets;
-
-
-	// 기본 맵 구성 이미지 
-	CBitmap _hMap;
-	CBitmap _hMapEle[6];
-
-	// 'SCORE'
-	CBitmap		_hScore;
-
-
 	Raccoon _Rac;
 	Enemy	_Ene[7];
 	Item	_Item[12];
@@ -135,6 +122,18 @@ public:
 
 	// 점수
 	int			_iScore;
+
+	CBitmap _hSurprise;
+	CBitmap _hLets;
+
+
+	// 기본 맵 구성 이미지 
+	CBitmap _hMap;
+	CBitmap _hMapEle[6];
+
+	// 'SCORE'
+	CBitmap		_hScore;
+
 
 	// 숫자
 	CBitmap		_hDigit;

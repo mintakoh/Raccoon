@@ -245,14 +245,24 @@ void CChildView::GameIntro()
 void CChildView::GamePlay()
 {
 	//CRect crt;
-	//CClientDC hdc(this);
-	//CDC hMemDC;
-	//hMemDC.CreateCompatibleDC(&hdc);
+	GetClientRect(&rect);
+	CClientDC dc(this);
+	CDC memdc, objectdc;
+	memdc.CreateCompatibleDC(&dc);
+	objectdc.CreateCompatibleDC(&memdc);
+
+	if (_cBit.m_hObject == NULL)
+		_cBit.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
+	memdc.SelectObject(&_cBit);
+
 	//HBITMAP OldBit;
 	//HPEN MyPen, OldPen;
 	//HBRUSH MyBrush, OldBrush;
 
-	//char i;
+	CPen pen;
+	CBrush brush;
+
+	char i;
 
 	//GetClientRect(&crt);
 	//hdc = GetDC(_pGame->GetWindow());
@@ -265,59 +275,67 @@ void CChildView::GamePlay()
 	//// 시간 바를 표시할 브러시와 펜 
 	//MyPen = CreatePen(PS_SOLID, 0, RGB(0, 0, 0));
 	//OldPen = (HPEN)SelectObject(hMemDC, MyPen);
-
+	pen.CreatePen(PS_SOLID, 0, RGB(0, 0, 0));
+	memdc.SelectObject(&pen);
 	//MyBrush = CreateSolidBrush(RGB(25, 184, 5));
 	//OldBrush = (HBRUSH)SelectObject(hMemDC, MyBrush);
+	brush.CreateSolidBrush(RGB(0, 0, 0));
+	memdc.SelectObject(&brush);
 
 	////에니메이션 구현을 위해 	
 	////너구리가 죽으면 움직임을 멈추는 것들은 _iTime을 기준으로 에니메이션
 	////너구리가 죽으면서 하는 움직임은 _iAni을 이용 	
-	//_iAni++;
+	_iAni++;
 
 	//// Play종료 조건 
 
 	//// 과일 다 먹음 
 	//// _ScoreShow == 1 을 한 이유는 마지막으로 먹은 과일 점수 까지 보여주려고 
-	//if (_iEat == 8 && _ScoreShow == 1) {
-	//	Sleep(500);
-	//	_iAni = 0;
-	//	_GameState = 2;
-	//}
+	if (_iEat == 8 && _ScoreShow == 1) {
+		Sleep(500);
+		_iAni = 0;
+		_GameState = 2;
+	}
 	//// 너구리 죽음 	
-	//if (_Rac.state == 11) {
-	//	//PlaySound(NULL, _hInstance, 0);
-	//	//PlaySound(MAKEINTRESOURCE(IDR_RAC_DIE), _hInstance, SND_RESOURCE | SND_ASYNC);
-	//	Sleep(1500);
-	//	if (_iLive == 0) { // 마지막 너구리가 죽으면 
-	//		Init();
-	//		_GameState = 3;	//gameover
-	//	}
-	//	else {
-	//		_iLive--;
-	//		Init();
-	//		LoadMap();
-	//	}
-	//}
+	if (_Rac.state == 11) {
+		//PlaySound(NULL, _hInstance, 0);
+		//PlaySound(MAKEINTRESOURCE(IDR_RAC_DIE), _hInstance, SND_RESOURCE | SND_ASYNC);
+		Sleep(1500);
+		if (_iLive == 0) { // 마지막 너구리가 죽으면 
+			Init();
+			_GameState = 3;	//gameover
+		}
+		else {
+			_iLive--;
+			Init();
+			LoadMap();
+		}
+	}
 
 
 	//// 남은 시간	
 	//// 너구리가 떨어지거나 죽으면 시간은 멈춘다.
-	//if (_iAni % 5 == 0 && _Rac.state != 10 && _Rac.state != 11) {
-	//	_iTime--;
-	//	if (_iTime == 0)
-	//		_Rac.state = 10;	//너구리 죽음 		
-	//}
+	if (_iAni % 5 == 0 && _Rac.state != 10 && _Rac.state != 11) {
+		_iTime--;
+		if (_iTime == 0)
+			_Rac.state = 10;	//너구리 죽음 		
+	}
 
 	//// 맵(처음 시작 할때 맵 전체를 한번 그린다.)
-	//if (_iAni == 1)
-	//	DrawBitmap(hMemDC, 0, 0, _hMap, FALSE);
-	//else {
-	//	//너구리 주위  
-	//	DrawBitmap(hMemDC, _Rac.x - 5, _Rac.y - 5, _hMap, FALSE, _Rac.x - 5, _Rac.y - 5, _Rac.x + 55, _Rac.y + 55);
-	//	//적 주위 
-	//	for (i = 0; i <_EnemyCount; i++)
-	//		DrawBitmap(hMemDC, _Ene[i].x - 2, _Ene[i].y + 5, _hMap, FALSE, _Ene[i].x - 2, _Ene[i].y + 5, _Ene[i].x + 52, _Ene[i].y + 48);
-	//}
+	if (_iAni == 1){
+		objectdc.SelectObject(&_hMap);
+		memdc.BitBlt(0, 0, rect.Width(), rect.Height(), &objectdc, 0, 0, SRCCOPY);
+		//DrawBitmap(hMemDC, 0, 0, _hMap, FALSE);
+	}
+
+	else {
+		//너구리 주위  
+		memdc.BitBlt(_Rac.x - 5, _Rac.y - 5, 60, 60, &objectdc, _Rac.x - 5, _Rac.y - 5, SRCCOPY);
+//		DrawBitmap(hMemDC, _Rac.x - 5, _Rac.y - 5, _hMap, FALSE, _Rac.x - 5, _Rac.y - 5, _Rac.x + 55, _Rac.y + 55);
+		//적 주위 
+		//for (i = 0; i <_EnemyCount; i++)
+			//DrawBitmap(hMemDC, _Ene[i].x - 2, _Ene[i].y + 5, _hMap, FALSE, _Ene[i].x - 2, _Ene[i].y + 5, _Ene[i].x + 52, _Ene[i].y + 48);
+	}
 
 
 	//// 점수 표시 (이전과 변화가 있을 때만 그린다.)
@@ -626,7 +644,7 @@ void CChildView::GamePlay()
 	//DeleteDC(hMemDC);
 	//ReleaseDC(_pGame->GetWindow(), hdc);
 	//InvalidateRect(_pGame->GetWindow(), NULL, FALSE);
-
+	Invalidate(FALSE);
 }
 
 void CChildView::OnPaint() 
@@ -747,7 +765,7 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			_iLive = LIVE;
 			_iScore = 0;
 			Init();
-			//LoadMap();
+			LoadMap();
 			_GameState = 1;
 			//스페이스를 조금 길게 누르면 게임이 시작하자 마자 너구리가 점프하므로 
 			//이를 방지 하기 위해 
