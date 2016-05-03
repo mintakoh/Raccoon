@@ -93,7 +93,7 @@ CChildView::CChildView()
 	_hFruit[3].LoadBitmapW(IDB_MAP_T);
 
 	_hScore.LoadBitmapW(IDB_SCORE);
-
+	_hDigit.LoadBitmapW(IDB_DIGIT);
 }
 
 CChildView::~CChildView()
@@ -1154,8 +1154,7 @@ void CChildView::DrawDigit(CDC& cDC, int x, int y, int score, CBitmap& cBit, int
 	MemDC.CreateCompatibleDC(&cDC);
 	OldBitmap = MemDC.SelectObject(&cBit);
 
-	GetObject(cBit, sizeof(BITMAP), &bit);
-	//cBit.GetBitmap(&bit);
+	cBit.GetBitmap(&bit);
 	bx = bit.bmWidth / 10;
 	by = bit.bmHeight;
 
@@ -1173,6 +1172,6 @@ void CChildView::DrawDigit(CDC& cDC, int x, int y, int score, CBitmap& cBit, int
 	for (int i = 0; i < len; i++)
 		cDC.TransparentBlt(x + (blank*bx) + (i*bx), y, bx, by, &MemDC, bx*(str[i] - '0'), 0, bx, by, crTransColor);
 
-	SelectObject(MemDC, OldBitmap);
-	DeleteDC(MemDC);
+	MemDC.SelectObject(&OldBitmap);
+	MemDC.DeleteDC();
 }
