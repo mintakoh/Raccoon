@@ -323,8 +323,8 @@ void CChildView::GamePlay()
 	}
 	//// 너구리 죽음 	
 	if (_Rac.state == 11) {
-		//PlaySound(NULL, _hInstance, 0);
-		//PlaySound(MAKEINTRESOURCE(IDR_RAC_DIE), _hInstance, SND_RESOURCE | SND_ASYNC);
+		PlaySound(NULL, AfxGetInstanceHandle(), 0);
+		PlaySound(MAKEINTRESOURCE(IDR_RAC_DIE), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 		Sleep(1500);
 		if (_iLive == 0) { // 마지막 너구리가 죽으면 
 			Init();
@@ -831,7 +831,7 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 					_Rac.state = 4;
 			}
 			else if (nChar == VK_SPACE) {
-				//PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), _hInstance, SND_RESOURCE | SND_ASYNC);
+				PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 				_Rac.state = 5;
 			}
 
@@ -842,12 +842,12 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				if (_Rac.x >= 25) {
 					_Rac.x -= _Rac.speedx;
 					_Rac.step = !_Rac.step;
-					//if (_Rac.x % 20 == 0)
-					//	PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), _hInstance, SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
+					if (_Rac.x % 20 == 0)
+						PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
 					CheckCollision();
 				} //키 버퍼 
 				if (nChar == VK_SPACE) {
-					//PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), _hInstance, SND_RESOURCE | SND_ASYNC);
+					PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 					_Rac.state = 7;
 				}
 			}
@@ -863,7 +863,7 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 					_Rac.state = 4;
 			}
 			else if (nChar == VK_SPACE) {
-				//PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), _hInstance, SND_RESOURCE | SND_ASYNC);
+				PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 				_Rac.state = 6;
 			}
 
@@ -877,12 +877,12 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				if ((_Rac.x <= 670) || (_Rac.x <= 775 && _Rac.y == 578)) {
 					_Rac.x += _Rac.speedx;
 					_Rac.step = !_Rac.step;
-					//if (_Rac.x % 20 == 0)
-						//PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), _hInstance, SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
+					if (_Rac.x % 20 == 0)
+						PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
 					CheckCollision();
 				} // 키 버퍼 
 				if (nChar == VK_SPACE)  {
-					//PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), _hInstance, SND_RESOURCE | SND_ASYNC);
+					PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 					_Rac.state = 9;
 				}
 			}
@@ -895,7 +895,7 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 					_Rac.state = 4;
 			}
 			else if (nChar == VK_SPACE) {
-				//PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), _hInstance, SND_RESOURCE | SND_ASYNC);
+				PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 				_Rac.state = 8;
 			}
 
@@ -906,8 +906,8 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				if (_cMap[(_Rac.y + 20) / 25][(_Rac.x + 20) / 25] == 'F') {
 					_Rac.y -= _Rac.speedy;
 					_Rac.step = !_Rac.step;
-					//if ((_Rac.y - 3) % 20 == 0)
-						//PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), _hInstance, SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
+					if ((_Rac.y - 3) % 20 == 0)
+						PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
 				}
 				else
 					_Rac.state = 1;
@@ -916,8 +916,8 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				if (_cMap[(_Rac.y + 50) / 25][(_Rac.x + 20) / 25] == 'F') {
 					_Rac.y += _Rac.speedy;
 					_Rac.step = !_Rac.step;
-					//if ((_Rac.y - 3) % 20 == 0)
-						//PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), _hInstance, SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
+					if ((_Rac.y - 3) % 20 == 0)
+						PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
 				}
 				else
 					_Rac.state = 1;
