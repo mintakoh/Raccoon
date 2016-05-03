@@ -1127,14 +1127,39 @@ void CChildView::GameClear()
 
 void CChildView::GameOver()
 {
+	//CClientDC dc(this);
+
+	//CDC memdc;
+	//memdc.CreateCompatibleDC(&dc);
+
+	//CRect rect;
+	//GetClientRect(&rect);
+
+	//CBitmap bmp;
+	//bmp.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
+
+	//CDC game_overdc;
+	//game_overdc.CreateCompatibleDC(&memdc);
 
 
+	//CDC dead_racoondc;
+	//dead_racoondc.CreateCompatibleDC(&memdc);
+	//
+	//game_overdc.SelectObject(&_gameover);
+	//dead_racoondc.SelectObject(&_)
 
+	////¹Ù´Ú ±×¸®±â 
+	//memdc.Rectangle(0, 585, 900, 670);
 
-
-
-
-
+	//static int i, j;
+	//j = 0;
+	//for (i = 585; i < 670; i += j) {
+	//	j++;
+	//	/*MoveToEx(hMemDC, 0, i, NULL);
+	//	LineTo(hMemDC, 900, i);*/
+	//	memdc.MoveTo(0, i);
+	//	memdc.LineTo(900, i);
+	//}
 
 	
 	
