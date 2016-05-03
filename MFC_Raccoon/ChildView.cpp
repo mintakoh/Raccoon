@@ -1190,6 +1190,14 @@ void CChildView::CheckCollision()
 				return;
 			}
 		}
+		if (_cMap[y2 / 25][x2 / 25] == 'E' || _cMap[y2 / 25 + 1][x2 / 25] == '.') {
+			xx1 = (x2 / 25 * 25) + 5;
+			xx2 = ((x2 / 25 + 1) * 25) - 5;
+			if ((xx1 > x1 && xx1 < x2) || (xx2 > x1 && xx2 < x2)) {
+				_Rac.state = 10;
+				return;
+			}
+		}
 	}
 
 	//과일, 항아리 충돌 검사
@@ -1219,11 +1227,12 @@ void CChildView::CheckCollision()
 					_Ene[_EnemyCount].type = FALSE;
 					_Ene[_EnemyCount].alpha = 10;
 
-					if (_Item[i].ch == 'N'){
+					if (_Item[i].ch == 'N') {
 						_Ene[_EnemyCount].state = TRUE;
 						_Ene[_EnemyCount].speed = -1;
+
 					}
-					else{
+					else {
 						_Ene[_EnemyCount].state = FALSE;
 						_Ene[_EnemyCount].speed = 1;
 					}
