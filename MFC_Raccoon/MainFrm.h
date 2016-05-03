@@ -45,6 +45,19 @@ protected:
 	afx_msg void OnSetFocus(CWnd *pOldWnd);
 	DECLARE_MESSAGE_MAP()
 
+public:
+	afx_msg void OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized);
+	void GameActivate()
+	{
+		// 화면을 전부 다시 그리기 위해 
+		GetChildView()->_bIsDrawAll = TRUE;
+	}
+
+	void GameDeactivate()
+	{
+		// 화면을 전부 다시 그리기 위해 
+		GetChildView()->_bIsDrawAll = TRUE;
+	}
 };
 
 

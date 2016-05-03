@@ -22,6 +22,7 @@ const UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_CREATE()
 	ON_WM_SETFOCUS()
+	ON_WM_ACTIVATE()
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -139,4 +140,23 @@ BOOL CMainFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO*
 CChildView* CMainFrame::GetChildView() 
 {
 	return &m_wndView;
+}
+
+void CMainFrame::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
+{
+	CFrameWnd::OnActivate(nState, pWndOther, bMinimized);
+
+	switch (nState)
+	{
+	case WA_ACTIVE :
+		GameActivate();
+		break;
+
+	case WA_INACTIVE :
+		GameDeactivate();
+		break;
+
+	default:
+		break;
+	}
 }
