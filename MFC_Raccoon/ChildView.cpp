@@ -81,19 +81,28 @@ CChildView::CChildView()
 	_hMapEle[4].LoadBitmapW(IDB_MAP_E);
 	_hMapEle[5].LoadBitmapW(IDB_MAP_F);
 
-	_hLeft.LoadBitmapW(IDB_LEFT);
-	_hStand.LoadBitmapW(IDB_STAND);
-	_hRight.LoadBitmapW(IDB_RIGHT);
-	_hSurprise.LoadBitmapW(IDB_SURPRISE);
-	_hLets.LoadBitmapW(IDB_LETS);
+	_hScore.LoadBitmapW(IDB_SCORE);
+	
 
+	// 숫자 
+	_hDigit.LoadBitmapW(IDB_DIGIT);
+	_hDigit_sm.LoadBitmapW(IDB_DIGIT_SM);
+
+	// 항아리 
+	_hPot.LoadBitmapW(IDB_MAP_N);
+
+	// 과일 
 	_hFruit[0].LoadBitmapW(IDB_MAP_Q);
 	_hFruit[1].LoadBitmapW(IDB_MAP_R);
 	_hFruit[2].LoadBitmapW(IDB_MAP_S);
 	_hFruit[3].LoadBitmapW(IDB_MAP_T);
 
-	_hScore.LoadBitmapW(IDB_SCORE);
-	_hDigit.LoadBitmapW(IDB_DIGIT);
+	// 너구리
+	_hLeft.LoadBitmapW(IDB_LEFT);
+	_hStand.LoadBitmapW(IDB_STAND);
+	_hRight.LoadBitmapW(IDB_RIGHT);
+	_hSurprise.LoadBitmapW(IDB_SURPRISE);
+	_hLets.LoadBitmapW(IDB_LETS);
 }
 
 CChildView::~CChildView()
