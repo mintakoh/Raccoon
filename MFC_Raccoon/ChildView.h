@@ -115,7 +115,6 @@ public:
 	jump	_LeftShortJump[11];
 	jump	_LeftLongJump[17];
 
-//	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	void LoadMap();
 	void CheckCollision();
 	void CheckCollision_Enemy();
