@@ -187,6 +187,7 @@ BOOL CMFC_RaccoonApp::OnIdle(LONG lCount)
 		CChildView *pView = (CChildView *)pFrame->GetChildView();
 		if (pView) {
 			pView->GameCycle();
+			pView->HandleKeys();
 		}
 	}
 	return true;

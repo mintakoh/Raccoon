@@ -10,6 +10,14 @@
 #include "afxwin.h"
 
 
+
+// 게임에서 사용하는 키 지정 
+#define LEFT		VK_LEFT
+#define RIGHT		VK_RIGHT
+#define UP			VK_UP
+#define DOWN		VK_DOWN
+#define	JUMP		VK_SPACE
+
 // 처음에 주어지는 너구리 수 
 #define	LIVE		7
 
@@ -107,7 +115,7 @@ public:
 	jump	_LeftShortJump[11];
 	jump	_LeftLongJump[17];
 
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+//	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	void LoadMap();
 	void CheckCollision();
 	void CheckCollision_Enemy();
