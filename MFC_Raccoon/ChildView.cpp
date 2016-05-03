@@ -172,10 +172,6 @@ void CChildView::GameIntro()
 	else
 		_iAni++;
 
-	//게임 화면(인트로 -> 게임화면(맵)) 전환
-	if (_iAni >= 1000)
-		_GameState = 1;
-
 	CDC memdc, objectdc;
 	memdc.CreateCompatibleDC(&dc);
 	objectdc.CreateCompatibleDC(&memdc);
