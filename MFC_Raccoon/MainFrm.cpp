@@ -91,7 +91,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	cs.hMenu = NULL;
 
 	//TODO : 프레임 크기는 추후에 미세조정
-	cs.cx = 930;
+	cs.cx = 920;
 	cs.cy = 730;
 
 	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
