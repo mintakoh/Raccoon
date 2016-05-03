@@ -1294,7 +1294,101 @@ void CChildView::CheckCollision_Enemy()
 
 void CChildView::GameClear()
 {
+	RECT crt;
+	CDC *hdc, hMemDC;
+	CBitmap OldBit;
+	CBrush BackBrush, OldBrush;
 
+	static int bonus;
+
+	GetClientRect(&crt);
+	hdc = GetDC();
+
+	if (_cBit.m_hObject == NULL)
+		_cBit.CreateCompatibleBitmap(hdc, crt.right, crt.bottom);
+
+	hMemDC.CreateCompatibleDC(hdc);
+	OldBit.CreateCompatibleBitmap(&hMemDC, crt.right, crt.bottom);
+
+	BackBrush.CreateSolidBrush(RGB(0, 0, 0));
+	OldBrush.CreateSolidBrush(RGB(0, 0, 0));
+
+	// 화면 지우기
+	_iAni++;
+
+	if (_iAni == 1)
+		FillRect(hMemDC, &crt, BackBrush);
+
+
+	// 마지막 레벨 성공여부	
+	if (_iLevel != LAST_LEVEL) {
+
+		if (_iAni == 130) {
+			_iScore += bonus;
+			_iLevel++;
+			Init();
+			LoadMap();
+			_GameState = 1;
+		}
+
+		//남은 시간에 따른 보너스 점수 
+		if (_iTime > 200)
+			bonus = 5000;
+		else
+			bonus = 2000;
+
+		// bonus 점수표시
+		DrawDigit(hMemDC, 450, 255, bonus, _hDigit, 7);
+
+		//'BONUS'
+		(*hdc).SelectObject(&_hBonus);
+		hMemDC.BitBlt(0, 0, 340, 255, hdc, 0, 0, SRCCOPY);
+		//DrawBitmap(hMemDC, 340, 255, _hBonus, TRUE);
+
+		//'Next'
+		(*hdc).SelectObject(&_hNext);
+		hMemDC.BitBlt(0, 0, 765, 620, hdc, 0, 0, SRCCOPY);
+		//DrawBitmap(hMemDC, 765, 620, _hNext, TRUE);
+
+		//과일
+		(*hdc).SelectObject(&_hFruit[_iLevel]);
+		hMemDC.BitBlt(0, 0, 830, 600, hdc, 0, 0, SRCCOPY);
+		//DrawBitmap(hMemDC, 830, 600, _hFruit[_iLevel], TRUE);
+
+		if (_iAni == 1)
+			PlaySound(MAKEINTRESOURCE(IDR_CLEAR), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
+	//		PlaySound(MAKEINTRESOURCE(IDR_CLEAR), _hInstance, SND_RESOURCE | SND_ASYNC);
+	}
+	else {
+		//마지막 레벨 성공 	
+		if (_iAni == 400) {
+			Init();
+			_GameState = 0;
+		}
+		// ending 메세지
+		(*hdc).SelectObject(&_hEnding);
+		hMemDC.BitBlt(0, 0, 100, 150,hdc, 0, 0, SRCCOPY);
+		//DrawBitmap(hMemDC, 100, 150, _hEnding, TRUE);
+		// 아기
+		(*hdc).SelectObject(&_hBaby);
+		hMemDC.BitBlt((_iAni / 4 % 2) * 42, (_iAni / 4 % 2 + 1) * 42, 750, 420, hdc, 0, 0, SRCCOPY);
+		//DrawBitmap(hMemDC, 750, 420, _hBaby, FALSE, (_iAni / 4 % 2) * 42, 0, (_iAni / 4 % 2 + 1) * 42, 43);
+	}
+
+	// 'SCORE' 표시
+	(*hdc).SelectObject(&_hScore);
+	hMemDC.BitBlt(0, 0, 25, 25, hdc, 0, 0, SRCCOPY);
+	//DrawBitmap(hMemDC, 25, 25, _hScore, TRUE);
+
+	// 점수 표시 
+	DrawDigit(hMemDC, 25, 50, _iScore, _hDigit, 7);
+
+	SelectObject(hMemDC, OldBrush);
+	SelectObject(hMemDC, OldBit);
+	DeleteObject(BackBrush);
+	DeleteDC(hMemDC);
+	ReleaseDC(hdc);
+	InvalidateRect(&crt, FALSE);
 }
 
 
