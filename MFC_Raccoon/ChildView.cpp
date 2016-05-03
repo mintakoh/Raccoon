@@ -343,10 +343,10 @@ void CChildView::GamePlay()
 		Score = _iScore;
 	}
 	//너구리 위치
-	memdc.BitBlt(300, 50, 120, 25, &objectdc, 300, 50, SRCCOPY);
+	//memdc.BitBlt(300, 50, 120, 25, &objectdc, 300, 50, SRCCOPY);
 	//DrawBitmap(hMemDC, 300, 50, _hMap, FALSE, 300, 50, 420, 75);
-	DrawDigit(memdc, 305, 50, _Rac.x, _hDigit, 7);
-	DrawDigit(memdc, 360, 50, _Rac.y, _hDigit, 7);
+	//DrawDigit(memdc, 305, 50, _Rac.x, _hDigit, 7);
+	//DrawDigit(memdc, 360, 50, _Rac.y, _hDigit, 7);
 
 	// 시간 바 표시 
 	if (_iAni % 50 == 0 || _iAni == 1) {
