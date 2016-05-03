@@ -1,6 +1,6 @@
 
 // ChildView.cpp : CChildView 클래스의 구현
-// 양종열
+// 
 #include "stdafx.h"
 #include "MFC_Raccoon.h"
 #include "ChildView.h"
