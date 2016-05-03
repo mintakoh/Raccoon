@@ -1,10 +1,10 @@
 
 // ChildView.cpp : CChildView 클래스의 구현
 // 양종열
-
 #include "stdafx.h"
 #include "MFC_Raccoon.h"
 #include "ChildView.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -237,6 +237,8 @@ void CChildView::GameIntro()
 	if (_iAni == 171) {
 		objectdc.SelectObject(_hLets);
 		memdc.BitBlt(220, 120, 455, 218, &objectdc, 0, 0, SRCCOPY);
+
+		PlaySound(MAKEINTRESOURCE(IDR_INTRO), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 	}
 
 	Invalidate(false);

@@ -4,6 +4,9 @@
 
 
 #pragma once
+
+#pragma comment(lib, "winmm")
+#include <mmsystem.h>
 #include "afxwin.h"
 
 
