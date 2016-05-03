@@ -729,7 +729,6 @@ void CChildView::GameCycle()
 	switch (_GameState) {
 	case 0:
 		_bIsDrawAll = FALSE;
-		//Invalidate(false);
 		GameIntro();
 		break;
 
