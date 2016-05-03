@@ -947,6 +947,8 @@ void CChildView::LoadMap()
 		_hMap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
 	memdc.SelectObject(&_hMap);
 
+	memdc.FillSolidRect(&rect, RGB(0, 0, 0));
+
 	int index = 0;
 
 	for (i = 0; i < 26; i++){
