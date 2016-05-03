@@ -718,8 +718,6 @@ void CChildView::GameCycle()
 	case 1:
 		_bIsDrawAll = FALSE;
 		GamePlay();
-		//LoadMap()구현 되었는지 확인하려고, 나중에 지울것
-		//LoadMap();
 		break;
 
 	case 2:
@@ -814,7 +812,8 @@ void CChildView::LoadMap()
 		}
 	}
 
-	_hMap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
+	if (_hMap.m_hObject == NULL)
+		_hMap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
 	memdc.SelectObject(&_hMap);
 
 	char index = 0;
@@ -867,12 +866,6 @@ void CChildView::LoadMap()
 	}
 
 	free(str);
-
-	/*확인작업용 
-	// TODO: 나중에 지울 것!!
-	dc.BitBlt(0, 0, rect.Width(), rect.Height(), &memdc, 0, 0, SRCCOPY);
-	_GameState = 2;
-	*/
 }
 
 
