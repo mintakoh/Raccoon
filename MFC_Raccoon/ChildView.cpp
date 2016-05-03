@@ -899,10 +899,10 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			//음악 종료 함수 호출
 
 			//초기화 작업.
-			// _iAni = 0;
-			//_GameState = 0;
-			//Sleep(100);
-			//Invalidate(false);
+			 _iAni = 0;
+			_GameState = 0;
+			Sleep(100);
+			Invalidate(false);
 		}
 		break;
 	}
