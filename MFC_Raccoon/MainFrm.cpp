@@ -36,6 +36,7 @@ static UINT indicators[] =
 // CMainFrame 생성/소멸
 
 CMainFrame::CMainFrame()
+	: m_bSleep(true)
 {
 	// TODO: 여기에 멤버 초기화 코드를 추가합니다.
 }
@@ -154,6 +155,10 @@ void CMainFrame::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
 
 	case WA_INACTIVE :
 		GameDeactivate();
+		break;
+
+	case WA_CLICKACTIVE :
+		GameActivate();
 		break;
 
 	default:

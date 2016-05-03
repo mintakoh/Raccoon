@@ -173,21 +173,26 @@ BOOL CMFC_RaccoonApp::OnIdle(LONG lCount)
 	static int  iTickTrigger = 0;
 	int         iTickCount;
 
-	iTickCount = GetTickCount();
+	CMainFrame *pFrame = (CMainFrame *)AfxGetMainWnd();
 
-	if (iTickCount > iTickTrigger)
+	if (!pFrame->m_bSleep)
 	{
-		// SetFrameRate(35);
-		// TODO : 클래스로 분리해야함
-		iTickTrigger = iTickCount +
-			1000/35;
+		iTickCount = GetTickCount();
 
-		// CChildView 객체를 얻어와 GameCycle 메소드를 실행함
-		CMainFrame *pFrame = (CMainFrame *)AfxGetMainWnd();
-		CChildView *pView = (CChildView *)pFrame->GetChildView();
-		if (pView) {
-			pView->GameCycle();
-			pView->HandleKeys();
+		if (iTickCount > iTickTrigger)
+		{
+			// SetFrameRate(35);
+			// TODO : 클래스로 분리해야함
+			iTickTrigger = iTickCount +
+				1000 / 35;
+
+			// CChildView 객체를 얻어와 GameCycle 메소드를 실행함
+			//CMainFrame *pFrame = (CMainFrame *)AfxGetMainWnd();
+			CChildView *pView = (CChildView *)pFrame->GetChildView();
+			if (pView) {
+				pView->GameCycle();
+				pView->HandleKeys();
+			}
 		}
 	}
 	return true;

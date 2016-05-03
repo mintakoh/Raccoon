@@ -107,11 +107,6 @@ public:
 	char _cMap[26][33];
 	int _EnemyCount;
 
-	BOOL                m_bSleep;
-	BOOL      GetSleep() { return m_bSleep; };
-	void      SetSleep(BOOL bSleep) { m_bSleep = bSleep; };
-
-
 	Raccoon _Rac;
 	Enemy	_Ene[7];
 	Item	_Item[12];
