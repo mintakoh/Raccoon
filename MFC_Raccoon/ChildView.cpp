@@ -395,13 +395,19 @@ void CChildView::GamePlay()
 		//Rectangle(hMemDC, 650 - _iTime, 25, 650, 50);
 	}
 
-	////먹은 과일 수 (이전과 변화가 있을 때만 그린다.)
-	//static char Eat;
-	//if (_iEat != Eat) {
-	//	for (i = 0; i < _iEat; i++)
-	//		DrawBitmap(hMemDC, 750, 490 - (i * 55), _hFruit[_iLevel - 1], FALSE);
-	//	Eat = _iEat;
-	//}
+	//먹은 과일 수 (이전과 변화가 있을 때만 그린다.)
+	static char Eat;
+	if (_iEat != Eat) {
+		for (i = 0; i < _iEat; i++)
+		{
+			BITMAP info;
+			_hFruit[_iLevel - 1].GetBitmap(&info);
+			memdc.SelectObject(&_hFruit[_iLevel - 1]);
+			memdc.BitBlt(750, 490 - (i * 55), info.bmWidth, info.bmHeight, &objectdc, 0, 0, SRCCOPY);
+			//DrawBitmap(hMemDC, 750, 490 - (i * 55), _hFruit[_iLevel - 1], FALSE);
+		}
+		Eat = _iEat;
+	}
 
 	//// 항아리 & 과일 표시 
 	//for (i = 0; i < 12; i++) {
