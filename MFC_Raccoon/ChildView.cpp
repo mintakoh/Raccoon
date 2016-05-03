@@ -1394,43 +1394,105 @@ void CChildView::GameClear()
 
 void CChildView::GameOver()
 {
-	//CClientDC dc(this);
+	CClientDC dc(this);
 
-	//CDC memdc;
-	//memdc.CreateCompatibleDC(&dc);
+	GetClientRect(&rect);
 
-	//CRect rect;
-	//GetClientRect(&rect);
+	CDC memdc, objectdc;
+	memdc.CreateCompatibleDC(&dc);
+	objectdc.CreateCompatibleDC(&memdc);
 
-	//CBitmap bmp;
-	//bmp.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
+	CBitmap* OldBit;
 
-	//CDC game_overdc;
-	//game_overdc.CreateCompatibleDC(&memdc);
+	if (_cBit.m_hObject == NULL)
+		_cBit.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
+	OldBit = memdc.SelectObject(&_cBit);
+
+	//인트로
+	CBrush backBrush;
+	backBrush.CreateSolidBrush(RGB(0, 0, 0));
+
+	memdc.FillRect(&rect, &backBrush);
+
+	CDC game_overdc;
+	game_overdc.CreateCompatibleDC(&memdc);
+
+	CDC scoredc;
+	scoredc.CreateCompatibleDC(&memdc);
+
+	CDC drop_racoondc;
+	drop_racoondc.CreateCompatibleDC(&memdc);
+
+	game_overdc.SelectObject(&_hGameOver);
+	drop_racoondc.SelectObject(&_hDrop);
+	scoredc.SelectObject(&_hScore);
 
 
-	//CDC dead_racoondc;
-	//dead_racoondc.CreateCompatibleDC(&memdc);
-	//
-	//game_overdc.SelectObject(&_gameover);
-	//dead_racoondc.SelectObject(&_)
+	if (_iAni != 350)
+		_iAni++;
+	else {
+		//_iAni == 350
+		Init();
+		_GameState = 0;
+	}
+	// 'SCORE' 표시
+	/*Drawbitmap(hMemDC, 25, 25, _hScore, TRUE);*/
+	memdc.BitBlt(25, 25, 75, 23, &scoredc, 0, 0, SRCCOPY);
 
-	////바닥 그리기 
-	//memdc.Rectangle(0, 585, 900, 670);
+	// 점수 표시 
+	static int Score;
+	if (_iScore != Score || _iAni == 1){
+		memdc.BitBlt(200, 50, 100, 25, &objectdc, 200, 50, SRCCOPY);
+		//DrawBitmap(hMemDC, 200, 50, _hMap, FALSE, 200, 50, 300, 75);
+		DrawDigit(memdc, 205, 50, _iScore, _hDigit, 7);
+		Score = _iScore;
+	}
 
-	//static int i, j;
-	//j = 0;
-	//for (i = 585; i < 670; i += j) {
-	//	j++;
-	//	/*MoveToEx(hMemDC, 0, i, NULL);
-	//	LineTo(hMemDC, 900, i);*/
-	//	memdc.MoveTo(0, i);
-	//	memdc.LineTo(900, i);
-	//}
 
-	
-	
+	//바닥 그리기 
+	CBrush brush;
+	brush.CreateSolidBrush(RGB(165, 113, 66));
+	memdc.Rectangle(0, 585, 900, 670);
 
+	static int i, j;
+	j = 0;
+	for (i = 585; i < 670; i += j) {
+		j++;
+		/*MoveToEx(hMemDC, 0, i, NULL);
+		LineTo(hMemDC, 900, i);*/
+		memdc.MoveTo(0, i);
+		memdc.LineTo(900, i);
+	}
+	j = 0;
+
+	//'GAME OVER'
+	if (_iAni < 50) {
+		memdc.BitBlt(-340 + _iAni * 10, 200, 280, 72, &game_overdc, 0, 0, SRCCOPY);
+		memdc.BitBlt(940 - _iAni * 10, 200, 280, 72, &game_overdc, 280, 0, SRCCOPY);
+	}
+	else
+		memdc.BitBlt(160, 200, 560, 72, &game_overdc, 0, 0, SRCCOPY);
+
+	//떨어져라 너구리야
+	if (_iAni > 50 && _iAni < 110)
+		memdc.BitBlt(430, (_iAni - 55) * 10, 50, 50, &drop_racoondc, (_iAni / 2 % 6) * 50, 0, SRCCOPY);
+
+	else if (_iAni >= 110){
+		//DrawBitmap(hMemDC, 430, 540, _hDie, TRUE);
+		drop_racoondc.SelectObject(&_hDie);
+		//memdc.BitBlt(430, 650, 50, 50, &drop_racoondc, 0, 0, SRCCOPY);
+		memdc.TransparentBlt(430, 540, 50, 50, &drop_racoondc, 0, 0, 50, 50, RGB(0, 0, 0));
+	}
+
+
+	//사운드 출력파트
+	if (_iAni == 1)
+		PlaySound(MAKEINTRESOURCE(IDR_GAMEOVER), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
+
+	if (_iAni == 110)
+		PlaySound(MAKEINTRESOURCE(IDR_RAC_DIE), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
+
+	Invalidate(false);
 }
 
 
