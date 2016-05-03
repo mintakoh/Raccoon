@@ -1391,6 +1391,8 @@ void CChildView::DrawDigit(CDC& cDC, int x, int y, int score, CBitmap& cBit, int
 
 void CChildView::HandleKeys()
 {
+	if (GetSleep()) return;
+
 	switch (_GameState) {
 
 		//인트로 화면 
