@@ -73,16 +73,13 @@ CChildView::CChildView()
 
 
 
-	//이미지 처리
+	//이미지 처리 맵 구성품
 	_hMapEle[0].LoadBitmapW(IDB_MAP_A);
 	_hMapEle[1].LoadBitmapW(IDB_MAP_B);
 	_hMapEle[2].LoadBitmapW(IDB_MAP_C);
 	_hMapEle[3].LoadBitmapW(IDB_MAP_D);
 	_hMapEle[4].LoadBitmapW(IDB_MAP_E);
 	_hMapEle[5].LoadBitmapW(IDB_MAP_F);
-
-	_hScore.LoadBitmapW(IDB_SCORE);
-	
 
 	// 숫자 
 	_hDigit.LoadBitmapW(IDB_DIGIT);
@@ -101,8 +98,32 @@ CChildView::CChildView()
 	_hLeft.LoadBitmapW(IDB_LEFT);
 	_hStand.LoadBitmapW(IDB_STAND);
 	_hRight.LoadBitmapW(IDB_RIGHT);
+	_hUpDown.LoadBitmapW(IDB_UPDOWN);
+	_hLeftJump.LoadBitmapW(IDB_LEFT_JUMP);
+	_hRightJump.LoadBitmapW(IDB_RIGHT_JUMP);
+	_hDrop.LoadBitmapW(IDB_DROP);
+	_hDie.LoadBitmapW(IDB_DIE);
+	
+	//SURPRISE
 	_hSurprise.LoadBitmapW(IDB_SURPRISE);
+	//LETS
 	_hLets.LoadBitmapW(IDB_LETS);
+	//SCORE
+	_hScore.LoadBitmapW(IDB_SCORE);
+	//GAMEOVER
+	_hGameOver.LoadBitmapW(IDB_GAMEOVER);
+	//BONUS
+	_hBonus.LoadBitmapW(IDB_BONUS);
+	//NEXT
+	_hNext.LoadBitmapW(IDB_NEXT);
+	//ENDING
+
+
+	//적
+
+	//뱀
+
+	//아기
 }
 
 CChildView::~CChildView()
