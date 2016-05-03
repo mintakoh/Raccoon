@@ -95,7 +95,7 @@ public:
 	int _iAni;
 	char _iLevel;
 	char _cMap[26][33];
-	char _EnemyCount;
+	int _EnemyCount;
 
 
 	Raccoon _Rac;

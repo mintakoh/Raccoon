@@ -557,7 +557,7 @@ void CChildView::GamePlay()
 	}
 
 	////利 面倒 皑瘤 
-	//CheckCollision_Enemy();
+	CheckCollision_Enemy();
 
 	////呈备府 
 	switch (_Rac.state) {
@@ -1054,7 +1054,7 @@ void CChildView::LoadMap()
 		_hMap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
 	memdc.SelectObject(&_hMap);
 
-	char index = 0;
+	int index = 0;
 
 	for (i = 0; i < 26; i++){
 		for (j = 0; j < 33; j++){
