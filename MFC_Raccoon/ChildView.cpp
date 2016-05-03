@@ -94,6 +94,9 @@ CChildView::CChildView()
 
 	_hScore.LoadBitmapW(IDB_SCORE);
 	_hDigit.LoadBitmapW(IDB_DIGIT);
+
+	_gameover.LoadBitmapW(IDB_GAMEOVER);
+
 }
 
 CChildView::~CChildView()
@@ -1124,6 +1127,17 @@ void CChildView::GameClear()
 
 void CChildView::GameOver()
 {
+
+
+
+
+
+
+
+
+
+	
+	
 
 }
 
