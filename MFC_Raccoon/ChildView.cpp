@@ -410,37 +410,62 @@ void CChildView::GamePlay()
 		Eat = _iEat;
 	}
 
-	//// 항아리 & 과일 표시 
-	//for (i = 0; i < 12; i++) {
-	//	//항아리 
-	//	if (_Item[i].ch == 'M' || _Item[i].ch == 'N' || _Item[i].ch == 'O')
-	//		DrawBitmap(hMemDC, _Item[i].x, _Item[i].y, _hPot, FALSE);
-	//	//과일 
-	//	else if (_Item[i].ch >= 'Q')
-	//		DrawBitmap(hMemDC, _Item[i].x, _Item[i].y, _hFruit[_iLevel - 1], FALSE);
-	//	//너구리가 먹은 것에 대한 점수 표시 
-	//	//너구리가 먹으면 *로 대치하고 점수를 표시한다음에 .로 바꿈
-	//	else if (_Item[i].ch == '*') {
-	//		//과일 지우고 점수 표시 
-	//		if (_ScoreShow == 0)
-	//			DrawBitmap(hMemDC, _Item[i].x, _Item[i].y, _hMap, FALSE, 200, 0, 250, 50);
-	//		DrawDigit(hMemDC, _Item[i].x, _Item[i].y + 25, _iItemScoreRate, _hDigit_sm);
+	// 항아리 & 과일 표시 
+	for (i = 0; i < 12; i++) {
+		//항아리 
+		if (_Item[i].ch == 'M' || _Item[i].ch == 'N' || _Item[i].ch == 'O')
+		{
+			memdc.SelectObject(&_hPot);
+			BITMAP info;
+			_hPot.GetBitmap(&info);
+			memdc.BitBlt(_Item[i].x, _Item[i].y, info.bmWidth, info.bmHeight, &objectdc, 0, 0, SRCCOPY);
+			//DrawBitmap(hMemDC, _Item[i].x, _Item[i].y, _hPot, FALSE);
+		}
 
-	//		//점수를 10프레임 동안 보여짐 			
-	//		if (++_ScoreShow == 11) {
-	//			DrawBitmap(hMemDC, _Item[i].x, _Item[i].y + 25, _hMap, FALSE, 200, 0, 240, 14);
-	//			_Item[i].ch = '.';
-	//			_ScoreShow = 0;
-	//		}
-	//	}
-	//	else if (_Item[i].ch == '#') {
-	//		DrawBitmap(hMemDC, _Item[i].x, _Item[i].y, _hMap, FALSE, 200, 0, 250, 50);
-	//		_Item[i].ch = '.';
-	//	}
-	//}
+		//과일 
+		else if (_Item[i].ch >= 'Q')
+		{
+			memdc.SelectObject(&_hFruit[_iLevel - 1]);
+			BITMAP info;
+			_hFruit[_iLevel - 1].GetBitmap(&info);
+			memdc.BitBlt(_Item[i].x, _Item[i].y, info.bmWidth, info.bmHeight, &objectdc, 0, 0, SRCCOPY);
+			//DrawBitmap(hMemDC, _Item[i].x, _Item[i].y, _hFruit[_iLevel - 1], FALSE);
+		}
 
-	////적 표시 
-	////뱀과 일반적인 적을 따로 그리는 이유는 투명 효과(Alpha) 때문에.	
+		//너구리가 먹은 것에 대한 점수 표시 
+		//너구리가 먹으면 *로 대치하고 점수를 표시한다음에 .로 바꿈
+
+		else if (_Item[i].ch == '*') {
+			//과일 지우고 점수 표시 
+
+			if (_ScoreShow == 0)
+			{
+				objectdc.SelectObject(&_hMap);
+				memdc.BitBlt(_Item[i].x, _Item[i].y, 50, 50, &objectdc, 200, 0, SRCCOPY);
+				//DrawBitmap(hMemDC, _Item[i].x, _Item[i].y, _hMap, FALSE, 200, 0, 250, 50);
+			}
+
+			DrawDigit(memdc, _Item[i].x, _Item[i].y + 25, _iItemScoreRate, _hDigit_sm);
+
+			//점수를 10프레임 동안 보여짐 			
+			if (++_ScoreShow == 11) {
+				objectdc.SelectObject(&_hMap);
+				memdc.BitBlt(_Item[i].x, _Item[i].y, 40, 14, &objectdc, 200, 0, SRCCOPY);
+				//DrawBitmap(hMemDC, _Item[i].x, _Item[i].y + 25, _hMap, FALSE, 200, 0, 240, 14);
+				_Item[i].ch = '.';
+				_ScoreShow = 0;
+			}
+		}
+		else if (_Item[i].ch == '#') {
+			objectdc.SelectObject(&_hMap);
+			memdc.BitBlt(_Item[i].x, _Item[i].y, 50, 50, &objectdc, 200, 0, SRCCOPY);
+			//DrawBitmap(hMemDC, _Item[i].x, _Item[i].y, _hMap, FALSE, 200, 0, 250, 50);
+			_Item[i].ch = '.';
+		}
+	}
+
+	//적 표시 
+	//뱀과 일반적인 적을 따로 그리는 이유는 투명 효과(Alpha) 때문에.	
 
 	//for (i = 0; i <_EnemyCount; i++) {
 
