@@ -517,162 +517,191 @@ void CChildView::GamePlay()
 	//CheckCollision_Enemy();
 
 	////너구리 
-	//switch (_Rac.state) {
-	//case 1:
-	//	DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hStand, TRUE, 0, 0, 50, 50);
-	//	break;
+	switch (_Rac.state) {
+	case 1:
+		objectdc.SelectObject(&_hStand);
+		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, 0, 0, 50, 50, RGB(0, 0, 0));
+		//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hStand, TRUE, 0, 0, 50, 50);
+		break;
 
-	//case 2:
-	//	DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hLeft, TRUE, _Rac.step * 50, 0, (_Rac.step + 1) * 50, 50);
-	//	break;
+	case 2:
+		objectdc.SelectObject(&_hLeft);
+		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, _Rac.step * 50, 0, 50, 50, RGB(0, 0, 0));
+		//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hLeft, TRUE, _Rac.step * 50, 0, (_Rac.step + 1) * 50, 50);
+		break;
 
-	//case 3:
-	//	DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hRight, TRUE, _Rac.step * 50, 0, (_Rac.step + 1) * 50, 50);
-	//	break;
+	case 3:
+		objectdc.SelectObject(&_hRight);
+		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, _Rac.step * 50, 0, 50, 50, RGB(0, 0, 0));
+		//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hRight, TRUE, _Rac.step * 50, 0, (_Rac.step + 1) * 50, 50);
+		break;
 
-	//case 4:
-	//	DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hUpDown, TRUE, _Rac.step * 50, 0, (_Rac.step + 1) * 50, 50);
-	//	break;
+	case 4:
+		objectdc.SelectObject(&_hUpDown);
+		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, _Rac.step * 50, 0, 50, 50, RGB(0, 0, 0));
+		//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hUpDown, TRUE, _Rac.step * 50, 0, (_Rac.step + 1) * 50, 50);
+		break;
 
-	//case 5:
-	//	// 점프 패턴을 읽어 와서 그림 
-	//	_Rac.x += _StandJump[_JumpFrame].x;
-	//	_Rac.y += _StandJump[_JumpFrame].y;
+	case 5:
+		// 점프 패턴을 읽어 와서 그림 
+		_Rac.x += _StandJump[_JumpFrame].x;
+		_Rac.y += _StandJump[_JumpFrame].y;
 
-	//	DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hStand, TRUE, (_StandJump[_JumpFrame].frame) * 50, 0,
-	//		(_StandJump[_JumpFrame].frame + 1) * 50, 50);
+		objectdc.SelectObject(&_hStand);
+		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_StandJump[_JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
+		//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hStand, TRUE, (_StandJump[_JumpFrame].frame) * 50, 0,
+		//	(_StandJump[_JumpFrame].frame + 1) * 50, 50);
 
-	//	_JumpFrame++;
+		_JumpFrame++;
 
-	//	if (_JumpFrame == 10) {
-	//		_JumpFrame = 0;	//초기화 
-	//		_Rac.state = 1;	//착지 하면 다시 1상태로 
-	//	}
-	//	break;
+		if (_JumpFrame == 10) {
+			_JumpFrame = 0;	//초기화 
+			_Rac.state = 1;	//착지 하면 다시 1상태로 
+		}
+		break;
+		
+	case 6:
+		//화면 왼쪽 끝이므로 화면 밖으로 안나가게 
+		if (_Rac.x >= 30)
+			_Rac.x += _LeftShortJump[_JumpFrame].x;
+		_Rac.y += _LeftShortJump[_JumpFrame].y;
 
-	//case 6:
-	//	//화면 왼쪽 끝이므로 화면 밖으로 안나가게 
-	//	if (_Rac.x >= 30)
-	//		_Rac.x += _LeftShortJump[_JumpFrame].x;
-	//	_Rac.y += _LeftShortJump[_JumpFrame].y;
+		objectdc.SelectObject(&_hLeftJump);
+		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_LeftShortJump[_JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
 
-	//	DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hLeftJump, TRUE, (_LeftShortJump[_JumpFrame].frame) * 50, 0,
-	//		(_LeftShortJump[_JumpFrame].frame + 1) * 50, 50);
+		//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hLeftJump, TRUE, (_LeftShortJump[_JumpFrame].frame) * 50, 0,
+		//	(_LeftShortJump[_JumpFrame].frame + 1) * 50, 50);
 
-	//	_JumpFrame++;
+		_JumpFrame++;
 
-	//	if (_JumpFrame == 11) {
-	//		_JumpFrame = 0;
-	//		_Rac.state = 2;
-	//		//충돌 검사 
-	//		//이 프로그램은 화살표키로 움직일때 충동 검사를 (압정, 낭떠러지)한다.
-	//		//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
-	//		//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
-	//		//따라서 착지하면 충돌검사를 한다.
-	//		CheckCollision();
-	//	}
+		if (_JumpFrame == 11) {
+			_JumpFrame = 0;
+			_Rac.state = 2;
+			//충돌 검사 
+			//이 프로그램은 화살표키로 움직일때 충동 검사를 (압정, 낭떠러지)한다.
+			//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
+			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
+			//따라서 착지하면 충돌검사를 한다.
+			CheckCollision();
+		}
 
-	//	break;
+		break;
 
-	//case 7:
-	//	//화면 왼쪽 끝이므로 화면 밖으로 안나가게 
-	//	if (_Rac.x >= 30)
-	//		_Rac.x += _LeftLongJump[_JumpFrame].x;
-	//	_Rac.y += _LeftLongJump[_JumpFrame].y;
+	case 7:
+		//화면 왼쪽 끝이므로 화면 밖으로 안나가게 
+		if (_Rac.x >= 30)
+			_Rac.x += _LeftLongJump[_JumpFrame].x;
+		_Rac.y += _LeftLongJump[_JumpFrame].y;
 
-	//	DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hLeftJump, TRUE, (_LeftLongJump[_JumpFrame].frame) * 50, 0,
-	//		(_LeftLongJump[_JumpFrame].frame + 1) * 50, 50);
+		objectdc.SelectObject(&_hLeftJump);
+		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_LeftLongJump[_JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
 
-	//	_JumpFrame++;
+		//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hLeftJump, TRUE, (_LeftLongJump[_JumpFrame].frame) * 50, 0,
+		//	(_LeftLongJump[_JumpFrame].frame + 1) * 50, 50);
 
-	//	if (_JumpFrame == 17) {
-	//		_JumpFrame = 0;
-	//		_Rac.state = 2;
-	//		//충돌 검사 
-	//		//이 프로그램은 화살표키로 움직일때 충동 검사를 (압정, 낭떠러지)한다.
-	//		//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
-	//		//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
-	//		//따라서 착지하면 충돌검사를 한다.
-	//		CheckCollision();
-	//	}
-	//	break;
+		_JumpFrame++;
 
-	//case 8:
-	//	//오른쪽 경계면 
-	//	//1층은 y좌표 775, 2층이상은 y좌표 670 
-	//	if (_Rac.x <= 670 || (_Rac.x <= 775 && _Rac.y >= 530))
-	//		_Rac.x -= _LeftShortJump[_JumpFrame].x;
-	//	_Rac.y += _LeftShortJump[_JumpFrame].y;
+		if (_JumpFrame == 17) {
+			_JumpFrame = 0;
+			_Rac.state = 2;
+			//충돌 검사 
+			//이 프로그램은 화살표키로 움직일때 충동 검사를 (압정, 낭떠러지)한다.
+			//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
+			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
+			//따라서 착지하면 충돌검사를 한다.
+			CheckCollision();
+		}
+		break;
 
-	//	DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hRightJump, TRUE, (_LeftShortJump[_JumpFrame].frame) * 50, 0,
-	//		(_LeftShortJump[_JumpFrame].frame + 1) * 50, 50);
+	case 8:
+		//오른쪽 경계면 
+		//1층은 y좌표 775, 2층이상은 y좌표 670 
+		if (_Rac.x <= 670 || (_Rac.x <= 775 && _Rac.y >= 530))
+			_Rac.x -= _LeftShortJump[_JumpFrame].x;
+		_Rac.y += _LeftShortJump[_JumpFrame].y;
 
-	//	_JumpFrame++;
+		objectdc.SelectObject(&_hRightJump);
+		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_LeftShortJump[_JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
 
-	//	if (_JumpFrame == 11) {
-	//		_JumpFrame = 0;
-	//		_Rac.state = 3;
-	//		//충돌 검사 
-	//		//이 프로그램은 화살표키로 움직일때 충동 검사를 (압정, 낭떠러지)한다.
-	//		//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
-	//		//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
-	//		//따라서 착지하면 충돌검사를 한다.
-	//		CheckCollision();
+		//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hRightJump, TRUE, (_LeftShortJump[_JumpFrame].frame) * 50, 0,
+		//	(_LeftShortJump[_JumpFrame].frame + 1) * 50, 50);
 
-	//	}
+		_JumpFrame++;
 
-	//	break;
+		if (_JumpFrame == 11) {
+			_JumpFrame = 0;
+			_Rac.state = 3;
+			//충돌 검사 
+			//이 프로그램은 화살표키로 움직일때 충동 검사를 (압정, 낭떠러지)한다.
+			//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
+			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
+			//따라서 착지하면 충돌검사를 한다.
+			CheckCollision();
 
-	//case 9:
-	//	//오른쪽 경계면 
-	//	//1층은 y좌표 775, 2층이상은 y좌표 670 
-	//	if (_Rac.x <= 670 || (_Rac.x <= 775 && _Rac.y >= 530))
-	//		_Rac.x -= _LeftLongJump[_JumpFrame].x;
-	//	_Rac.y += _LeftLongJump[_JumpFrame].y;
+		}
 
-	//	DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hRightJump, TRUE, (_LeftLongJump[_JumpFrame].frame) * 50, 0,
-	//		(_LeftLongJump[_JumpFrame].frame + 1) * 50, 50);
+		break;
 
-	//	_JumpFrame++;
+	case 9:
+		//오른쪽 경계면 
+		//1층은 y좌표 775, 2층이상은 y좌표 670 
+		if (_Rac.x <= 670 || (_Rac.x <= 775 && _Rac.y >= 530))
+			_Rac.x -= _LeftLongJump[_JumpFrame].x;
+		_Rac.y += _LeftLongJump[_JumpFrame].y;
 
-	//	if (_JumpFrame == 17) {
-	//		_JumpFrame = 0;
-	//		_Rac.state = 3;
-	//		//충돌 검사 
-	//		//이 프로그램은 화살표키로 움직일때 충동 검사를 (압정, 낭떠러지)한다.
-	//		//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
-	//		//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
-	//		//따라서 착지하면 충돌검사를 한다.
-	//		CheckCollision();
-	//	}
+		objectdc.SelectObject(&_hRightJump);
+		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_LeftLongJump[_JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
 
-	//	break;
+		//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hRightJump, TRUE, (_LeftLongJump[_JumpFrame].frame) * 50, 0,
+		//	(_LeftLongJump[_JumpFrame].frame + 1) * 50, 50);
 
-	//case 10: //떨어지는 너구리  
-	//	if (_bIsDrop_Sound == FALSE) {
-	//		//PlaySound(NULL, _hInstance, 0);
-	//		//PlaySound(MAKEINTRESOURCE(IDR_RAC_DROP), _hInstance, SND_RESOURCE | SND_ASYNC);
-	//		_bIsDrop_Sound = TRUE;
-	//	}
+		_JumpFrame++;
 
-	//	if (_Rac.y >= 578) {
-	//		_Rac.y = 578;
-	//		//다 떨어진 상태
-	//		DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hDie, TRUE);
-	//		_Rac.state = 11;
-	//	}
-	//	else {
-	//		_Rac.y += 5;
-	//		//덜 떨어진 상태 
-	//		DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hDrop, TRUE, (_iAni / 2 % 6) * 50, 0,
-	//			(_iAni / 2 % 6 + 1) * 50, 50);
-	//	}
-	//	break;
+		if (_JumpFrame == 17) {
+			_JumpFrame = 0;
+			_Rac.state = 3;
+			//충돌 검사 
+			//이 프로그램은 화살표키로 움직일때 충동 검사를 (압정, 낭떠러지)한다.
+			//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
+			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
+			//따라서 착지하면 충돌검사를 한다.
+			CheckCollision();
+		}
 
-	//case 11: //너구리 떨어진 상태 				
-	//	break;
+		break;
 
-	//}
+	case 10: //떨어지는 너구리  
+		if (_bIsDrop_Sound == FALSE) {
+			//PlaySound(NULL, _hInstance, 0);
+			//PlaySound(MAKEINTRESOURCE(IDR_RAC_DROP), _hInstance, SND_RESOURCE | SND_ASYNC);
+			_bIsDrop_Sound = TRUE;
+		}
+
+		if (_Rac.y >= 578) {
+			_Rac.y = 578;
+			//다 떨어진 상태
+			
+			objectdc.SelectObject(&_hDie);
+			memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, 0, 0, 50, 50, RGB(0, 0, 0));
+
+			//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hDie, TRUE);
+			_Rac.state = 11;
+		}
+		else {
+			_Rac.y += 5;
+			//덜 떨어진 상태 
+			
+			objectdc.SelectObject(&_hDrop);
+			memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_iAni / 2 % 6) * 50, 0, 50, 50, RGB(0, 0, 0));
+			//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hDrop, TRUE, (_iAni / 2 % 6) * 50, 0,
+			//	(_iAni / 2 % 6 + 1) * 50, 50);
+		}
+		break;
+		
+	case 11: //너구리 떨어진 상태 				
+		break;
+
+	}
 
 	//SelectObject(hMemDC, OldBrush);
 	//SelectObject(hMemDC, OldPen);
