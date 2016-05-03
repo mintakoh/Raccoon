@@ -1235,13 +1235,12 @@ void CChildView::CheckCollision_Enemy()
 			xx2 = _Ene[i].x + 43;
 			yy2 = _Ene[i].y + 50;
 
-			if ((xx1 > x1 && xx1 < x2 && yy1 > y1 && yy1 < y2) ||
-				(xx1 > x1 && xx1 < x2 && yy2 > y1 && yy2 < y2) ||
-				(xx2 > x1 && xx2 < x2 && yy1 > y1 && yy1 < y2) ||
-				(xx2 > x1 && xx2 < x2 && yy2 > y1 && yy2 < y2)){
-
+			if ((x1 > xx1 && x1 < xx2 && y1 > yy1 && y1 < yy2) ||
+				(x1 > xx1 && x1 < xx2 && y2 > yy1 && y2 < yy2) ||
+				(x2 > xx1 && x2 < xx2 && y1 > yy1 && y2 < yy2) ||
+				(x2 > xx1 && x2 < xx2 && y2 > yy1 && y2 < yy2))
 				_Rac.state = 10;
-			}
+			
 		}
 	}
 }
