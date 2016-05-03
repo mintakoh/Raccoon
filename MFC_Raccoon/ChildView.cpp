@@ -388,6 +388,7 @@ void CChildView::GamePlay()
 
 	// 시간 바 표시 
 	if (_iAni % 50 == 0 || _iAni == 1) {
+		objectdc.SelectObject(&_hMap);
 		memdc.BitBlt(600 - _iTime, 25, 50, 25, &objectdc, 200, 0, SRCCOPY);
 		//DrawBitmap(hMemDC, 600 - _iTime, 25, _hMap, FALSE, 200, 0, 250, 25);
 		memdc.Rectangle(650 - _iTime, 25, 650, 50);
