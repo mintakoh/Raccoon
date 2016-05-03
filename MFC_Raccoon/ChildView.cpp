@@ -395,7 +395,7 @@ void CChildView::GamePlay()
 		memdc.Rectangle(650 - _iTime, 25, 650, 50);
 		//Rectangle(hMemDC, 650 - _iTime, 25, 650, 50);
 	}
-
+	
 	//먹은 과일 수 (이전과 변화가 있을 때만 그린다.)
 	static char Eat;
 	if (_iEat != Eat) {
@@ -410,12 +410,13 @@ void CChildView::GamePlay()
 		Eat = _iEat;
 	}
 
+	// TODO : 오류
 	// 항아리 & 과일 표시 
 	for (i = 0; i < 12; i++) {
 		//항아리 
 		if (_Item[i].ch == 'M' || _Item[i].ch == 'N' || _Item[i].ch == 'O')
 		{
-			memdc.SelectObject(&_hPot);
+			objectdc.SelectObject(&_hPot);
 			BITMAP info;
 			_hPot.GetBitmap(&info);
 			memdc.BitBlt(_Item[i].x, _Item[i].y, info.bmWidth, info.bmHeight, &objectdc, 0, 0, SRCCOPY);
@@ -425,7 +426,7 @@ void CChildView::GamePlay()
 		//과일 
 		else if (_Item[i].ch >= 'Q')
 		{
-			memdc.SelectObject(&_hFruit[_iLevel - 1]);
+			objectdc.SelectObject(&_hFruit[_iLevel - 1]);
 			BITMAP info;
 			_hFruit[_iLevel - 1].GetBitmap(&info);
 			memdc.BitBlt(_Item[i].x, _Item[i].y, info.bmWidth, info.bmHeight, &objectdc, 0, 0, SRCCOPY);
@@ -450,7 +451,7 @@ void CChildView::GamePlay()
 			//점수를 10프레임 동안 보여짐 			
 			if (++_ScoreShow == 11) {
 				objectdc.SelectObject(&_hMap);
-				memdc.BitBlt(_Item[i].x, _Item[i].y, 40, 14, &objectdc, 200, 0, SRCCOPY);
+				memdc.BitBlt(_Item[i].x, _Item[i].y + 25, 40, 14, &objectdc, 200, 0, SRCCOPY);
 				//DrawBitmap(hMemDC, _Item[i].x, _Item[i].y + 25, _hMap, FALSE, 200, 0, 240, 14);
 				_Item[i].ch = '.';
 				_ScoreShow = 0;
@@ -463,7 +464,7 @@ void CChildView::GamePlay()
 			_Item[i].ch = '.';
 		}
 	}
-
+	
 	//적 표시 
 	//뱀과 일반적인 적을 따로 그리는 이유는 투명 효과(Alpha) 때문에.	
 
