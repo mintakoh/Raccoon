@@ -84,6 +84,8 @@ protected:
 public:
 	CRect rect;
 	
+	void HandleKeys();
+
 	void GameCycle();
 	void GameIntro();
 	void GamePlay();
@@ -194,5 +196,6 @@ public:
 	BOOL _bIsDrop_Sound;
 
 
+	
 };
 

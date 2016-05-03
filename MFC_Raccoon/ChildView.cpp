@@ -1396,3 +1396,9 @@ void CChildView::DrawDigit(CDC& cDC, int x, int y, int score, CBitmap& cBit, int
 	MemDC.SelectObject(&OldBitmap);
 	MemDC.DeleteDC();
 }
+
+void CChildView::HandleKeys()
+{
+
+
+}
