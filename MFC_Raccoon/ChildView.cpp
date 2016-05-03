@@ -380,6 +380,7 @@ void CChildView::GamePlay()
 		DrawDigit(memdc, 205, 50, _iScore, _hDigit, 7);
 		Score = _iScore;
 	}
+
 	//너구리 위치
 	//memdc.BitBlt(300, 50, 120, 25, &objectdc, 300, 50, SRCCOPY);
 	//DrawBitmap(hMemDC, 300, 50, _hMap, FALSE, 300, 50, 420, 75);
@@ -480,38 +481,55 @@ void CChildView::GamePlay()
 
 
 
-	////일반적인 적 
-	//for (i = 0; i <_EnemyCount; i++) {
+	//일반적인 적 
+	for (i = 0; i < _EnemyCount; i++) {
 
-	//	if (_Ene[i].type == TRUE) {
+		if (_Ene[i].type == TRUE) {
 
-	//		if (_Rac.state != 10 && _Rac.state != 11) _Ene[i].x += _Ene[i].speed;
+			if (_Rac.state != 10 && _Rac.state != 11) _Ene[i].x += _Ene[i].speed;
 
-	//		if (_Ene[i].x <= 30) {
-	//			_Ene[i].x = 30;
-	//			_Ene[i].speed *= -1;
-	//			_Ene[i].state = !_Ene[i].state;
-	//		}
-	//		else if (_Ene[i].x >= 670) {
-	//			_Ene[i].x = 670;
-	//			_Ene[i].speed *= -1;
-	//			_Ene[i].state = !_Ene[i].state;
-	//		}
+			if (_Ene[i].x <= 30) {
+				_Ene[i].x = 30;
+				_Ene[i].speed *= -1;
+				_Ene[i].state = !_Ene[i].state;
+			}
+			else if (_Ene[i].x >= 670) {
+				_Ene[i].x = 670;
+				_Ene[i].speed *= -1;
+				_Ene[i].state = !_Ene[i].state;
+			}
 
-	//		if (_Ene[i].speed == 4 || _Ene[i].speed == -4) { // 속도가 4인 적은 빨간색, 나머지는 초록색 
-	//			if (_Ene[i].state == FALSE) //방향
-	//				DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hEnemyRightRed, TRUE, (_iAni % 2) * 50, 0, (_iAni % 2 + 1) * 50, 50);
-	//			else
-	//				DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hEnemyLeftRed, TRUE, (_iAni % 2) * 50, 0, (_iAni % 2 + 1) * 50, 50);
-	//		}
-	//		else {
-	//			if (_Ene[i].state == FALSE) //방향
-	//				DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hEnemyRight, TRUE, (_iAni % 2) * 50, 0, (_iAni % 2 + 1) * 50, 50);
-	//			else
-	//				DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hEnemyLeft, TRUE, (_iAni % 2) * 50, 0, (_iAni % 2 + 1) * 50, 50);
-	//		}
-	//	}
-	//}
+			if (_Ene[i].speed == 4 || _Ene[i].speed == -4) { // 속도가 4인 적은 빨간색, 나머지는 초록색 
+				if (_Ene[i].state == FALSE) //방향
+				{
+					objectdc.SelectObject(&_hEnemyRightRed);
+					memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni % 2) * 50, 0, SRCCOPY);
+					//DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hEnemyRightRed, TRUE, (_iAni % 2) * 50, 0, (_iAni % 2 + 1) * 50, 50);
+				}
+					
+				else
+				{
+					objectdc.SelectObject(&_hEnemyLeftRed);
+					memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni % 2) * 50, 0, SRCCOPY);
+					//DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hEnemyLeftRed, TRUE, (_iAni % 2) * 50, 0, (_iAni % 2 + 1) * 50, 50);
+				}
+			}
+			else {
+				if (_Ene[i].state == FALSE) //방향
+				{
+					objectdc.SelectObject(&_hEnemyRight);
+					memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni % 2) * 50, 0, SRCCOPY);
+					//DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hEnemyRight, TRUE, (_iAni % 2) * 50, 0, (_iAni % 2 + 1) * 50, 50);
+				}
+				else
+				{
+					objectdc.SelectObject(&_hEnemyLeft);
+					memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni % 2) * 50, 0, SRCCOPY);
+					//DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hEnemyLeft, TRUE, (_iAni % 2) * 50, 0, (_iAni % 2 + 1) * 50, 50);
+				}
+			}
+		}
+	}
 
 	////적 충돌 감지 
 	//CheckCollision_Enemy();
