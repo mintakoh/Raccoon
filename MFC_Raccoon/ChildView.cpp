@@ -244,43 +244,28 @@ void CChildView::GameIntro()
 
 void CChildView::GamePlay()
 {
-	//CRect crt;
 	GetClientRect(&rect);
 	CClientDC dc(this);
 	CDC memdc, objectdc;
 	memdc.CreateCompatibleDC(&dc);
 	objectdc.CreateCompatibleDC(&memdc);
 
+	CBitmap* OldBit;
+
 	if (_cBit.m_hObject == NULL)
 		_cBit.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
-	memdc.SelectObject(&_cBit);
+	OldBit = memdc.SelectObject(&_cBit);
 
-	//HBITMAP OldBit;
-	//HPEN MyPen, OldPen;
-	//HBRUSH MyBrush, OldBrush;
-
-	CPen pen;
-	CBrush brush;
+	CPen pen, *OldPen;
+	CBrush brush, *OldBrush;
 
 	char i;
 
-	//GetClientRect(&crt);
-	//hdc = GetDC(_pGame->GetWindow());
-
-	//if (_hBit == NULL)
-	//	_hBit = CreateCompatibleBitmap(hdc, crt.right, crt.bottom);
-
-	//OldBit = (HBITMAP)SelectObject(hMemDC, _hBit);
-
 	//// 시간 바를 표시할 브러시와 펜 
-	//MyPen = CreatePen(PS_SOLID, 0, RGB(0, 0, 0));
-	//OldPen = (HPEN)SelectObject(hMemDC, MyPen);
 	pen.CreatePen(PS_SOLID, 0, RGB(0, 0, 0));
-	memdc.SelectObject(&pen);
-	//MyBrush = CreateSolidBrush(RGB(25, 184, 5));
-	//OldBrush = (HBRUSH)SelectObject(hMemDC, MyBrush);
+	OldPen = memdc.SelectObject(&pen);
 	brush.CreateSolidBrush(RGB(0, 0, 0));
-	memdc.SelectObject(&brush);
+	OldBrush = memdc.SelectObject(&brush);
 
 	////에니메이션 구현을 위해 	
 	////너구리가 죽으면 움직임을 멈추는 것들은 _iTime을 기준으로 에니메이션
@@ -333,18 +318,20 @@ void CChildView::GamePlay()
 		memdc.BitBlt(_Rac.x - 5, _Rac.y - 5, 60, 60, &objectdc, _Rac.x - 5, _Rac.y - 5, SRCCOPY);
 //		DrawBitmap(hMemDC, _Rac.x - 5, _Rac.y - 5, _hMap, FALSE, _Rac.x - 5, _Rac.y - 5, _Rac.x + 55, _Rac.y + 55);
 		//적 주위 
-		//for (i = 0; i <_EnemyCount; i++)
+		for (i = 0; i < _EnemyCount; i++)
+			memdc.BitBlt(_Ene[i].x - 2, _Ene[i].y + 5, 54, 53, &objectdc, _Ene[i].x - 2, _Ene[i].y + 5, SRCCOPY);
 			//DrawBitmap(hMemDC, _Ene[i].x - 2, _Ene[i].y + 5, _hMap, FALSE, _Ene[i].x - 2, _Ene[i].y + 5, _Ene[i].x + 52, _Ene[i].y + 48);
 	}
 
 
-	//// 점수 표시 (이전과 변화가 있을 때만 그린다.)
-	///*	static int Score;
-	//if (_iScore != Score || _iAni == 1){
-	//DrawBitmap(hMemDC, 20, 50, _hMap, FALSE, 20, 50, 106, 75);
-	//DrawDigit(hMemDC, 25, 50, _iScore, _hDigit, 7);
-	//Score = _iScore;
-	//} */
+	// 점수 표시 (이전과 변화가 있을 때만 그린다.)
+	static int Score;
+	if (_iScore != Score || _iAni == 1){
+		memdc.BitBlt(20, 50, 86, 25, &objectdc, 20, 50, SRCCOPY);
+		//DrawBitmap(hMemDC, 20, 50, _hMap, FALSE, 20, 50, 106, 75);
+		DrawDigit(memdc, 25, 50, _iScore, _hDigit, 7);
+		Score = _iScore;
+	} 
 
 	//static int Score;
 	//if (_iScore != Score || _iAni == 1){
@@ -1030,4 +1017,37 @@ void CChildView::Init()
 
 	_ScoreShow = 0;			//먹은 과일 점수 표시 시간 
 	_JumpFrame = 0;			//점프를 보여 줄때 필요 (카운터)
+}
+
+void CChildView::DrawDigit(CDC& cDC, int x, int y, int score, CBitmap& cBit, int cipher, COLORREF crTransColor)
+{
+	CDC MemDC;
+	CBitmap *OldBitmap;
+	int bx, by;
+	BITMAP bit;
+
+	MemDC.CreateCompatibleDC(&cDC);
+	OldBitmap = MemDC.SelectObject(&cBit);
+
+	GetObject(cBit, sizeof(BITMAP), &bit);
+	//cBit.GetBitmap(&bit);
+	bx = bit.bmWidth / 10;
+	by = bit.bmHeight;
+
+	int len;
+	int blank = 0;
+	char str[10];
+
+	_itoa_s(score, str, 10);
+	len = strlen(str);
+
+	if (cipher)
+		blank = cipher - len - 1;
+
+	//숫자를 자리수를 고려하여 공백을 넣고 숫자 표시  
+	for (int i = 0; i < len; i++)
+		cDC.TransparentBlt(x + (blank*bx) + (i*bx), y, bx, by, &MemDC, bx*(str[i] - '0'), 0, bx, by, crTransColor);
+
+	SelectObject(MemDC, OldBitmap);
+	DeleteDC(MemDC);
 }
