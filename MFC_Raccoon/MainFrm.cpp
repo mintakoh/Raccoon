@@ -90,8 +90,16 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	//메뉴바 제거
 	cs.hMenu = NULL;
 
+	//TODO : 프레임 크기는 추후에 미세조정
+	cs.cx = 930;
+	cs.cy = 730;
+
 	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
 	cs.lpszClass = AfxRegisterWndClass(0);
+
+	//프레임 고정
+	cs.style &= ~(WS_THICKFRAME | WS_MAXIMIZEBOX);
+
 	return TRUE;
 }
 
