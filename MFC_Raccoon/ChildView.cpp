@@ -266,7 +266,7 @@ void CChildView::GamePlay()
 	//// 시간 바를 표시할 브러시와 펜 
 	pen.CreatePen(PS_SOLID, 0, RGB(0, 0, 0));
 	OldPen = memdc.SelectObject(&pen);
-	brush.CreateSolidBrush(RGB(0, 0, 0));
+	brush.CreateSolidBrush(RGB(25, 184, 5));
 	OldBrush = memdc.SelectObject(&brush);
 
 	////에니메이션 구현을 위해 	
@@ -326,31 +326,35 @@ void CChildView::GamePlay()
 	}
 
 
-	// 점수 표시 (이전과 변화가 있을 때만 그린다.)
-	static int Score;
-	if (_iScore != Score || _iAni == 1){
-		memdc.BitBlt(20, 50, 86, 25, &objectdc, 20, 50, SRCCOPY);
-		//DrawBitmap(hMemDC, 20, 50, _hMap, FALSE, 20, 50, 106, 75);
-		DrawDigit(memdc, 25, 50, _iScore, _hDigit, 7);
-		Score = _iScore;
-	} 
-
+	//// 점수 표시 (이전과 변화가 있을 때만 그린다.)
 	//static int Score;
 	//if (_iScore != Score || _iAni == 1){
-	//	DrawBitmap(hMemDC, 200, 50, _hMap, FALSE, 200, 50, 300, 75);
-	//	DrawDigit(hMemDC, 205, 50, _iScore, _hDigit, 7);
+	//	memdc.BitBlt(20, 50, 86, 25, &objectdc, 20, 50, SRCCOPY);
+	//	//DrawBitmap(hMemDC, 20, 50, _hMap, FALSE, 20, 50, 106, 75);
+	//	DrawDigit(memdc, 25, 50, _iScore, _hDigit, 7);
 	//	Score = _iScore;
-	//}
-	////너구리 위치
-	//DrawBitmap(hMemDC, 300, 50, _hMap, FALSE, 300, 50, 420, 75);
-	//DrawDigit(hMemDC, 305, 50, _Rac.x, _hDigit, 7);
-	//DrawDigit(hMemDC, 360, 50, _Rac.y, _hDigit, 7);
+	//} 
 
-	//// 시간 바 표시 
-	//if (_iAni % 50 == 0 || _iAni == 1) {
-	//	DrawBitmap(hMemDC, 600 - _iTime, 25, _hMap, FALSE, 200, 0, 250, 25);
-	//	Rectangle(hMemDC, 650 - _iTime, 25, 650, 50);
-	//}
+	static int Score;
+	if (_iScore != Score || _iAni == 1){
+		memdc.BitBlt(200, 50, 100, 25, &objectdc, 200, 50, SRCCOPY);
+		//DrawBitmap(hMemDC, 200, 50, _hMap, FALSE, 200, 50, 300, 75);
+		DrawDigit(memdc, 205, 50, _iScore, _hDigit, 7);
+		Score = _iScore;
+	}
+	//너구리 위치
+	memdc.BitBlt(300, 50, 120, 25, &objectdc, 300, 50, SRCCOPY);
+	//DrawBitmap(hMemDC, 300, 50, _hMap, FALSE, 300, 50, 420, 75);
+	DrawDigit(memdc, 305, 50, _Rac.x, _hDigit, 7);
+	DrawDigit(memdc, 360, 50, _Rac.y, _hDigit, 7);
+
+	// 시간 바 표시 
+	if (_iAni % 50 == 0 || _iAni == 1) {
+		memdc.BitBlt(600 - _iTime, 25, 50, 25, &objectdc, 200, 0, SRCCOPY);
+		//DrawBitmap(hMemDC, 600 - _iTime, 25, _hMap, FALSE, 200, 0, 250, 25);
+		memdc.Rectangle(650 - _iTime, 25, 650, 50);
+		//Rectangle(hMemDC, 650 - _iTime, 25, 650, 50);
+	}
 
 	////먹은 과일 수 (이전과 변화가 있을 때만 그린다.)
 	//static char Eat;
