@@ -473,42 +473,84 @@ void CChildView::GamePlay()
 	//적 표시 
 	//뱀과 일반적인 적을 따로 그리는 이유는 투명 효과(Alpha) 때문에.	
 
-	//for (i = 0; i <_EnemyCount; i++) {
+	for (i = 0; i <_EnemyCount; i++) {
 
-	//	//뱀
-	//	if (_Ene[i].type == FALSE) {
+		//뱀
+		if (_Ene[i].type == FALSE) {
 
-	//		//너구리가 살아있고 (너구리가 죽으면 화면이 멈춰야 되므로)
-	//		//알파 값이 255가 되면 뱀은 움직인다.
-	//		if (_Rac.state != 10 && _Rac.state != 11 && _Ene[i].alpha == 255) _Ene[i].x += _Ene[i].speed;
+			//너구리가 살아있고 (너구리가 죽으면 화면이 멈춰야 되므로)
+			//알파 값이 255가 되면 뱀은 움직인다.
+			if (_Rac.state != 10 && _Rac.state != 11 && _Ene[i].alpha == 255) _Ene[i].x += _Ene[i].speed;
 
-	//		if (_Ene[i].x <= 30) {	//왼쪽 끝
-	//			_Ene[i].x = 30;
-	//			_Ene[i].speed *= -1;
-	//			_Ene[i].state = !_Ene[i].state;
-	//		}
-	//		else if (_Ene[i].x >= 670) { //오른쪽 끝
-	//			_Ene[i].x = 670;
-	//			_Ene[i].speed *= -1;
-	//			_Ene[i].state = !_Ene[i].state;
-	//		}
+			if (_Ene[i].x <= 30) {	//왼쪽 끝
+				_Ene[i].x = 30;
+				_Ene[i].speed *= -1;
+				_Ene[i].state = !_Ene[i].state;
+			}
+			else if (_Ene[i].x >= 670) { //오른쪽 끝
+				_Ene[i].x = 670;
+				_Ene[i].speed *= -1;
+				_Ene[i].state = !_Ene[i].state;
+			}
 
-	//		if (_Ene[i].state == FALSE) //방향(오른쪽을 보고 있을때)
-	//			if (_Ene[i].alpha != 255) {
-	//				_Ene[i].alpha += 5;	//선명하게
-	//				DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hMap, FALSE, 200, 0, 250, 50); //검은색으로 기존의 것을 지우기 (200,0 ~ 250,50은 검정색)
-	//				DrawBitmapAlpha(hMemDC, _Ene[i].x, _Ene[i].y, _hSnakeRight, _Ene[i].alpha, (_iAni / 5 % 2) * 50, 0, (_iAni / 5 % 2 + 1) * 50, 50);
-	//			}
-	//			else
-	//				DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hSnakeRight, TRUE, (_iAni / 5 % 2) * 50, 0, (_iAni / 5 % 2 + 1) * 50, 50);
-	//		else if (_Ene[i].alpha != 255) {
-	//			_Ene[i].alpha += 5;	//선명하게  
-	//			DrawBitmapAlpha(hMemDC, _Ene[i].x, _Ene[i].y, _hSnakeLeft, _Ene[i].alpha, (_iAni / 5 % 2) * 50, 0, (_iAni / 5 % 2 + 1) * 50, 50);
-	//		}
-	//		else // 방향(왼쪽을 보고 있을때)
-	//			DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hSnakeLeft, TRUE, (_iAni / 5 % 2) * 50, 0, (_iAni / 5 % 2 + 1) * 50, 50);
-	//	}
-	//}
+			if (_Ene[i].state == FALSE) //방향(오른쪽을 보고 있을때)
+				if (_Ene[i].alpha != 255) {
+					_Ene[i].alpha += 5;	//선명하게
+					objectdc.SelectObject(&_hMap);
+					memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, 200, 0, SRCCOPY); //검은색으로 기존의 것을 지우기 (200,0 ~ 250,50은 검정색)
+					//DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hMap, FALSE, 200, 0, 250, 50);
+
+					BLENDFUNCTION bf;
+					bf.BlendOp = AC_SRC_OVER;
+					bf.BlendFlags = 0;
+					bf.SourceConstantAlpha = _Ene[i].alpha;
+					bf.AlphaFormat = 0;
+
+					objectdc.SelectObject(&_hSnakeRight);
+
+					BITMAP info;
+					_hSnakeRight.GetBitmap(&info);
+					memdc.AlphaBlend(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni / 5 % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, bf);
+					//DrawBitmapAlpha(hMemDC, _Ene[i].x, _Ene[i].y, _hSnakeRight, _Ene[i].alpha, (_iAni / 5 % 2) * 50, 0, (_iAni / 5 % 2 + 1) * 50, 50);
+				}
+				else
+				{
+					objectdc.SelectObject(&_hSnakeRight);
+					BITMAP info;
+					_hSnakeRight.GetBitmap(&info);
+					memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni / 5 % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, RGB(0, 0, 0));
+					//DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hSnakeRight, TRUE, (_iAni / 5 % 2) * 50, 0, (_iAni / 5 % 2 + 1) * 50, 50);
+				}
+			else if (_Ene[i].alpha != 255) {
+				_Ene[i].alpha += 5;	//선명하게  
+				objectdc.SelectObject(&_hMap);
+				memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, 200, 0, SRCCOPY); //검은색으로 기존의 것을 지우기 (200,0 ~ 250,50은 검정색)
+				//DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hMap, FALSE, 200, 0, 250, 50);
+
+				BLENDFUNCTION bf;
+				bf.BlendOp = AC_SRC_OVER;
+				bf.BlendFlags = 0;
+				bf.SourceConstantAlpha = _Ene[i].alpha;
+				bf.AlphaFormat = 0;
+
+				objectdc.SelectObject(&_hSnakeLeft);
+
+				BITMAP info;
+				_hSnakeLeft.GetBitmap(&info);
+				memdc.AlphaBlend(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni / 5 % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, bf);
+				//DrawBitmapAlpha(hMemDC, _Ene[i].x, _Ene[i].y, _hSnakeLeft, _Ene[i].alpha, (_iAni / 5 % 2) * 50, 0, (_iAni / 5 % 2 + 1) * 50, 50);
+			}
+
+			else // 방향(왼쪽을 보고 있을때)
+			{
+				objectdc.SelectObject(&_hSnakeLeft);
+				BITMAP info;
+				_hSnakeLeft.GetBitmap(&info);
+				memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni / 5 % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, RGB(0, 0, 0));
+				//DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hSnakeLeft, TRUE, (_iAni / 5 % 2) * 50, 0, (_iAni / 5 % 2 + 1) * 50, 50);
+			}
+		}
+	}
 
 
 
