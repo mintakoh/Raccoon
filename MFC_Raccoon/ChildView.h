@@ -129,7 +129,6 @@ public:
 	// 점수
 	int			_iScore;
 
-	CBitmap _hSurprise;
 	
 
 
@@ -150,19 +149,28 @@ public:
 	//ENDING
 	CBitmap		_hEnding;
 
-
 	// 숫자
 	CBitmap		_hDigit;
 	CBitmap		_hDigit_sm;
 
-	//과일
-	CBitmap		_hFruit[4];
-
 	// 항아리
 	CBitmap		_hPot;
 
-	// 먹은 과일이나 항아리 점수 증가폭 (2배씩 증가)
-	int			_iItemScoreRate;
+	//과일
+	CBitmap		_hFruit[4];
+	
+	// 너구리 이미지 
+	CBitmap		_hLeft;
+	CBitmap		_hRight;
+	CBitmap		_hUpDown;
+	CBitmap		_hStand;
+	CBitmap		_hLeftJump;
+	CBitmap		_hRightJump;
+	CBitmap		_hDrop;
+	CBitmap		_hDie;
+
+	//깜짝 놀란 무늬
+	CBitmap _hSurprise;
 
 	// 적
 	CBitmap		_hEnemyRight;
@@ -174,15 +182,11 @@ public:
 	CBitmap		_hSnakeLeft;
 	CBitmap		_hSnakeRight;
 
-	// 너구리 이미지 
-	CBitmap		_hLeft;
-	CBitmap		_hRight;
-	CBitmap		_hUpDown;
-	CBitmap		_hStand;
-	CBitmap		_hLeftJump;
-	CBitmap		_hRightJump;
-	CBitmap		_hDrop;
-	CBitmap		_hDie;
+	//아기
+	CBitmap		_hBaby;
+
+	// 먹은 과일이나 항아리 점수 증가폭 (2배씩 증가)
+	int			_iItemScoreRate;
 
 	// 점프를 보여줄때 필요한 카운터
 	char _JumpFrame;

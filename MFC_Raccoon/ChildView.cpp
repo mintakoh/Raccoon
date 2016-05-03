@@ -81,6 +81,19 @@ CChildView::CChildView()
 	_hMapEle[4].LoadBitmapW(IDB_MAP_E);
 	_hMapEle[5].LoadBitmapW(IDB_MAP_F);
 
+	//LETS
+	_hLets.LoadBitmapW(IDB_LETS);
+	//SCORE
+	_hScore.LoadBitmapW(IDB_SCORE);
+	//GAMEOVER
+	_hGameOver.LoadBitmapW(IDB_GAMEOVER);
+	//BONUS
+	_hBonus.LoadBitmapW(IDB_BONUS);
+	//NEXT
+	_hNext.LoadBitmapW(IDB_NEXT);
+	//ENDING
+	_hEnding.LoadBitmapW(IDB_ENDING);
+
 	// 숫자 
 	_hDigit.LoadBitmapW(IDB_DIGIT);
 	_hDigit_sm.LoadBitmapW(IDB_DIGIT_SM);
@@ -103,27 +116,22 @@ CChildView::CChildView()
 	_hRightJump.LoadBitmapW(IDB_RIGHT_JUMP);
 	_hDrop.LoadBitmapW(IDB_DROP);
 	_hDie.LoadBitmapW(IDB_DIE);
-	
+
 	//SURPRISE
 	_hSurprise.LoadBitmapW(IDB_SURPRISE);
-	//LETS
-	_hLets.LoadBitmapW(IDB_LETS);
-	//SCORE
-	_hScore.LoadBitmapW(IDB_SCORE);
-	//GAMEOVER
-	_hGameOver.LoadBitmapW(IDB_GAMEOVER);
-	//BONUS
-	_hBonus.LoadBitmapW(IDB_BONUS);
-	//NEXT
-	_hNext.LoadBitmapW(IDB_NEXT);
-	//ENDING
-
 
 	//적
-
+	_hEnemyLeft.LoadBitmapW(IDB_ENEMY_LEFT);
+	_hEnemyRight.LoadBitmapW(IDB_ENEMY_RIGHT);
+	_hEnemyLeftRed.LoadBitmapW(IDB_ENEMY_LEFT_RED);
+	_hEnemyRightRed.LoadBitmapW(IDB_ENEMY_RIGHT_RED);
+	
 	//뱀
-
+	_hSnakeLeft.LoadBitmapW(IDB_SNAKE_LEFT);
+	_hSnakeRight.LoadBitmapW(IDB_SNAKE_RIGHT);
+	
 	//아기
+	_hBaby.LoadBitmapW(IDB_BABY);
 }
 
 CChildView::~CChildView()
