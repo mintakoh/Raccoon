@@ -1162,7 +1162,6 @@ void CChildView::LoadMap()
 	free(str);
 }
 
-
 void CChildView::CheckCollision()
 {
 	static int x1, y1, x2, y2;
@@ -1215,12 +1214,12 @@ void CChildView::CheckCollision()
 				(xx2 > x1 && xx2 < x2 && yy1 > y1 && yy1 < y2) ||
 				(xx2 > x1 && xx2 < x2 && yy2 > y1 && yy2 < y2)){
 
-				//TODO : PlaySound
+				PlaySound(MAKEINTRESOURCE(IDR_RAC_EAT), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 
 				if (_Item[i].ch >= 'Q') _iEat++;
 
 				if (_Item[i].ch == 'N' || _Item[i].ch == 'M'){
-					//TODO : PlaySound
+					PlaySound(MAKEINTRESOURCE(IDR_SNAKE), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 
 					_Ene[_EnemyCount].x = _Item[i].x;
 					_Ene[_EnemyCount].y = _Item[i].y;
