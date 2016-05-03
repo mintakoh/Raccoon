@@ -84,6 +84,7 @@ public:
 	void GameCycle();
 	void GameIntro();
 	void GamePlay();
+	void DrawDigit(CDC& cDC, int x, int y, int score, CBitmap& cBit, int cipher = 0, COLORREF crTransColor = RGB(0, 0, 0));
 	bool _bIsDrawAll;
 	char _GameState;
 	int _iAni;
