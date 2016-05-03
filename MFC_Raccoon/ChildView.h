@@ -130,15 +130,25 @@ public:
 	int			_iScore;
 
 	CBitmap _hSurprise;
-	CBitmap _hLets;
+	
 
 
 	// 기본 맵 구성 이미지 
 	CBitmap _hMap;
 	CBitmap _hMapEle[6];
 
+	//LETS
+	CBitmap _hLets;
 	// 'SCORE'
 	CBitmap		_hScore;
+	//Gameover
+	CBitmap		_hGameOver;
+	//BONUS
+	CBitmap		_hBonus;
+	//NEXT
+	CBitmap		_hNext;
+	//ENDING
+	CBitmap		_hEnding;
 
 
 	// 숫자

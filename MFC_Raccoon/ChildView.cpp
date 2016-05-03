@@ -1,6 +1,6 @@
 
 // ChildView.cpp : CChildView 클래스의 구현
-// 양종열
+// 
 #include "stdafx.h"
 #include "MFC_Raccoon.h"
 #include "ChildView.h"
@@ -73,7 +73,7 @@ CChildView::CChildView()
 
 
 
-	//이미지 처리
+	//이미지 처리 맵 구성품
 	_hMapEle[0].LoadBitmapW(IDB_MAP_A);
 	_hMapEle[1].LoadBitmapW(IDB_MAP_B);
 	_hMapEle[2].LoadBitmapW(IDB_MAP_C);
@@ -81,22 +81,50 @@ CChildView::CChildView()
 	_hMapEle[4].LoadBitmapW(IDB_MAP_E);
 	_hMapEle[5].LoadBitmapW(IDB_MAP_F);
 
-	_hLeft.LoadBitmapW(IDB_LEFT);
-	_hStand.LoadBitmapW(IDB_STAND);
-	_hRight.LoadBitmapW(IDB_RIGHT);
-	_hSurprise.LoadBitmapW(IDB_SURPRISE);
-	_hLets.LoadBitmapW(IDB_LETS);
+	// 숫자 
+	_hDigit.LoadBitmapW(IDB_DIGIT);
+	_hDigit_sm.LoadBitmapW(IDB_DIGIT_SM);
 
+	// 항아리 
+	_hPot.LoadBitmapW(IDB_MAP_N);
+
+	// 과일 
 	_hFruit[0].LoadBitmapW(IDB_MAP_Q);
 	_hFruit[1].LoadBitmapW(IDB_MAP_R);
 	_hFruit[2].LoadBitmapW(IDB_MAP_S);
 	_hFruit[3].LoadBitmapW(IDB_MAP_T);
 
+	// 너구리
+	_hLeft.LoadBitmapW(IDB_LEFT);
+	_hStand.LoadBitmapW(IDB_STAND);
+	_hRight.LoadBitmapW(IDB_RIGHT);
+	_hUpDown.LoadBitmapW(IDB_UPDOWN);
+	_hLeftJump.LoadBitmapW(IDB_LEFT_JUMP);
+	_hRightJump.LoadBitmapW(IDB_RIGHT_JUMP);
+	_hDrop.LoadBitmapW(IDB_DROP);
+	_hDie.LoadBitmapW(IDB_DIE);
+	
+	//SURPRISE
+	_hSurprise.LoadBitmapW(IDB_SURPRISE);
+	//LETS
+	_hLets.LoadBitmapW(IDB_LETS);
+	//SCORE
 	_hScore.LoadBitmapW(IDB_SCORE);
 	_hDigit.LoadBitmapW(IDB_DIGIT);
+	//GAMEOVER
+	_hGameOver.LoadBitmapW(IDB_GAMEOVER);
+	//BONUS
+	_hBonus.LoadBitmapW(IDB_BONUS);
+	//NEXT
+	_hNext.LoadBitmapW(IDB_NEXT);
+	//ENDING
 
-	_gameover.LoadBitmapW(IDB_GAMEOVER);
 
+	//적
+
+	//뱀
+
+	//아기
 }
 
 CChildView::~CChildView()
@@ -346,10 +374,10 @@ void CChildView::GamePlay()
 		Score = _iScore;
 	}
 	//너구리 위치
-	memdc.BitBlt(300, 50, 120, 25, &objectdc, 300, 50, SRCCOPY);
+	//memdc.BitBlt(300, 50, 120, 25, &objectdc, 300, 50, SRCCOPY);
 	//DrawBitmap(hMemDC, 300, 50, _hMap, FALSE, 300, 50, 420, 75);
-	DrawDigit(memdc, 305, 50, _Rac.x, _hDigit, 7);
-	DrawDigit(memdc, 360, 50, _Rac.y, _hDigit, 7);
+	//DrawDigit(memdc, 305, 50, _Rac.x, _hDigit, 7);
+	//DrawDigit(memdc, 360, 50, _Rac.y, _hDigit, 7);
 
 	// 시간 바 표시 
 	if (_iAni % 50 == 0 || _iAni == 1) {
