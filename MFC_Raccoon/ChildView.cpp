@@ -26,6 +26,7 @@ CChildView::CChildView()
 	, _iItemScoreRate(0)
 	, _JumpFrame(0)
 	, _bIsDrop_Sound(FALSE)
+	, m_bSleep(true)
 {
 	// 제자리 점프 
 	_StandJump[0] = { 1, -5, 0 };
