@@ -739,12 +739,12 @@ void CChildView::GameCycle()
 
 	case 2:
 		_bIsDrawAll = FALSE;
-		//GameClear();
+		GameClear();
 		break;
 
 	case 3:
 		_bIsDrawAll = FALSE;
-		//GameOver();
+		GameOver();
 		break;
 	}
 }
@@ -1121,6 +1121,19 @@ void CChildView::CheckCollision_Enemy()
 		}
 	}
 }
+
+
+void CChildView::GameClear()
+{
+
+}
+
+
+void CChildView::GameOver()
+{
+
+}
+
 
 void CChildView::Init()
 {

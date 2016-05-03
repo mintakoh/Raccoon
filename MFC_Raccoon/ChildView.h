@@ -84,6 +84,8 @@ public:
 	void GameCycle();
 	void GameIntro();
 	void GamePlay();
+	void GameClear();
+	void GameOver();
 	bool _bIsDrawAll;
 	char _GameState;
 	int _iAni;
