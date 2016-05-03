@@ -408,7 +408,7 @@ void CChildView::GamePlay()
 		{
 			BITMAP info;
 			_hFruit[_iLevel - 1].GetBitmap(&info);
-			memdc.SelectObject(&_hFruit[_iLevel - 1]);
+			objectdc.SelectObject(&_hFruit[_iLevel - 1]);
 			memdc.BitBlt(750, 490 - (i * 55), info.bmWidth, info.bmHeight, &objectdc, 0, 0, SRCCOPY);
 			//DrawBitmap(hMemDC, 750, 490 - (i * 55), _hFruit[_iLevel - 1], FALSE);
 		}
