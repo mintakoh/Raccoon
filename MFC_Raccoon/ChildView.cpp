@@ -1295,9 +1295,10 @@ void CChildView::GameOver()
 	if (_iScore != Score || _iAni == 1){
 		memdc.BitBlt(200, 50, 100, 25, &objectdc, 200, 50, SRCCOPY);
 		//DrawBitmap(hMemDC, 200, 50, _hMap, FALSE, 200, 50, 300, 75);
-		DrawDigit(memdc, 205, 50, _iScore, _hDigit, 7);
+		DrawDigit(memdc, 25, 50, _iScore, _hDigit, 7);
 		Score = _iScore;
 	}
+	
 
 
 	//¹Ù´Ú ±×¸®±â 
