@@ -106,6 +106,12 @@ BOOL CMFC_RaccoonApp::InitInstance()
 	// 창 하나만 초기화되었으므로 이를 표시하고 업데이트합니다.
 	pFrame->ShowWindow(SW_SHOW);
 	pFrame->UpdateWindow();
+
+	//타이틀 이름 변경
+	pFrame->SetWindowTextW(_T("너구리"));
+	//타이틀 아이콘 변경
+	pFrame->SetIcon(AfxGetApp()->LoadIcon(IDI_RACCOON), TRUE);
+
 	return TRUE;
 }
 

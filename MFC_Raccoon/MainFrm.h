@@ -34,7 +34,8 @@ public:
 #endif
 
 protected:  // 컨트롤 모음이 포함된 멤버입니다.
-	CToolBar          m_wndToolBar;
+	//툴바 제거
+	//CToolBar          m_wndToolBar;
 	CStatusBar        m_wndStatusBar;
 	CChildView    m_wndView;
 

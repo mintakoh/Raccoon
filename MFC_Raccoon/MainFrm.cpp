@@ -55,6 +55,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 	}
 
+	/*
+	//툴바, 상태바 제거
 	if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) ||
 		!m_wndToolBar.LoadToolBar(IDR_MAINFRAME))
 	{
@@ -71,8 +73,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	// TODO: 도구 모음을 도킹할 수 없게 하려면 이 세 줄을 삭제하십시오.
 	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
-	EnableDocking(CBRS_ALIGN_ANY);
 	DockControlBar(&m_wndToolBar);
+	*/
+	EnableDocking(CBRS_ALIGN_ANY);
 
 
 	return 0;
@@ -84,9 +87,19 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 		return FALSE;
 	// TODO: CREATESTRUCT cs를 수정하여 여기에서
 	//  Window 클래스 또는 스타일을 수정합니다.
+	//메뉴바 제거
+	cs.hMenu = NULL;
+
+	//TODO : 프레임 크기는 추후에 미세조정
+	cs.cx = 930;
+	cs.cy = 730;
 
 	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
 	cs.lpszClass = AfxRegisterWndClass(0);
+
+	//프레임 고정
+	cs.style &= ~(WS_THICKFRAME | WS_MAXIMIZEBOX);
+
 	return TRUE;
 }
 

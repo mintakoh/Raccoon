@@ -4,6 +4,9 @@
 
 
 #pragma once
+
+#pragma comment(lib, "winmm")
+#include <mmsystem.h>
 #include "afxwin.h"
 
 
@@ -85,6 +88,8 @@ public:
 	void GameIntro();
 	void GamePlay();
 	void DrawDigit(CDC& cDC, int x, int y, int score, CBitmap& cBit, int cipher = 0, COLORREF crTransColor = RGB(0, 0, 0));
+	void GameClear();
+	void GameOver();
 	bool _bIsDrawAll;
 	char _GameState;
 	int _iAni;

@@ -1,10 +1,10 @@
 
 // ChildView.cpp : CChildView 클래스의 구현
 // 양종열
-
 #include "stdafx.h"
 #include "MFC_Raccoon.h"
 #include "ChildView.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -237,6 +237,8 @@ void CChildView::GameIntro()
 	if (_iAni == 171) {
 		objectdc.SelectObject(_hLets);
 		memdc.BitBlt(220, 120, 455, 218, &objectdc, 0, 0, SRCCOPY);
+
+		PlaySound(MAKEINTRESOURCE(IDR_INTRO), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 	}
 
 	Invalidate(false);
@@ -716,7 +718,6 @@ void CChildView::GameCycle()
 	switch (_GameState) {
 	case 0:
 		_bIsDrawAll = FALSE;
-		//Invalidate(false);
 		GameIntro();
 		break;
 
@@ -727,12 +728,12 @@ void CChildView::GameCycle()
 
 	case 2:
 		_bIsDrawAll = FALSE;
-		//GameClear();
+		GameClear();
 		break;
 
 	case 3:
 		_bIsDrawAll = FALSE;
-		//GameOver();
+		GameOver();
 		break;
 	}
 }
@@ -760,10 +761,121 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		}
 		break;
 
-	//게임 플레이 도중
+		//게임 플레이 도중
 	case 1:
 		//너구리 상태(_Rac.state)에 대해 switch 문 작성. 오토마다 그림 참고.
+		switch (_Rac.state) {
+		case 1:
+			if (nChar == VK_LEFT)
+				_Rac.state = 2;
+
+			else if (nChar == VK_RIGHT)
+				_Rac.state = 3;
+
+			// 'F'는 사다리,  +20 한 것은 너구리의 중심을 맞추기 위해 
+			else if (nChar == VK_UP) {
+				if (_cMap[(_Rac.y) / 25][(_Rac.x + 20) / 25] == 'F')
+					_Rac.state = 4;
+			}
+			else if (nChar == VK_DOWN) {
+				if (_cMap[(_Rac.y + 50) / 25][(_Rac.x + 20) / 25] == 'F')
+					_Rac.state = 4;
+			}
+			else if (nChar == VK_SPACE) {
+				//PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), _hInstance, SND_RESOURCE | SND_ASYNC);
+				_Rac.state = 5;
+			}
+
+			break;
+
+		case 2:
+			if (nChar == VK_LEFT) {
+				if (_Rac.x >= 25) {
+					_Rac.x -= _Rac.speedx;
+					_Rac.step = !_Rac.step;
+					//if (_Rac.x % 20 == 0)
+					//	PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), _hInstance, SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
+					CheckCollision();
+				} //키 버퍼 
+				if (nChar == VK_SPACE) {
+					//PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), _hInstance, SND_RESOURCE | SND_ASYNC);
+					_Rac.state = 7;
+				}
+			}
+			else if (nChar == VK_RIGHT)
+				_Rac.state = 3;
+
+			else if (nChar == VK_UP) {
+				if (_cMap[(_Rac.y - 25) / 25][(_Rac.x + 20) / 25] == 'F')
+					_Rac.state = 4;
+			}
+			else if (nChar == VK_DOWN) {
+				if (_cMap[(_Rac.y + 50) / 25][(_Rac.x + 20) / 25] == 'F')
+					_Rac.state = 4;
+			}
+			else if (nChar == VK_SPACE) {
+				//PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), _hInstance, SND_RESOURCE | SND_ASYNC);
+				_Rac.state = 6;
+			}
+
+			break;
+
+		case 3:
+			if (nChar == VK_LEFT)
+				_Rac.state = 2;
+
+			else if (nChar == VK_RIGHT) {
+				if ((_Rac.x <= 670) || (_Rac.x <= 775 && _Rac.y == 578)) {
+					_Rac.x += _Rac.speedx;
+					_Rac.step = !_Rac.step;
+					//if (_Rac.x % 20 == 0)
+						//PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), _hInstance, SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
+					CheckCollision();
+				} // 키 버퍼 
+				if (nChar == VK_SPACE)  {
+					//PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), _hInstance, SND_RESOURCE | SND_ASYNC);
+					_Rac.state = 9;
+				}
+			}
+			else if (nChar == VK_UP) {
+				if (_cMap[(_Rac.y - 25) / 25][(_Rac.x + 20) / 25] == 'F')
+					_Rac.state = 4;
+			}
+			else if (nChar == VK_DOWN) {
+				if (_cMap[(_Rac.y + 50) / 25][(_Rac.x + 20) / 25] == 'F')
+					_Rac.state = 4;
+			}
+			else if (nChar == VK_SPACE) {
+				//PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), _hInstance, SND_RESOURCE | SND_ASYNC);
+				_Rac.state = 8;
+			}
+
+			break;
+
+		case 4:
+			if (nChar == VK_UP)
+				if (_cMap[(_Rac.y + 20) / 25][(_Rac.x + 20) / 25] == 'F') {
+					_Rac.y -= _Rac.speedy;
+					_Rac.step = !_Rac.step;
+					//if ((_Rac.y - 3) % 20 == 0)
+						//PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), _hInstance, SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
+				}
+				else
+					_Rac.state = 1;
+
+			else if (nChar == VK_DOWN)
+				if (_cMap[(_Rac.y + 50) / 25][(_Rac.x + 20) / 25] == 'F') {
+					_Rac.y += _Rac.speedy;
+					_Rac.step = !_Rac.step;
+					//if ((_Rac.y - 3) % 20 == 0)
+						//PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), _hInstance, SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
+				}
+				else
+					_Rac.state = 1;
+			break;
+		}
 		break;
+
 		
 	//레벨 클리어 ( 내용 없음 )
 	case 2:
@@ -775,10 +887,10 @@ void CChildView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			//음악 종료 함수 호출
 
 			//초기화 작업.
-			// _iAni = 0;
-			//_GameState = 0;
-			//Sleep(100);
-			//Invalidate(false);
+			 _iAni = 0;
+			_GameState = 0;
+			Sleep(100);
+			Invalidate(false);
 		}
 		break;
 	}
@@ -998,6 +1110,19 @@ void CChildView::CheckCollision_Enemy()
 		}
 	}
 }
+
+
+void CChildView::GameClear()
+{
+
+}
+
+
+void CChildView::GameOver()
+{
+
+}
+
 
 void CChildView::Init()
 {
