@@ -982,8 +982,10 @@ void CChildView::LoadMap()
 	// 당근 , 앵두 ... 
 	for (i = 0; i < _iLevel; i++)
 	{
+		BITMAP info;
+		_hFruit[i].GetBitmap(&info);
 		objectdc.SelectObject(&_hFruit[i]);
-		memdc.TransparentBlt((670 - (_iLevel - 1) * 55) + i * 55, 70, 51, 51, &objectdc, 0, 0, 51, 51, RGB(0, 0, 0));
+		memdc.TransparentBlt((670 - (_iLevel - 1) * 55) + i * 55, 70, info.bmWidth, info.bmHeight, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
 	}
 	
 
@@ -1198,8 +1200,10 @@ void CChildView::GameClear()
 		//DrawBitmap(hMemDC, 765, 620, _hNext, TRUE);
 
 		//과일
+		BITMAP info;
+		_hFruit[_iLevel].GetBitmap(&info);
 		objectdc.SelectObject(&_hFruit[_iLevel]);
-		memdc.TransparentBlt(830, 600, 51, 51, &objectdc, 0, 0, 51, 51, RGB(0, 0, 0));
+		memdc.TransparentBlt(830, 600, info.bmWidth, info.bmHeight, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
 		//hMemDC.BitBlt(0, 0, 830, 600, hdc, 0, 0, SRCCOPY);
 		//DrawBitmap(hMemDC, 830, 600, _hFruit[_iLevel], TRUE);
 
