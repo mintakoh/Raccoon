@@ -90,16 +90,20 @@ protected:
 	afx_msg void OnPaint();
 	DECLARE_MESSAGE_MAP()
 public:
-	CRect rect;
-	
 	void HandleKeys();
-
 	void GameCycle();
 	void GameIntro();
 	void GamePlay();
 	void DrawDigit(CDC& cDC, int x, int y, int score, CBitmap& cBit, int cipher = 0, COLORREF crTransColor = RGB(0, 0, 0));
 	void GameClear();
 	void GameOver();
+	void LoadMap();
+	void CheckCollision();
+	void CheckCollision_Enemy();
+	void Init();
+
+	CRect rect;
+
 	bool _bIsDrawAll;
 	char _GameState;
 	int _iAni;
@@ -114,10 +118,6 @@ public:
 	jump	_LeftShortJump[11];
 	jump	_LeftLongJump[17];
 
-	void LoadMap();
-	void CheckCollision();
-	void CheckCollision_Enemy();
-	void Init();
 
 	//더블 버퍼링을 위해  
 	CBitmap		_cBit;
