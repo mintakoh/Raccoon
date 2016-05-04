@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "resource.h"
+#include "MainFrm.h"
 
 
 CGame::CGame()
@@ -133,7 +134,10 @@ CGame::~CGame()
 
 void CGame::GameIntro()
 {
-	CClientDC dc(this);
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	CChildView* pView = (CChildView*)pFrame->GetChildView();
+
+	CClientDC dc(pView);
 
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 
@@ -147,7 +151,7 @@ void CGame::GameIntro()
 	memdc.CreateCompatibleDC(&dc);
 	objectdc.CreateCompatibleDC(&memdc);
 
-	GetClientRect(&rect);
+	pView->GetClientRect(&rect);
 
 	if (_cBit.m_hObject == NULL)
 		_cBit.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
@@ -246,13 +250,16 @@ void CGame::GameIntro()
 		PlaySound(MAKEINTRESOURCE(IDR_INTRO), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 	}
 
-	Invalidate(false);
+	pView->Invalidate(false);
 }
 
 void CGame::GamePlay()
 {
-	GetClientRect(&rect);
-	CClientDC dc(this);
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	CChildView* pView = (CChildView*)pFrame->GetChildView(); 
+	
+	pView->GetClientRect(&rect);
+	CClientDC dc(pView);
 	CDC memdc, objectdc;
 	memdc.CreateCompatibleDC(&dc);
 	objectdc.CreateCompatibleDC(&memdc);
@@ -713,7 +720,8 @@ void CGame::GamePlay()
 		break;
 
 	}
-	Invalidate(FALSE);
+
+	pView->Invalidate(FALSE);
 }
 
 void CGame::GameCycle()
@@ -743,12 +751,15 @@ void CGame::GameCycle()
 
 void CGame::LoadMap()
 {
-	CClientDC dc(this);
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	CChildView* pView = (CChildView*)pFrame->GetChildView();
+
+	CClientDC dc(pView);
 	CDC memdc, objectdc;
 	memdc.CreateCompatibleDC(&dc);
 	objectdc.CreateCompatibleDC(&memdc);
 
-	GetClientRect(&rect);
+	pView->GetClientRect(&rect);
 
 	HRSRC hRSrc = FindResource(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_MAP), _T("TEXT"));
 	DWORD size = SizeofResource(AfxGetInstanceHandle(), hRSrc);
@@ -968,8 +979,11 @@ void CGame::CheckCollision_Enemy()
 
 void CGame::GameClear()
 {
-	CClientDC dc(this);
-	GetClientRect(&rect);
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	CChildView* pView = (CChildView*)pFrame->GetChildView();
+
+	CClientDC dc(pView);
+	pView->GetClientRect(&rect);
 	CDC memdc, objectdc;
 	memdc.CreateCompatibleDC(&dc);
 	objectdc.CreateCompatibleDC(&memdc);
@@ -1052,14 +1066,17 @@ void CGame::GameClear()
 	// 점수 표시 
 	DrawDigit(memdc, 25, 50, _iScore, _hDigit, 7);
 
-	Invalidate(false);
+	pView->Invalidate(false);
 }
 
 void CGame::GameOver()
 {
-	CClientDC dc(this);
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	CChildView* pView = (CChildView*)pFrame->GetChildView();
 
-	GetClientRect(&rect);
+	CClientDC dc(pView);
+
+	pView->GetClientRect(&rect);
 
 	CDC memdc, objectdc;
 	memdc.CreateCompatibleDC(&dc);
@@ -1149,7 +1166,7 @@ void CGame::GameOver()
 	if (_iAni == 110)
 		PlaySound(MAKEINTRESOURCE(IDR_RAC_DIE), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 
-	Invalidate(false);
+	pView->Invalidate(false);
 }
 
 void CGame::Init()
