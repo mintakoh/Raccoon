@@ -190,8 +190,8 @@ BOOL CMFC_RaccoonApp::OnIdle(LONG lCount)
 			//CMainFrame *pFrame = (CMainFrame *)AfxGetMainWnd();
 			CChildView *pView = (CChildView *)pFrame->GetChildView();
 			if (pView) {
-				pView->GameCycle();
-				pView->HandleKeys();
+				pView->game.GameCycle();
+				pView->game.HandleKeys();
 			}
 		}
 	}

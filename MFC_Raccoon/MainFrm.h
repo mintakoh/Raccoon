@@ -50,14 +50,14 @@ public:
 	void GameActivate()
 	{
 		// 화면을 전부 다시 그리기 위해 
-		GetChildView()->_bIsDrawAll = TRUE;
+		GetChildView()->game._bIsDrawAll = TRUE;
 		m_bSleep = false;
 	}
 
 	void GameDeactivate()
 	{
 		// 화면을 전부 다시 그리기 위해 
-		GetChildView()->_bIsDrawAll = TRUE;
+		GetChildView()->game._bIsDrawAll = TRUE;
 		m_bSleep = true;
 	}
 	bool m_bSleep;

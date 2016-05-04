@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChildView.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="MFC_Raccoon.h" />
     <ClInclude Include="Resource.h" />
@@ -115,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChildView.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MFC_Raccoon.cpp" />
     <ClCompile Include="stdafx.cpp">
