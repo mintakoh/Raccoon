@@ -345,20 +345,17 @@ void CChildView::GamePlay()
 	if (_iAni == 1){
 		objectdc.SelectObject(&_hMap);
 		memdc.BitBlt(0, 0, rect.Width(), rect.Height(), &objectdc, 0, 0, SRCCOPY);
-		//DrawBitmap(hMemDC, 0, 0, _hMap, FALSE);
 	}
 
 	else {
 		//너구리 주위  
 		objectdc.SelectObject(&_hMap);
 		memdc.BitBlt(_Rac.x - 5, _Rac.y - 5, 60, 60, &objectdc, _Rac.x - 5, _Rac.y - 5, SRCCOPY);
-//		DrawBitmap(hMemDC, _Rac.x - 5, _Rac.y - 5, _hMap, FALSE, _Rac.x - 5, _Rac.y - 5, _Rac.x + 55, _Rac.y + 55);
 		//적 주위 
 		for (i = 0; i < _EnemyCount; i++)
 		{
 			objectdc.SelectObject(&_hMap);
 			memdc.BitBlt(_Ene[i].x - 2, _Ene[i].y + 5, 54, 53, &objectdc, _Ene[i].x - 2, _Ene[i].y + 5, SRCCOPY);
-			//DrawBitmap(hMemDC, _Ene[i].x - 2, _Ene[i].y + 5, _hMap, FALSE, _Ene[i].x - 2, _Ene[i].y + 5, _Ene[i].x + 52, _Ene[i].y + 48);
 		}
 	}
 
@@ -368,33 +365,15 @@ void CChildView::GamePlay()
 	if (_iScore != Score || _iAni == 1){
 		objectdc.SelectObject(&_hMap);
 		memdc.BitBlt(20, 50, 86, 25, &objectdc, 20, 50, SRCCOPY);
-		//DrawBitmap(hMemDC, 20, 50, _hMap, FALSE, 20, 50, 106, 75);
 		DrawDigit(memdc, 25, 50, _iScore, _hDigit, 7);
 		Score = _iScore;
 	} 
-
-	//static int Score;
-	//if (_iScore != Score || _iAni == 1){
-	//	objectdc.SelectObject(&_hMap);
-	//	memdc.BitBlt(200, 50, 100, 25, &objectdc, 200, 50, SRCCOPY);
-	//	//DrawBitmap(hMemDC, 200, 50, _hMap, FALSE, 200, 50, 300, 75);
-	//	DrawDigit(memdc, 205, 50, _iScore, _hDigit, 7);
-	//	Score = _iScore;
-	//}
-
-	//너구리 위치
-	//memdc.BitBlt(300, 50, 120, 25, &objectdc, 300, 50, SRCCOPY);
-	//DrawBitmap(hMemDC, 300, 50, _hMap, FALSE, 300, 50, 420, 75);
-	//DrawDigit(memdc, 305, 50, _Rac.x, _hDigit, 7);
-	//DrawDigit(memdc, 360, 50, _Rac.y, _hDigit, 7);
 
 	// 시간 바 표시 
 	if (_iAni % 50 == 0 || _iAni == 1) {
 		objectdc.SelectObject(&_hMap);
 		memdc.BitBlt(600 - _iTime, 25, 50, 25, &objectdc, 200, 0, SRCCOPY);
-		//DrawBitmap(hMemDC, 600 - _iTime, 25, _hMap, FALSE, 200, 0, 250, 25);
 		memdc.Rectangle(650 - _iTime, 25, 650, 50);
-		//Rectangle(hMemDC, 650 - _iTime, 25, 650, 50);
 	}
 	
 	//먹은 과일 수 (이전과 변화가 있을 때만 그린다.)
@@ -406,7 +385,6 @@ void CChildView::GamePlay()
 			_hFruit[_iLevel - 1].GetBitmap(&info);
 			objectdc.SelectObject(&_hFruit[_iLevel - 1]);
 			memdc.BitBlt(750, 490 - (i * 55), info.bmWidth, info.bmHeight, &objectdc, 0, 0, SRCCOPY);
-			//DrawBitmap(hMemDC, 750, 490 - (i * 55), _hFruit[_iLevel - 1], FALSE);
 		}
 		Eat = _iEat;
 	}
@@ -420,7 +398,6 @@ void CChildView::GamePlay()
 			BITMAP info;
 			_hPot.GetBitmap(&info);
 			memdc.BitBlt(_Item[i].x, _Item[i].y, info.bmWidth, info.bmHeight, &objectdc, 0, 0, SRCCOPY);
-			//DrawBitmap(hMemDC, _Item[i].x, _Item[i].y, _hPot, FALSE);
 		}
 
 		//과일 
@@ -430,7 +407,6 @@ void CChildView::GamePlay()
 			BITMAP info;
 			_hFruit[_iLevel - 1].GetBitmap(&info);
 			memdc.BitBlt(_Item[i].x, _Item[i].y, info.bmWidth, info.bmHeight, &objectdc, 0, 0, SRCCOPY);
-			//DrawBitmap(hMemDC, _Item[i].x, _Item[i].y, _hFruit[_iLevel - 1], FALSE);
 		}
 
 		//너구리가 먹은 것에 대한 점수 표시 
@@ -443,7 +419,6 @@ void CChildView::GamePlay()
 			{
 				objectdc.SelectObject(&_hMap);
 				memdc.BitBlt(_Item[i].x, _Item[i].y, 50, 50, &objectdc, 200, 0, SRCCOPY);
-				//DrawBitmap(hMemDC, _Item[i].x, _Item[i].y, _hMap, FALSE, 200, 0, 250, 50);
 			}
 
 			DrawDigit(memdc, _Item[i].x, _Item[i].y + 25, _iItemScoreRate, _hDigit_sm);
@@ -452,7 +427,6 @@ void CChildView::GamePlay()
 			if (++_ScoreShow == 11) {
 				objectdc.SelectObject(&_hMap);
 				memdc.BitBlt(_Item[i].x, _Item[i].y + 25, 40, 14, &objectdc, 200, 0, SRCCOPY);
-				//DrawBitmap(hMemDC, _Item[i].x, _Item[i].y + 25, _hMap, FALSE, 200, 0, 240, 14);
 				_Item[i].ch = '.';
 				_ScoreShow = 0;
 			}
@@ -460,7 +434,6 @@ void CChildView::GamePlay()
 		else if (_Item[i].ch == '#') {
 			objectdc.SelectObject(&_hMap);
 			memdc.BitBlt(_Item[i].x, _Item[i].y, 50, 50, &objectdc, 200, 0, SRCCOPY);
-			//DrawBitmap(hMemDC, _Item[i].x, _Item[i].y, _hMap, FALSE, 200, 0, 250, 50);
 			_Item[i].ch = '.';
 		}
 	}
@@ -493,7 +466,6 @@ void CChildView::GamePlay()
 					_Ene[i].alpha += 5;	//선명하게
 					objectdc.SelectObject(&_hMap);
 					memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, 200, 0, SRCCOPY); //검은색으로 기존의 것을 지우기 (200,0 ~ 250,50은 검정색)
-					//DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hMap, FALSE, 200, 0, 250, 50);
 
 					BLENDFUNCTION bf;
 					bf.BlendOp = AC_SRC_OVER;
@@ -506,7 +478,6 @@ void CChildView::GamePlay()
 					BITMAP info;
 					_hSnakeRight.GetBitmap(&info);
 					memdc.AlphaBlend(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni / 5 % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, bf);
-					//DrawBitmapAlpha(hMemDC, _Ene[i].x, _Ene[i].y, _hSnakeRight, _Ene[i].alpha, (_iAni / 5 % 2) * 50, 0, (_iAni / 5 % 2 + 1) * 50, 50);
 				}
 				else
 				{
@@ -514,13 +485,11 @@ void CChildView::GamePlay()
 					BITMAP info;
 					_hSnakeRight.GetBitmap(&info);
 					memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni / 5 % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, RGB(0, 0, 0));
-					//DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hSnakeRight, TRUE, (_iAni / 5 % 2) * 50, 0, (_iAni / 5 % 2 + 1) * 50, 50);
 				}
 			else if (_Ene[i].alpha != 255) {
 				_Ene[i].alpha += 5;	//선명하게  
 				objectdc.SelectObject(&_hMap);
 				memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, 200, 0, SRCCOPY); //검은색으로 기존의 것을 지우기 (200,0 ~ 250,50은 검정색)
-				//DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hMap, FALSE, 200, 0, 250, 50);
 
 				BLENDFUNCTION bf;
 				bf.BlendOp = AC_SRC_OVER;
@@ -533,7 +502,6 @@ void CChildView::GamePlay()
 				BITMAP info;
 				_hSnakeLeft.GetBitmap(&info);
 				memdc.AlphaBlend(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni / 5 % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, bf);
-				//DrawBitmapAlpha(hMemDC, _Ene[i].x, _Ene[i].y, _hSnakeLeft, _Ene[i].alpha, (_iAni / 5 % 2) * 50, 0, (_iAni / 5 % 2 + 1) * 50, 50);
 			}
 
 			else // 방향(왼쪽을 보고 있을때)
@@ -542,7 +510,6 @@ void CChildView::GamePlay()
 				BITMAP info;
 				_hSnakeLeft.GetBitmap(&info);
 				memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni / 5 % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, RGB(0, 0, 0));
-				//DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hSnakeLeft, TRUE, (_iAni / 5 % 2) * 50, 0, (_iAni / 5 % 2 + 1) * 50, 50);
 			}
 		}
 	}
@@ -574,7 +541,6 @@ void CChildView::GamePlay()
 					BITMAP info;
 					_hEnemyRightRed.GetBitmap(&info);
 					memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni % 2) * 50, 0, info.bmWidth/2, info.bmHeight, RGB(0, 0, 0));
-					//DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hEnemyRightRed, TRUE, (_iAni % 2) * 50, 0, (_iAni % 2 + 1) * 50, 50);
 				}
 					
 				else
@@ -583,7 +549,6 @@ void CChildView::GamePlay()
 					BITMAP info;
 					_hEnemyLeftRed.GetBitmap(&info);
 					memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni % 2) * 50, 0, info.bmWidth/2, info.bmHeight, RGB(0, 0, 0));
-					//DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hEnemyLeftRed, TRUE, (_iAni % 2) * 50, 0, (_iAni % 2 + 1) * 50, 50);
 				}
 			}
 			else {
@@ -593,7 +558,6 @@ void CChildView::GamePlay()
 					BITMAP info;
 					_hEnemyRight.GetBitmap(&info);
 					memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni % 2) * 50, 0, info.bmWidth/2, info.bmHeight, RGB(0, 0, 0));
-					//DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hEnemyRight, TRUE, (_iAni % 2) * 50, 0, (_iAni % 2 + 1) * 50, 50);
 				}
 				else
 				{
@@ -601,7 +565,6 @@ void CChildView::GamePlay()
 					BITMAP info;
 					_hEnemyLeft.GetBitmap(&info);
 					memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni % 2) * 50, 0, info.bmWidth/2, info.bmHeight, RGB(0, 0, 0));
-					//DrawBitmap(hMemDC, _Ene[i].x, _Ene[i].y, _hEnemyLeft, TRUE, (_iAni % 2) * 50, 0, (_iAni % 2 + 1) * 50, 50);
 				}
 			}
 		}
@@ -615,25 +578,21 @@ void CChildView::GamePlay()
 	case 1:
 		objectdc.SelectObject(&_hStand);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, 0, 0, 50, 50, RGB(0, 0, 0));
-		//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hStand, TRUE, 0, 0, 50, 50);
 		break;
 
 	case 2:
 		objectdc.SelectObject(&_hLeft);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, _Rac.step * 50, 0, 50, 50, RGB(0, 0, 0));
-		//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hLeft, TRUE, _Rac.step * 50, 0, (_Rac.step + 1) * 50, 50);
 		break;
 
 	case 3:
 		objectdc.SelectObject(&_hRight);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, _Rac.step * 50, 0, 50, 50, RGB(0, 0, 0));
-		//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hRight, TRUE, _Rac.step * 50, 0, (_Rac.step + 1) * 50, 50);
 		break;
 
 	case 4:
 		objectdc.SelectObject(&_hUpDown);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, _Rac.step * 50, 0, 50, 50, RGB(0, 0, 0));
-		//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hUpDown, TRUE, _Rac.step * 50, 0, (_Rac.step + 1) * 50, 50);
 		break;
 
 	case 5:
@@ -643,8 +602,6 @@ void CChildView::GamePlay()
 
 		objectdc.SelectObject(&_hStand);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_StandJump[_JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
-		//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hStand, TRUE, (_StandJump[_JumpFrame].frame) * 50, 0,
-		//	(_StandJump[_JumpFrame].frame + 1) * 50, 50);
 
 		_JumpFrame++;
 
@@ -663,8 +620,6 @@ void CChildView::GamePlay()
 		objectdc.SelectObject(&_hLeftJump);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_LeftShortJump[_JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
 
-		//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hLeftJump, TRUE, (_LeftShortJump[_JumpFrame].frame) * 50, 0,
-		//	(_LeftShortJump[_JumpFrame].frame + 1) * 50, 50);
 
 		_JumpFrame++;
 
@@ -690,8 +645,6 @@ void CChildView::GamePlay()
 		objectdc.SelectObject(&_hLeftJump);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_LeftLongJump[_JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
 
-		//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hLeftJump, TRUE, (_LeftLongJump[_JumpFrame].frame) * 50, 0,
-		//	(_LeftLongJump[_JumpFrame].frame + 1) * 50, 50);
 
 		_JumpFrame++;
 
@@ -717,8 +670,6 @@ void CChildView::GamePlay()
 		objectdc.SelectObject(&_hRightJump);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_LeftShortJump[_JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
 
-		//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hRightJump, TRUE, (_LeftShortJump[_JumpFrame].frame) * 50, 0,
-		//	(_LeftShortJump[_JumpFrame].frame + 1) * 50, 50);
 
 		_JumpFrame++;
 
@@ -746,9 +697,6 @@ void CChildView::GamePlay()
 		objectdc.SelectObject(&_hRightJump);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_LeftLongJump[_JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
 
-		//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hRightJump, TRUE, (_LeftLongJump[_JumpFrame].frame) * 50, 0,
-		//	(_LeftLongJump[_JumpFrame].frame + 1) * 50, 50);
-
 		_JumpFrame++;
 
 		if (_JumpFrame == 17) {
@@ -766,8 +714,8 @@ void CChildView::GamePlay()
 
 	case 10: //떨어지는 너구리  
 		if (_bIsDrop_Sound == FALSE) {
-			//PlaySound(NULL, _hInstance, 0);
-			//PlaySound(MAKEINTRESOURCE(IDR_RAC_DROP), _hInstance, SND_RESOURCE | SND_ASYNC);
+			PlaySound(NULL, AfxGetInstanceHandle(), 0);
+			PlaySound(MAKEINTRESOURCE(IDR_RAC_DROP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 			_bIsDrop_Sound = TRUE;
 		}
 
@@ -778,7 +726,6 @@ void CChildView::GamePlay()
 			objectdc.SelectObject(&_hDie);
 			memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, 0, 0, 50, 50, RGB(0, 0, 0));
 
-			//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hDie, TRUE);
 			_Rac.state = 11;
 		}
 		else {
@@ -787,8 +734,6 @@ void CChildView::GamePlay()
 			
 			objectdc.SelectObject(&_hDrop);
 			memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_iAni / 2 % 6) * 50, 0, 50, 50, RGB(0, 0, 0));
-			//DrawBitmap(hMemDC, _Rac.x, _Rac.y, _hDrop, TRUE, (_iAni / 2 % 6) * 50, 0,
-			//	(_iAni / 2 % 6 + 1) * 50, 50);
 		}
 		break;
 		
@@ -796,15 +741,6 @@ void CChildView::GamePlay()
 		break;
 
 	}
-
-	//SelectObject(hMemDC, OldBrush);
-	//SelectObject(hMemDC, OldPen);
-	//SelectObject(hMemDC, OldBit);
-	//DeleteObject(MyBrush);
-	//DeleteObject(MyPen);
-	//DeleteDC(hMemDC);
-	//ReleaseDC(_pGame->GetWindow(), hdc);
-	//InvalidateRect(_pGame->GetWindow(), NULL, FALSE);
 	Invalidate(FALSE);
 }
 
@@ -1147,14 +1083,12 @@ void CChildView::GameClear()
 
 	CBitmap* OldBit;
 	CBrush BackBrush, *OldBrush;
-//	hdc = GetDC();
 
 	static int bonus;
 
 	if (_cBit.m_hObject == NULL)
 		_cBit.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
 
-	//hMemDC.CreateCompatibleDC(hdc);
 	OldBit = memdc.SelectObject(&_cBit);
 
 	BackBrush.CreateSolidBrush(RGB(0, 0, 0));
@@ -1190,26 +1124,19 @@ void CChildView::GameClear()
 		//'BONUS'
 		objectdc.SelectObject(&_hBonus);
 		memdc.TransparentBlt(340, 255, 87, 22, &objectdc, 0, 0, 87, 22, RGB(0, 0, 0));
-		//memdc.BitBlt(0, 0, 340, 255, &objectdc, 0, 0, SRCCOPY);
-		//DrawBitmap(hMemDC, 340, 255, _hBonus, TRUE);
 
 		//'Next'
 		objectdc.SelectObject(&_hNext);
 		memdc.TransparentBlt(765, 622, 51, 22, &objectdc, 0, 0, 51, 22, RGB(0, 0, 0));
-		//memdc.BitBlt(0, 0, 765, 620, &objectdc, 0, 0, SRCCOPY);
-		//DrawBitmap(hMemDC, 765, 620, _hNext, TRUE);
 
 		//과일
 		BITMAP info;
 		_hFruit[_iLevel].GetBitmap(&info);
 		objectdc.SelectObject(&_hFruit[_iLevel]);
 		memdc.TransparentBlt(830, 600, info.bmWidth, info.bmHeight, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
-		//hMemDC.BitBlt(0, 0, 830, 600, hdc, 0, 0, SRCCOPY);
-		//DrawBitmap(hMemDC, 830, 600, _hFruit[_iLevel], TRUE);
 
 		if (_iAni == 1)
 			PlaySound(MAKEINTRESOURCE(IDR_CLEAR), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
-	//		PlaySound(MAKEINTRESOURCE(IDR_CLEAR), _hInstance, SND_RESOURCE | SND_ASYNC);
 	}
 	else {
 		//마지막 레벨 성공 	
@@ -1220,29 +1147,18 @@ void CChildView::GameClear()
 		// ending 메세지
 		objectdc.SelectObject(&_hEnding);
 		memdc.TransparentBlt(100, 150, 700, 197, &objectdc, 0, 0, 700, 197, RGB(0, 0, 0));
-		//hMemDC.BitBlt(0, 0, 100, 150,hdc, 0, 0, SRCCOPY);
-		//DrawBitmap(hMemDC, 100, 150, _hEnding, TRUE);
 		// 아기
 		objectdc.SelectObject(&_hBaby);
 		memdc.BitBlt(750, 420, 42, 43, &objectdc, (_iAni / 4 % 2) * 42, 0, SRCCOPY);
-		//DrawBitmap(hMemDC, 750, 420, _hBaby, FALSE, (_iAni / 4 % 2) * 42, 0, (_iAni / 4 % 2 + 1) * 42, 43);
 	}
 
 	// 'SCORE' 표시
 	objectdc.SelectObject(&_hScore);
 	memdc.TransparentBlt(25, 25, 75, 23, &objectdc, 0, 0, 75, 23, RGB(0, 0, 0));
-	//hMemDC.BitBlt(0, 0, 25, 25, hdc, 0, 0, SRCCOPY);
-	//DrawBitmap(hMemDC, 25, 25, _hScore, TRUE);
 
 	// 점수 표시 
 	DrawDigit(memdc, 25, 50, _iScore, _hDigit, 7);
 
-	//SelectObject(hMemDC, OldBrush);
-	//SelectObject(hMemDC, OldBit);
-	//DeleteObject(BackBrush);
-	//DeleteDC(hMemDC);
-	//ReleaseDC(hdc);
-	//InvalidateRect(&crt, FALSE);
 	Invalidate(false);
 }
 
@@ -1286,19 +1202,16 @@ void CChildView::GameOver()
 	if (_iAni != 350)
 		_iAni++;
 	else {
-		//_iAni == 350
 		Init();
 		_GameState = 0;
 	}
 	// 'SCORE' 표시
-	/*Drawbitmap(hMemDC, 25, 25, _hScore, TRUE);*/
 	memdc.BitBlt(25, 25, 75, 23, &scoredc, 0, 0, SRCCOPY);
 
 	// 점수 표시 
 	static int Score;
 	if (_iScore != Score || _iAni == 1){
 		memdc.BitBlt(200, 50, 100, 25, &objectdc, 200, 50, SRCCOPY);
-		//DrawBitmap(hMemDC, 200, 50, _hMap, FALSE, 200, 50, 300, 75);
 		DrawDigit(memdc, 25, 50, _iScore, _hDigit, 7);
 		Score = _iScore;
 	}
@@ -1314,8 +1227,6 @@ void CChildView::GameOver()
 	j = 0;
 	for (i = 585; i < 670; i += j) {
 		j++;
-		/*MoveToEx(hMemDC, 0, i, NULL);
-		LineTo(hMemDC, 900, i);*/
 		memdc.MoveTo(0, i);
 		memdc.LineTo(900, i);
 	}
@@ -1334,9 +1245,7 @@ void CChildView::GameOver()
 		memdc.BitBlt(430, (_iAni - 55) * 10, 50, 50, &drop_racoondc, (_iAni / 2 % 6) * 50, 0, SRCCOPY);
 
 	else if (_iAni >= 110){
-		//DrawBitmap(hMemDC, 430, 540, _hDie, TRUE);
 		drop_racoondc.SelectObject(&_hDie);
-		//memdc.BitBlt(430, 650, 50, 50, &drop_racoondc, 0, 0, SRCCOPY);
 		memdc.TransparentBlt(430, 540, 50, 50, &drop_racoondc, 0, 0, 50, 50, RGB(0, 0, 0));
 	}
 
