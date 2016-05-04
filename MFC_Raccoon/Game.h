@@ -2,6 +2,9 @@
 
 #pragma comment(lib, "winmm")
 #include <mmsystem.h>
+#include "Raccoon.h"
+#include "Enemy.h"
+#include "Item.h"
 
 // 게임에서 사용하는 키 지정 
 #define LEFT		VK_LEFT
@@ -15,36 +18,6 @@
 
 // 마지막 레벨 
 #define LAST_LEVEL	4
-
-//너구리
-struct Raccoon
-{
-	int x;			//x좌표
-	int y;			//y좌표
-	char state;		//너구리상태 (오토마다 참조)
-	bool step;		//움직일때 애니메이션
-	char speedx;	//x속도
-	char speedy;	//y속도
-};
-
-//적 (적과 뱀을 같이 처리, 차이는 적은 알파값을 사용하지 않는다, 뱀만 사용)
-struct Enemy
-{
-	int x;			//x좌표
-	int y;			//y좌표
-	int alpha;		//뱀 희미하다 선명하게
-	char speed;		//속도
-	bool state;		//방향(좌우)
-	bool type;		//일반적인 적, 뱀
-};
-
-//과일, 항아리 
-struct Item
-{
-	int x;
-	int y;
-	char ch;
-};
 
 //점프할때 좌표  
 struct jump
