@@ -364,22 +364,23 @@ void CChildView::GamePlay()
 
 
 	//// 점수 표시 (이전과 변화가 있을 때만 그린다.)
-	//static int Score;
-	//if (_iScore != Score || _iAni == 1){
-	//	memdc.BitBlt(20, 50, 86, 25, &objectdc, 20, 50, SRCCOPY);
-	//	//DrawBitmap(hMemDC, 20, 50, _hMap, FALSE, 20, 50, 106, 75);
-	//	DrawDigit(memdc, 25, 50, _iScore, _hDigit, 7);
-	//	Score = _iScore;
-	//} 
-
 	static int Score;
 	if (_iScore != Score || _iAni == 1){
 		objectdc.SelectObject(&_hMap);
-		memdc.BitBlt(200, 50, 100, 25, &objectdc, 200, 50, SRCCOPY);
-		//DrawBitmap(hMemDC, 200, 50, _hMap, FALSE, 200, 50, 300, 75);
-		DrawDigit(memdc, 205, 50, _iScore, _hDigit, 7);
+		memdc.BitBlt(20, 50, 86, 25, &objectdc, 20, 50, SRCCOPY);
+		//DrawBitmap(hMemDC, 20, 50, _hMap, FALSE, 20, 50, 106, 75);
+		DrawDigit(memdc, 25, 50, _iScore, _hDigit, 7);
 		Score = _iScore;
-	}
+	} 
+
+	//static int Score;
+	//if (_iScore != Score || _iAni == 1){
+	//	objectdc.SelectObject(&_hMap);
+	//	memdc.BitBlt(200, 50, 100, 25, &objectdc, 200, 50, SRCCOPY);
+	//	//DrawBitmap(hMemDC, 200, 50, _hMap, FALSE, 200, 50, 300, 75);
+	//	DrawDigit(memdc, 205, 50, _iScore, _hDigit, 7);
+	//	Score = _iScore;
+	//}
 
 	//너구리 위치
 	//memdc.BitBlt(300, 50, 120, 25, &objectdc, 300, 50, SRCCOPY);
@@ -410,7 +411,6 @@ void CChildView::GamePlay()
 		Eat = _iEat;
 	}
 
-	// TODO : 오류
 	// 항아리 & 과일 표시 
 	for (i = 0; i < 12; i++) {
 		//항아리 
