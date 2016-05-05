@@ -9,7 +9,6 @@ CGame::CGame()
 	, _GameState(0)
 	, _iAni(0)
 	, _iLevel(1)
-	, _EnemyCount(0)
 	, _ScoreShow(0)
 	, _iTime(0)
 	, _iScore(0)
@@ -40,16 +39,6 @@ CGame::CGame()
 	// 숫자 
 	_hDigit.LoadBitmapW(IDB_DIGIT);
 	_hDigit_sm.LoadBitmapW(IDB_DIGIT_SM);
-
-	//적
-	_hEnemyLeft.LoadBitmapW(IDB_ENEMY_LEFT);
-	_hEnemyRight.LoadBitmapW(IDB_ENEMY_RIGHT);
-	_hEnemyLeftRed.LoadBitmapW(IDB_ENEMY_LEFT_RED);
-	_hEnemyRightRed.LoadBitmapW(IDB_ENEMY_RIGHT_RED);
-
-	//뱀
-	_hSnakeLeft.LoadBitmapW(IDB_SNAKE_LEFT);
-	_hSnakeRight.LoadBitmapW(IDB_SNAKE_RIGHT);
 
 	//아기
 	_hBaby.LoadBitmapW(IDB_BABY);
@@ -260,7 +249,7 @@ void CGame::GamePlay()
 		objectdc.SelectObject(&_hMap);
 		memdc.BitBlt(_Rac.x - 5, _Rac.y - 5, 60, 60, &objectdc, _Rac.x - 5, _Rac.y - 5, SRCCOPY);
 		//적 주위 
-		for (i = 0; i < _EnemyCount; i++)
+		for (i = 0; i < Enemy::_EnemyCount; i++)
 		{
 			objectdc.SelectObject(&_hMap);
 			memdc.BitBlt(_Ene[i].x - 2, _Ene[i].y + 5, 54, 53, &objectdc, _Ene[i].x - 2, _Ene[i].y + 5, SRCCOPY);
@@ -349,7 +338,7 @@ void CGame::GamePlay()
 	//적 표시 
 	//뱀과 일반적인 적을 따로 그리는 이유는 투명 효과(Alpha) 때문에.	
 
-	for (i = 0; i <_EnemyCount; i++) {
+	for (i = 0; i < Enemy::_EnemyCount; i++) {
 
 		//뱀
 		if (_Ene[i].type == FALSE) {
@@ -381,17 +370,17 @@ void CGame::GamePlay()
 					bf.SourceConstantAlpha = _Ene[i].alpha;
 					bf.AlphaFormat = 0;
 
-					objectdc.SelectObject(&_hSnakeRight);
+					objectdc.SelectObject(&_Ene[0]._hSnakeRight);
 
 					BITMAP info;
-					_hSnakeRight.GetBitmap(&info);
+					_Ene[0]._hSnakeRight.GetBitmap(&info);
 					memdc.AlphaBlend(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni / 5 % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, bf);
 				}
 				else
 				{
-					objectdc.SelectObject(&_hSnakeRight);
+					objectdc.SelectObject(&_Ene[0]._hSnakeRight);
 					BITMAP info;
-					_hSnakeRight.GetBitmap(&info);
+					_Ene[0]._hSnakeRight.GetBitmap(&info);
 					memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni / 5 % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, RGB(0, 0, 0));
 				}
 			else if (_Ene[i].alpha != 255) {
@@ -405,18 +394,18 @@ void CGame::GamePlay()
 				bf.SourceConstantAlpha = _Ene[i].alpha;
 				bf.AlphaFormat = 0;
 
-				objectdc.SelectObject(&_hSnakeLeft);
+				objectdc.SelectObject(&_Ene[0]._hSnakeLeft);
 
 				BITMAP info;
-				_hSnakeLeft.GetBitmap(&info);
+				_Ene[0]._hSnakeLeft.GetBitmap(&info);
 				memdc.AlphaBlend(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni / 5 % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, bf);
 			}
 
 			else // 방향(왼쪽을 보고 있을때)
 			{
-				objectdc.SelectObject(&_hSnakeLeft);
+				objectdc.SelectObject(&_Ene[0]._hSnakeLeft);
 				BITMAP info;
-				_hSnakeLeft.GetBitmap(&info);
+				_Ene[0]._hSnakeLeft.GetBitmap(&info);
 				memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni / 5 % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, RGB(0, 0, 0));
 			}
 		}
@@ -425,7 +414,7 @@ void CGame::GamePlay()
 
 
 	//일반적인 적 
-	for (i = 0; i < _EnemyCount; i++) {
+	for (i = 0; i < Enemy::_EnemyCount; i++) {
 
 		if (_Ene[i].type == TRUE) {
 
@@ -445,33 +434,33 @@ void CGame::GamePlay()
 			if (_Ene[i].speed == 4 || _Ene[i].speed == -4) { // 속도가 4인 적은 빨간색, 나머지는 초록색 
 				if (_Ene[i].state == FALSE) //방향
 				{
-					objectdc.SelectObject(&_hEnemyRightRed);
+					objectdc.SelectObject(&_Ene[0]._hEnemyRightRed);
 					BITMAP info;
-					_hEnemyRightRed.GetBitmap(&info);
+					_Ene[0]._hEnemyRightRed.GetBitmap(&info);
 					memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, RGB(0, 0, 0));
 				}
 
 				else
 				{
-					objectdc.SelectObject(&_hEnemyLeftRed);
+					objectdc.SelectObject(&_Ene[0]._hEnemyLeftRed);
 					BITMAP info;
-					_hEnemyLeftRed.GetBitmap(&info);
+					_Ene[0]._hEnemyLeftRed.GetBitmap(&info);
 					memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, RGB(0, 0, 0));
 				}
 			}
 			else {
 				if (_Ene[i].state == FALSE) //방향
 				{
-					objectdc.SelectObject(&_hEnemyRight);
+					objectdc.SelectObject(&_Ene[0]._hEnemyRight);
 					BITMAP info;
-					_hEnemyRight.GetBitmap(&info);
+					_Ene[0]._hEnemyRight.GetBitmap(&info);
 					memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, RGB(0, 0, 0));
 				}
 				else
 				{
-					objectdc.SelectObject(&_hEnemyLeft);
+					objectdc.SelectObject(&_Ene[0]._hEnemyLeft);
 					BITMAP info;
-					_hEnemyLeft.GetBitmap(&info);
+					_Ene[0]._hEnemyLeft.GetBitmap(&info);
 					memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, RGB(0, 0, 0));
 				}
 			}
@@ -728,16 +717,16 @@ void CGame::LoadMap()
 				memdc.TransparentBlt(j * 25, i * 25, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
 			}
 			else if (_cMap[i][j] >= 'G' && _cMap[i][j] <= 'L'){
-				_Ene[_EnemyCount].x = j * 25;
-				_Ene[_EnemyCount].y = i * 25 - 25;
-				_Ene[_EnemyCount].type = TRUE;
-				_Ene[_EnemyCount].state = (_cMap[i][j] - 'G') % 2;
-				_Ene[_EnemyCount].alpha = 255;
-				if (_Ene[_EnemyCount].state)
-					_Ene[_EnemyCount].speed = (2 + (_cMap[i][j] - 'G') / 2)* (-1);
+				_Ene[Enemy::_EnemyCount].x = j * 25;
+				_Ene[Enemy::_EnemyCount].y = i * 25 - 25;
+				_Ene[Enemy::_EnemyCount].type = TRUE;
+				_Ene[Enemy::_EnemyCount].state = (_cMap[i][j] - 'G') % 2;
+				_Ene[Enemy::_EnemyCount].alpha = 255;
+				if (_Ene[Enemy::_EnemyCount].state)
+					_Ene[Enemy::_EnemyCount].speed = (2 + (_cMap[i][j] - 'G') / 2)* (-1);
 				else
-					_Ene[_EnemyCount].speed = 2 + (_cMap[i][j] - 'G') / 2;
-				_EnemyCount++;
+					_Ene[Enemy::_EnemyCount].speed = 2 + (_cMap[i][j] - 'G') / 2;
+				Enemy::_EnemyCount++;
 			}
 			else if (_cMap[i][j] >= 'M'){
 				_Item[index].x = j * 25;
@@ -832,23 +821,23 @@ void CGame::CheckCollision()
 				if (_Item[i].ch == 'N' || _Item[i].ch == 'M'){
 					PlaySound(MAKEINTRESOURCE(IDR_SNAKE), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 
-					_Ene[_EnemyCount].x = _Item[i].x;
-					_Ene[_EnemyCount].y = _Item[i].y;
-					_Ene[_EnemyCount].type = FALSE;
-					_Ene[_EnemyCount].alpha = 10;
+					_Ene[Enemy::_EnemyCount].x = _Item[i].x;
+					_Ene[Enemy::_EnemyCount].y = _Item[i].y;
+					_Ene[Enemy::_EnemyCount].type = FALSE;
+					_Ene[Enemy::_EnemyCount].alpha = 10;
 
 					if (_Item[i].ch == 'N') {
-						_Ene[_EnemyCount].state = TRUE;
-						_Ene[_EnemyCount].speed = -1;
+						_Ene[Enemy::_EnemyCount].state = TRUE;
+						_Ene[Enemy::_EnemyCount].speed = -1;
 
 					}
 					else {
-						_Ene[_EnemyCount].state = FALSE;
-						_Ene[_EnemyCount].speed = 1;
+						_Ene[Enemy::_EnemyCount].state = FALSE;
+						_Ene[Enemy::_EnemyCount].speed = 1;
 					}
 
 					_Item[i].ch = '.';
-					_EnemyCount++;
+					Enemy::_EnemyCount++;
 				}
 				else{
 					//점수 표시 준비
@@ -889,7 +878,7 @@ void CGame::CheckCollision_Enemy()
 
 	char i;
 
-	for (i = 0; i < _EnemyCount; i++){
+	for (i = 0; i < Enemy::_EnemyCount; i++){
 		if (_Ene[i].alpha == 255){
 			xx1 = _Ene[i].x + 7;
 			yy1 = _Ene[i].y + 5;
@@ -1112,7 +1101,7 @@ void CGame::Init()
 	_iAni = 0;				//애니메이션 효과를 위해 
 	_bIsDrop_Sound = FALSE;	//너구리가 떨어질때 나는 소리 상태 
 
-	_EnemyCount = 0;		//적의 숫자 
+	Enemy::_EnemyCount = 0;	//적의 숫자 
 
 	_ScoreShow = 0;			//먹은 과일 점수 표시 시간 
 	_Rac._JumpFrame = 0;			//점프를 보여 줄때 필요 (카운터)

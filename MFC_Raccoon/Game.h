@@ -41,7 +41,6 @@ public:
 	int _iAni;
 	char _iLevel;
 	char _cMap[26][33];
-	int _EnemyCount;
 
 	Raccoon _Rac;
 	Enemy	_Ene[7];
@@ -81,16 +80,6 @@ public:
 	CBitmap		_hDigit;
 	CBitmap		_hDigit_sm;
 	
-	// Àû
-	CBitmap		_hEnemyRight;
-	CBitmap		_hEnemyLeft;
-	CBitmap		_hEnemyRightRed;
-	CBitmap		_hEnemyLeftRed;
-
-	//¹ì
-	CBitmap		_hSnakeLeft;
-	CBitmap		_hSnakeRight;
-
 	//¾Æ±â
 	CBitmap		_hBaby;
 

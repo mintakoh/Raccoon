@@ -14,5 +14,18 @@ public:
 	char speed;		//加档
 	bool state;		//规氢(谅快)
 	bool type;		//老馆利牢 利, 轨
+
+	// 利
+	CBitmap		_hEnemyRight;
+	CBitmap		_hEnemyLeft;
+	CBitmap		_hEnemyRightRed;
+	CBitmap		_hEnemyLeftRed;
+
+	//轨
+	CBitmap		_hSnakeLeft;
+	CBitmap		_hSnakeRight;
+
+	static int _EnemyCount;
+
 };
 

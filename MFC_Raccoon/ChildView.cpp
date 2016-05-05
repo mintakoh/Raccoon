@@ -86,7 +86,7 @@ void CChildView::OnPaint()
 			dc.BitBlt(game._Rac.x - 10, game._Rac.y - 10, 70, 70, &memdc, game._Rac.x - 10, game._Rac.y - 10, SRCCOPY);
 
 			//적 주위 
-			for (int i = 0; i < game._EnemyCount; i++)
+			for (int i = 0; i < Enemy::_EnemyCount; i++)
 				dc.BitBlt(game._Ene[i].x - 2, game._Ene[i].y + 5, 60, 50, &memdc, game._Ene[i].x - 2, game._Ene[i].y + 5, SRCCOPY);
 
 			//아이템 주위 
