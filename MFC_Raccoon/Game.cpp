@@ -10,7 +10,6 @@ CGame::CGame()
 	, _iAni(0)
 	, _iLevel(1)
 	, _EnemyCount(0)
-	, _iEat(0)
 	, _ScoreShow(0)
 	, _iTime(0)
 	, _iScore(0)
@@ -41,15 +40,6 @@ CGame::CGame()
 	// 숫자 
 	_hDigit.LoadBitmapW(IDB_DIGIT);
 	_hDigit_sm.LoadBitmapW(IDB_DIGIT_SM);
-
-	// 항아리 
-	_hPot.LoadBitmapW(IDB_MAP_N);
-
-	// 과일 
-	_hFruit[0].LoadBitmapW(IDB_MAP_Q);
-	_hFruit[1].LoadBitmapW(IDB_MAP_R);
-	_hFruit[2].LoadBitmapW(IDB_MAP_S);
-	_hFruit[3].LoadBitmapW(IDB_MAP_T);
 
 	//적
 	_hEnemyLeft.LoadBitmapW(IDB_ENEMY_LEFT);
@@ -229,7 +219,7 @@ void CGame::GamePlay()
 
 	//// 과일 다 먹음 
 	//// _ScoreShow == 1 을 한 이유는 마지막으로 먹은 과일 점수 까지 보여주려고 
-	if (_iEat == 8 && _ScoreShow == 1) {
+	if (Item::_iEat == 8 && _ScoreShow == 1) {
 		Sleep(500);
 		_iAni = 0;
 		_GameState = 2;
@@ -296,15 +286,15 @@ void CGame::GamePlay()
 
 	//먹은 과일 수 (이전과 변화가 있을 때만 그린다.)
 	static char Eat;
-	if (_iEat != Eat) {
-		for (i = 0; i < _iEat; i++)
+	if (Item::_iEat != Eat) {
+		for (i = 0; i < Item::_iEat; i++)
 		{
 			BITMAP info;
-			_hFruit[_iLevel - 1].GetBitmap(&info);
-			objectdc.SelectObject(&_hFruit[_iLevel - 1]);
+			_Item[0]._hFruit[_iLevel - 1].GetBitmap(&info);
+			objectdc.SelectObject(&_Item[0]._hFruit[_iLevel - 1]);
 			memdc.BitBlt(750, 490 - (i * 55), info.bmWidth, info.bmHeight, &objectdc, 0, 0, SRCCOPY);
 		}
-		Eat = _iEat;
+		Eat = Item::_iEat;
 	}
 
 	// 항아리 & 과일 표시 
@@ -312,18 +302,18 @@ void CGame::GamePlay()
 		//항아리 
 		if (_Item[i].ch == 'M' || _Item[i].ch == 'N' || _Item[i].ch == 'O')
 		{
-			objectdc.SelectObject(&_hPot);
+			objectdc.SelectObject(&_Item[0]._hPot);
 			BITMAP info;
-			_hPot.GetBitmap(&info);
+			_Item[0]._hPot.GetBitmap(&info);
 			memdc.BitBlt(_Item[i].x, _Item[i].y, info.bmWidth, info.bmHeight, &objectdc, 0, 0, SRCCOPY);
 		}
 
 		//과일 
 		else if (_Item[i].ch >= 'Q')
 		{
-			objectdc.SelectObject(&_hFruit[_iLevel - 1]);
+			objectdc.SelectObject(&_Item[0]._hFruit[_iLevel - 1]);
 			BITMAP info;
-			_hFruit[_iLevel - 1].GetBitmap(&info);
+			_Item[0]._hFruit[_iLevel - 1].GetBitmap(&info);
 			memdc.BitBlt(_Item[i].x, _Item[i].y, info.bmWidth, info.bmHeight, &objectdc, 0, 0, SRCCOPY);
 		}
 
@@ -763,8 +753,8 @@ void CGame::LoadMap()
 	for (i = 0; i < _iLevel; i++)
 	{
 		BITMAP info;
-		_hFruit[i].GetBitmap(&info);
-		objectdc.SelectObject(&_hFruit[i]);
+		_Item[0]._hFruit[i].GetBitmap(&info);
+		objectdc.SelectObject(&_Item[0]._hFruit[i]);
 		memdc.TransparentBlt((670 - (_iLevel - 1) * 55) + i * 55, 70, info.bmWidth, info.bmHeight, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
 	}
 
@@ -837,7 +827,7 @@ void CGame::CheckCollision()
 
 				PlaySound(MAKEINTRESOURCE(IDR_RAC_EAT), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 
-				if (_Item[i].ch >= 'Q') _iEat++;
+				if (_Item[i].ch >= 'Q') Item::_iEat++;
 
 				if (_Item[i].ch == 'N' || _Item[i].ch == 'M'){
 					PlaySound(MAKEINTRESOURCE(IDR_SNAKE), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
@@ -977,8 +967,8 @@ void CGame::GameClear()
 
 		//과일
 		BITMAP info;
-		_hFruit[_iLevel].GetBitmap(&info);
-		objectdc.SelectObject(&_hFruit[_iLevel]);
+		_Item[0]._hFruit[_iLevel].GetBitmap(&info);
+		objectdc.SelectObject(&_Item[0]._hFruit[_iLevel]);
 		memdc.TransparentBlt(830, 600, info.bmWidth, info.bmHeight, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
 
 		if (_iAni == 1)
@@ -1118,7 +1108,7 @@ void CGame::Init()
 	_Rac.speedy = 5;		//너구리 이동 속도 
 	_iTime = 500;			//게임 제한 시간 
 	_iItemScoreRate = 5;	//아이템 점수, 2배씩 곱해지면서 증가 
-	_iEat = 0;				//먹은 과일수 
+	Item::_iEat = 0;		//먹은 과일수 
 	_iAni = 0;				//애니메이션 효과를 위해 
 	_bIsDrop_Sound = FALSE;	//너구리가 떨어질때 나는 소리 상태 
 

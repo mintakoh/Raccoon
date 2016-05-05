@@ -50,9 +50,6 @@ public:
 	//더블 버퍼링을 위해  
 	CBitmap		_cBit;
 
-	//먹은 과일 수
-	char		_iEat;
-
 	//먹은 아이템의 점수 표시 시간 
 	char		_ScoreShow;
 
@@ -83,12 +80,6 @@ public:
 	// 숫자
 	CBitmap		_hDigit;
 	CBitmap		_hDigit_sm;
-
-	// 항아리
-	CBitmap		_hPot;
-
-	//과일
-	CBitmap		_hFruit[4];
 	
 	// 적
 	CBitmap		_hEnemyRight;
