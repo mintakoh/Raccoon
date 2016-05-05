@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include "resource.h"
 
+// static 변수 사용을 위해 초기화
 int Enemy::_EnemyCount = 0;
 
 Enemy::Enemy()
