@@ -12,59 +12,11 @@ CGame::CGame()
 	, _EnemyCount(0)
 	, _iEat(0)
 	, _ScoreShow(0)
-	, _iLive(0)
 	, _iTime(0)
 	, _iScore(0)
 	, _iItemScoreRate(0)
-	, _JumpFrame(0)
 	, _bIsDrop_Sound(FALSE)
 {
-	// 제자리 점프 
-	_StandJump[0] = { 1, -5, 0 };
-	_StandJump[1] = { 1, -5, 0 };
-	_StandJump[2] = { -1, -5, 0 };
-	_StandJump[3] = { -1, -5, 1 };
-	_StandJump[4] = { -1, -5, 1 };
-	_StandJump[5] = { -1, 5, 1 };
-	_StandJump[6] = { 1, 5, 1 };
-	_StandJump[7] = { 1, 5, 0 };
-	_StandJump[8] = { 0, 5, 0 };
-	_StandJump[9] = { 0, 5, 0 };
-
-	//왼쪽 짧은 점프 
-	_LeftShortJump[0] = { -5, -5, 0 };
-	_LeftShortJump[1] = { -5, -4, 0 };
-	_LeftShortJump[2] = { -5, -4, 1 };
-	_LeftShortJump[3] = { -5, -4, 1 };
-	_LeftShortJump[4] = { -5, -3, 1 };
-	_LeftShortJump[5] = { 0, 0, 1 };
-	_LeftShortJump[6] = { -5, 3, 2 };
-	_LeftShortJump[7] = { -5, 4, 2 };
-	_LeftShortJump[8] = { -5, 4, 2 };
-	_LeftShortJump[9] = { -5, 4, 2 };
-	_LeftShortJump[10] = { -5, 5, 3 };
-
-	//왼쪽 긴 점프 
-	_LeftLongJump[0] = { -5, -6, 0 };
-	_LeftLongJump[1] = { -5, -6, 0 };
-	_LeftLongJump[2] = { -5, -5, 0 };
-	_LeftLongJump[3] = { -5, -5, 1 };
-	_LeftLongJump[4] = { -5, -4, 1 };
-	_LeftLongJump[5] = { -5, -3, 1 };
-	_LeftLongJump[6] = { -5, -2, 1 };
-	_LeftLongJump[7] = { -5, -1, 1 };
-	_LeftLongJump[8] = { 0, 0, 1 };
-	_LeftLongJump[9] = { -5, 1, 2 };
-	_LeftLongJump[10] = { -5, 2, 2 };
-	_LeftLongJump[11] = { -5, 3, 2 };
-	_LeftLongJump[12] = { -5, 4, 2 };
-	_LeftLongJump[13] = { -5, 5, 2 };
-	_LeftLongJump[14] = { -5, 5, 2 };
-	_LeftLongJump[15] = { -5, 6, 2 };
-	_LeftLongJump[16] = { -5, 6, 3 };
-
-
-
 	//이미지 처리 맵 구성품
 	_hMapEle[0].LoadBitmapW(IDB_MAP_A);
 	_hMapEle[1].LoadBitmapW(IDB_MAP_B);
@@ -98,19 +50,6 @@ CGame::CGame()
 	_hFruit[1].LoadBitmapW(IDB_MAP_R);
 	_hFruit[2].LoadBitmapW(IDB_MAP_S);
 	_hFruit[3].LoadBitmapW(IDB_MAP_T);
-
-	// 너구리
-	_hLeft.LoadBitmapW(IDB_LEFT);
-	_hStand.LoadBitmapW(IDB_STAND);
-	_hRight.LoadBitmapW(IDB_RIGHT);
-	_hUpDown.LoadBitmapW(IDB_UPDOWN);
-	_hLeftJump.LoadBitmapW(IDB_LEFT_JUMP);
-	_hRightJump.LoadBitmapW(IDB_RIGHT_JUMP);
-	_hDrop.LoadBitmapW(IDB_DROP);
-	_hDie.LoadBitmapW(IDB_DIE);
-
-	//SURPRISE
-	_hSurprise.LoadBitmapW(IDB_SURPRISE);
 
 	//적
 	_hEnemyLeft.LoadBitmapW(IDB_ENEMY_LEFT);
@@ -171,7 +110,7 @@ void CGame::GameIntro()
 	if (_iAni <= 171) {
 
 		b = !b;
-		objectdc.SelectObject(_hLeft);
+		objectdc.SelectObject(_Rac._hLeft);
 
 		if (_iAni <= 50)
 			memdc.TransparentBlt(970 - _iAni * 5, 450, 50, 50, &objectdc, b * 50, 0, 50, 50, RGB(0, 0, 0));
@@ -211,7 +150,7 @@ void CGame::GameIntro()
 		//너구리 몸 흔들기 -> Dance ㅡㅡ;;
 	}
 	else if (_iAni < 437) {
-		objectdc.SelectObject(&_hStand);
+		objectdc.SelectObject(&_Rac._hStand);
 		for (int i = 120; i <= 520; i += 100)
 			memdc.TransparentBlt(i, 450, 50, 50, &objectdc, (_iAni / 19 % 2) * 50, 0, 50, 50, RGB(0, 0, 0));
 
@@ -221,25 +160,25 @@ void CGame::GameIntro()
 			memdc.TransparentBlt(620, 450, 50, 50, &objectdc, (_iAni / 19 % 2) * 50, 0, 50, 50, RGB(0, 0, 0));
 
 		if (_iAni > 220 && _iAni < 255) {
-			objectdc.SelectObject(_hSurprise);
+			objectdc.SelectObject(_Rac._hSurprise);
 			memdc.TransparentBlt(640, 435, 29, 21, &objectdc, 0, 0, 29, 21, RGB(0, 0, 0));
 		}
 
-		objectdc.SelectObject(_hStand);
+		objectdc.SelectObject(_Rac._hStand);
 		memdc.TransparentBlt(720, 450, 50, 50, &objectdc, (_iAni / 19 % 2) * 50, 0, 50, 50, RGB(0, 0, 0));
 	}
 	else {
-		objectdc.SelectObject(_hRight);
+		objectdc.SelectObject(_Rac._hRight);
 		for (int i = 120; i <= 520; i += 100)
 			memdc.TransparentBlt(i, 450, 50, 50, &objectdc, 0, 0, 50, 50, RGB(0, 0, 0));
 
-		objectdc.SelectObject(_hStand);
+		objectdc.SelectObject(_Rac._hStand);
 		memdc.TransparentBlt(620, 450, 50, 50, &objectdc, 0, 0, 50, 50, RGB(0, 0, 0));
 
-		objectdc.SelectObject(_hSurprise);
+		objectdc.SelectObject(_Rac._hSurprise);
 		memdc.TransparentBlt(640, 435, 29, 21, &objectdc, 0, 0, 29, 21, RGB(0, 0, 0));
 
-		objectdc.SelectObject(_hLeft);
+		objectdc.SelectObject(_Rac._hLeft);
 		memdc.TransparentBlt(720, 450, 50, 50, &objectdc, 0, 0, 50, 50, RGB(0, 0, 0));
 	}
 
@@ -300,12 +239,12 @@ void CGame::GamePlay()
 		PlaySound(NULL, AfxGetInstanceHandle(), 0);
 		PlaySound(MAKEINTRESOURCE(IDR_RAC_DIE), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 		Sleep(1500);
-		if (_iLive == 0) { // 마지막 너구리가 죽으면 
+		if (Raccoon::_iLive == 0) { // 마지막 너구리가 죽으면 
 			Init();
 			_GameState = 3;	//gameover
 		}
 		else {
-			_iLive--;
+			Raccoon::_iLive--;
 			Init();
 			LoadMap();
 		}
@@ -555,37 +494,37 @@ void CGame::GamePlay()
 	////너구리 
 	switch (_Rac.state) {
 	case 1:
-		objectdc.SelectObject(&_hStand);
+		objectdc.SelectObject(&_Rac._hStand);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, 0, 0, 50, 50, RGB(0, 0, 0));
 		break;
 
 	case 2:
-		objectdc.SelectObject(&_hLeft);
+		objectdc.SelectObject(&_Rac._hLeft);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, _Rac.step * 50, 0, 50, 50, RGB(0, 0, 0));
 		break;
 
 	case 3:
-		objectdc.SelectObject(&_hRight);
+		objectdc.SelectObject(&_Rac._hRight);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, _Rac.step * 50, 0, 50, 50, RGB(0, 0, 0));
 		break;
 
 	case 4:
-		objectdc.SelectObject(&_hUpDown);
+		objectdc.SelectObject(&_Rac._hUpDown);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, _Rac.step * 50, 0, 50, 50, RGB(0, 0, 0));
 		break;
 
 	case 5:
 		// 점프 패턴을 읽어 와서 그림 
-		_Rac.x += _StandJump[_JumpFrame].x;
-		_Rac.y += _StandJump[_JumpFrame].y;
+		_Rac.x += _Rac._StandJump[_Rac._JumpFrame].x;
+		_Rac.y += _Rac._StandJump[_Rac._JumpFrame].y;
 
-		objectdc.SelectObject(&_hStand);
-		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_StandJump[_JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
+		objectdc.SelectObject(&_Rac._hStand);
+		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_Rac._StandJump[_Rac._JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
 
-		_JumpFrame++;
+		_Rac._JumpFrame++;
 
-		if (_JumpFrame == 10) {
-			_JumpFrame = 0;	//초기화 
+		if (_Rac._JumpFrame == 10) {
+			_Rac._JumpFrame = 0;	//초기화 
 			_Rac.state = 1;	//착지 하면 다시 1상태로 
 		}
 		break;
@@ -593,17 +532,17 @@ void CGame::GamePlay()
 	case 6:
 		//화면 왼쪽 끝이므로 화면 밖으로 안나가게 
 		if (_Rac.x >= 30)
-			_Rac.x += _LeftShortJump[_JumpFrame].x;
-		_Rac.y += _LeftShortJump[_JumpFrame].y;
+			_Rac.x += _Rac._LeftShortJump[_Rac._JumpFrame].x;
+		_Rac.y += _Rac._LeftShortJump[_Rac._JumpFrame].y;
 
-		objectdc.SelectObject(&_hLeftJump);
-		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_LeftShortJump[_JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
+		objectdc.SelectObject(&_Rac._hLeftJump);
+		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_Rac._LeftShortJump[_Rac._JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
 
 
-		_JumpFrame++;
+		_Rac._JumpFrame++;
 
-		if (_JumpFrame == 11) {
-			_JumpFrame = 0;
+		if (_Rac._JumpFrame == 11) {
+			_Rac._JumpFrame = 0;
 			_Rac.state = 2;
 			//충돌 검사 
 			//이 프로그램은 화살표키로 움직일때 충동 검사를 (압정, 낭떠러지)한다.
@@ -618,17 +557,17 @@ void CGame::GamePlay()
 	case 7:
 		//화면 왼쪽 끝이므로 화면 밖으로 안나가게 
 		if (_Rac.x >= 30)
-			_Rac.x += _LeftLongJump[_JumpFrame].x;
-		_Rac.y += _LeftLongJump[_JumpFrame].y;
+			_Rac.x += _Rac._LeftLongJump[_Rac._JumpFrame].x;
+		_Rac.y += _Rac._LeftLongJump[_Rac._JumpFrame].y;
 
-		objectdc.SelectObject(&_hLeftJump);
-		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_LeftLongJump[_JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
+		objectdc.SelectObject(&_Rac._hLeftJump);
+		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_Rac._LeftLongJump[_Rac._JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
 
 
-		_JumpFrame++;
+		_Rac._JumpFrame++;
 
-		if (_JumpFrame == 17) {
-			_JumpFrame = 0;
+		if (_Rac._JumpFrame == 17) {
+			_Rac._JumpFrame = 0;
 			_Rac.state = 2;
 			//충돌 검사 
 			//이 프로그램은 화살표키로 움직일때 충동 검사를 (압정, 낭떠러지)한다.
@@ -643,17 +582,17 @@ void CGame::GamePlay()
 		//오른쪽 경계면 
 		//1층은 y좌표 775, 2층이상은 y좌표 670 
 		if (_Rac.x <= 670 || (_Rac.x <= 775 && _Rac.y >= 530))
-			_Rac.x -= _LeftShortJump[_JumpFrame].x;
-		_Rac.y += _LeftShortJump[_JumpFrame].y;
+			_Rac.x -= _Rac._LeftShortJump[_Rac._JumpFrame].x;
+		_Rac.y += _Rac._LeftShortJump[_Rac._JumpFrame].y;
 
-		objectdc.SelectObject(&_hRightJump);
-		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_LeftShortJump[_JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
+		objectdc.SelectObject(&_Rac._hRightJump);
+		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_Rac._LeftShortJump[_Rac._JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
 
 
-		_JumpFrame++;
+		_Rac._JumpFrame++;
 
-		if (_JumpFrame == 11) {
-			_JumpFrame = 0;
+		if (_Rac._JumpFrame == 11) {
+			_Rac._JumpFrame = 0;
 			_Rac.state = 3;
 			//충돌 검사 
 			//이 프로그램은 화살표키로 움직일때 충동 검사를 (압정, 낭떠러지)한다.
@@ -670,16 +609,16 @@ void CGame::GamePlay()
 		//오른쪽 경계면 
 		//1층은 y좌표 775, 2층이상은 y좌표 670 
 		if (_Rac.x <= 670 || (_Rac.x <= 775 && _Rac.y >= 530))
-			_Rac.x -= _LeftLongJump[_JumpFrame].x;
-		_Rac.y += _LeftLongJump[_JumpFrame].y;
+			_Rac.x -= _Rac._LeftLongJump[_Rac._JumpFrame].x;
+		_Rac.y += _Rac._LeftLongJump[_Rac._JumpFrame].y;
 
-		objectdc.SelectObject(&_hRightJump);
-		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_LeftLongJump[_JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
+		objectdc.SelectObject(&_Rac._hRightJump);
+		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_Rac._LeftLongJump[_Rac._JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
 
-		_JumpFrame++;
+		_Rac._JumpFrame++;
 
-		if (_JumpFrame == 17) {
-			_JumpFrame = 0;
+		if (_Rac._JumpFrame == 17) {
+			_Rac._JumpFrame = 0;
 			_Rac.state = 3;
 			//충돌 검사 
 			//이 프로그램은 화살표키로 움직일때 충동 검사를 (압정, 낭떠러지)한다.
@@ -702,7 +641,7 @@ void CGame::GamePlay()
 			_Rac.y = 578;
 			//다 떨어진 상태
 
-			objectdc.SelectObject(&_hDie);
+			objectdc.SelectObject(&_Rac._hDie);
 			memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, 0, 0, 50, 50, RGB(0, 0, 0));
 
 			_Rac.state = 11;
@@ -711,7 +650,7 @@ void CGame::GamePlay()
 			_Rac.y += 5;
 			//덜 떨어진 상태 
 
-			objectdc.SelectObject(&_hDrop);
+			objectdc.SelectObject(&_Rac._hDrop);
 			memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_iAni / 2 % 6) * 50, 0, 50, 50, RGB(0, 0, 0));
 		}
 		break;
@@ -835,9 +774,9 @@ void CGame::LoadMap()
 	memdc.TransparentBlt(25, 25, 75, 23, &objectdc, 0, 0, 75, 23, RGB(0, 0, 0));
 
 	// 남은 너구리 수
-	for (i = 0; i < _iLive; i++)
+	for (i = 0; i < Raccoon::_iLive; i++)
 	{
-		objectdc.SelectObject(&_hStand);
+		objectdc.SelectObject(&_Rac._hStand);
 		memdc.BitBlt(840, 600 - (i * 55), 50, 50, &objectdc, 0, 0, SRCCOPY);
 	}
 
@@ -1104,7 +1043,7 @@ void CGame::GameOver()
 	drop_racoondc.CreateCompatibleDC(&memdc);
 
 	game_overdc.SelectObject(&_hGameOver);
-	drop_racoondc.SelectObject(&_hDrop);
+	drop_racoondc.SelectObject(&_Rac._hDrop);
 	scoredc.SelectObject(&_hScore);
 
 
@@ -1154,7 +1093,7 @@ void CGame::GameOver()
 		memdc.BitBlt(430, (_iAni - 55) * 10, 50, 50, &drop_racoondc, (_iAni / 2 % 6) * 50, 0, SRCCOPY);
 
 	else if (_iAni >= 110){
-		drop_racoondc.SelectObject(&_hDie);
+		drop_racoondc.SelectObject(&_Rac._hDie);
 		memdc.TransparentBlt(430, 540, 50, 50, &drop_racoondc, 0, 0, 50, 50, RGB(0, 0, 0));
 	}
 
@@ -1186,7 +1125,7 @@ void CGame::Init()
 	_EnemyCount = 0;		//적의 숫자 
 
 	_ScoreShow = 0;			//먹은 과일 점수 표시 시간 
-	_JumpFrame = 0;			//점프를 보여 줄때 필요 (카운터)
+	_Rac._JumpFrame = 0;			//점프를 보여 줄때 필요 (카운터)
 }
 
 void CGame::DrawDigit(CDC& cDC, int x, int y, int score, CBitmap& cBit, int cipher, COLORREF crTransColor)
@@ -1232,7 +1171,7 @@ void CGame::HandleKeys()
 			PlaySound(NULL, AfxGetInstanceHandle(), 0);
 			// 초기화 
 			_iLevel = 1;
-			_iLive = LIVE;
+			Raccoon::_iLive = LIVE;
 			_iScore = 0;
 			Init();
 			LoadMap();
