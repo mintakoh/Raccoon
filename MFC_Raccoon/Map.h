@@ -2,6 +2,7 @@
 
 #include "resource.h"
 
+// 상호 참조를 피하기 위해 이름만 선언 후 .cpp 에서 헤더파일 참조
 class Enemy;
 class Item;
 class Raccoon;
