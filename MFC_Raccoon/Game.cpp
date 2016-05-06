@@ -460,7 +460,7 @@ void CGame::GamePlay()
 	}
 
 	////적 충돌 감지 
-	CheckCollision_Enemy();
+	_Rac.CheckCollision_Enemy(_Ene);
 
 	////너구리 
 	switch (_Rac.state) {
@@ -520,7 +520,7 @@ void CGame::GamePlay()
 			//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
 			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
 			//따라서 착지하면 충돌검사를 한다.
-			CheckCollision();
+			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore);
 		}
 
 		break;
@@ -545,7 +545,7 @@ void CGame::GamePlay()
 			//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
 			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
 			//따라서 착지하면 충돌검사를 한다.
-			CheckCollision();
+			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore);
 		}
 		break;
 
@@ -570,7 +570,7 @@ void CGame::GamePlay()
 			//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
 			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
 			//따라서 착지하면 충돌검사를 한다.
-			CheckCollision();
+			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore);
 
 		}
 
@@ -596,7 +596,7 @@ void CGame::GamePlay()
 			//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
 			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
 			//따라서 착지하면 충돌검사를 한다.
-			CheckCollision();
+			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore);
 		}
 
 		break;
@@ -656,139 +656,6 @@ void CGame::GameCycle()
 		_bIsDrawAll = FALSE;
 		GameOver();
 		break;
-	}
-}
-
-void CGame::CheckCollision()
-{
-	static int x1, y1, x2, y2;
-	static int xx1, yy1, xx2, yy2;
-
-	if (_Rac.state == 2 || _Rac.state == 6 || _Rac.state == 7){
-		x1 = _Rac.x + 10;
-		y1 = _Rac.y + 5;
-		x2 = _Rac.x + 30;
-		y2 = _Rac.y + 45;
-	}
-	else{
-		x1 = _Rac.x + 20;
-		y1 = _Rac.y + 5;
-		x2 = _Rac.x + 40;
-		y2 = _Rac.y + 40;
-	}
-
-	if (_Rac.state == 2 || _Rac.state == 3){
-		if (_Map._cMap[y2 / 25][x1 / 25] == 'E' || _Map._cMap[y2 / 25 + 1][x1 / 25] == '.'){
-			xx1 = (x1 / 25 * 25) + 5;
-			xx2 = ((x1 / 25 + 1) * 25) - 5;
-			if ((xx1 > x1 && xx1 <x2) || (xx2 > x1 && xx2 < x2)){
-				_Rac.state = 10;
-				return;
-			}
-		}
-		if (_Map._cMap[y2 / 25][x2 / 25] == 'E' || _Map._cMap[y2 / 25 + 1][x2 / 25] == '.') {
-			xx1 = (x2 / 25 * 25) + 5;
-			xx2 = ((x2 / 25 + 1) * 25) - 5;
-			if ((xx1 > x1 && xx1 < x2) || (xx2 > x1 && xx2 < x2)) {
-				_Rac.state = 10;
-				return;
-			}
-		}
-	}
-
-	//과일, 항아리 충돌 검사
-	char i;
-
-	for (i = 0; i < 12; i++){
-		if (_Item[i].ch >= 'M'){
-			xx1 = _Item[i].x + 10;
-			yy1 = _Item[i].y + 30;
-			xx2 = _Item[i].x + 40;
-			yy2 = _Item[i].y + 40;
-
-			if ((xx1 > x1 && xx1 < x2 && yy1 > y1 && yy1 < y2) ||
-				(xx1 > x1 && xx1 < x2 && yy2 > y1 && yy2 < y2) ||
-				(xx2 > x1 && xx2 < x2 && yy1 > y1 && yy1 < y2) ||
-				(xx2 > x1 && xx2 < x2 && yy2 > y1 && yy2 < y2)){
-
-				PlaySound(MAKEINTRESOURCE(IDR_RAC_EAT), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
-
-				if (_Item[i].ch >= 'Q') Item::_iEat++;
-
-				if (_Item[i].ch == 'N' || _Item[i].ch == 'M'){
-					PlaySound(MAKEINTRESOURCE(IDR_SNAKE), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
-
-					_Ene[Enemy::_EnemyCount].x = _Item[i].x;
-					_Ene[Enemy::_EnemyCount].y = _Item[i].y;
-					_Ene[Enemy::_EnemyCount].type = FALSE;
-					_Ene[Enemy::_EnemyCount].alpha = 10;
-
-					if (_Item[i].ch == 'N') {
-						_Ene[Enemy::_EnemyCount].state = TRUE;
-						_Ene[Enemy::_EnemyCount].speed = -1;
-
-					}
-					else {
-						_Ene[Enemy::_EnemyCount].state = FALSE;
-						_Ene[Enemy::_EnemyCount].speed = 1;
-					}
-
-					_Item[i].ch = '.';
-					Enemy::_EnemyCount++;
-				}
-				else{
-					//점수 표시 준비
-					//나중에 점수 표시하고 '.'으로 교체
-					_Item[i].ch = '*';
-					//점수 계산
-					_iItemScoreRate *= 2;
-					_iScore += _iItemScoreRate;
-				}
-			}
-		}
-	}
-}
-
-void CGame::CheckCollision_Enemy()
-{
-	static int x1, y1, x2, y2;
-	static int xx1, yy1, xx2, yy2;
-
-	if (_Rac.state == 2 || _Rac.state == 6 || _Rac.state == 7){
-		x1 = _Rac.x + 10;
-		y1 = _Rac.y + 5;
-		x2 = _Rac.x + 30;
-		y2 = _Rac.y + 45;
-	}
-	else if (_Rac.state == 3 || _Rac.state == 8 || _Rac.state == 9){
-		x1 = _Rac.x + 20;
-		y1 = _Rac.y + 5;
-		x2 = _Rac.x + 40;
-		y2 = _Rac.y + 45;
-	}
-	else{
-		x1 = _Rac.x + 5;
-		y1 = _Rac.y + 5;
-		x2 = _Rac.x + 40;
-		y2 = _Rac.y + 45;
-	}
-
-	char i;
-
-	for (i = 0; i < Enemy::_EnemyCount; i++){
-		if (_Ene[i].alpha == 255){
-			xx1 = _Ene[i].x + 7;
-			yy1 = _Ene[i].y + 5;
-			xx2 = _Ene[i].x + 43;
-			yy2 = _Ene[i].y + 50;
-
-			if ((x1 > xx1 && x1 < xx2 && y1 > yy1 && y1 < yy2) ||
-				(x1 > xx1 && x1 < xx2 && y2 > yy1 && y2 < yy2) ||
-				(x2 > xx1 && x2 < xx2 && y1 > yy1 && y2 < yy2) ||
-				(x2 > xx1 && x2 < xx2 && y2 > yy1 && y2 < yy2))
-				_Rac.state = 10;
-
-		}
 	}
 }
 
@@ -1104,7 +971,7 @@ void CGame::HandleKeys()
 					_Rac.step = !_Rac.step;
 					if (_Rac.x % 20 == 0)
 						PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
-					CheckCollision();
+					_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore);
 				} //키 버퍼 
 				if (GetAsyncKeyState(JUMP) < 0) {
 					PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
@@ -1139,7 +1006,7 @@ void CGame::HandleKeys()
 					_Rac.step = !_Rac.step;
 					if (_Rac.x % 20 == 0)
 						PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
-					CheckCollision();
+					_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore);
 				} // 키 버퍼 
 				if (GetAsyncKeyState(JUMP) < 0)  {
 					PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);

@@ -1,5 +1,10 @@
 #pragma once
 
+// 상호 참조를 피하기 위해 이름만 선언 후 .cpp 에서 헤더파일 참조
+class Map;
+class Enemy;
+class Item;
+
 // 처음에 주어지는 너구리 수 
 #define	LIVE		7
 
@@ -55,5 +60,9 @@ public:
 
 	//깜짝 놀란 무늬
 	CBitmap _hSurprise;
+
+	// 충돌 검사
+	void CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemScoreRate, int& _iScore);
+	void CheckCollision_Enemy(Enemy* _Ene);
 };
 

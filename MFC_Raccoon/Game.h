@@ -30,8 +30,6 @@ public:
 	void DrawDigit(CDC& cDC, int x, int y, int score, CBitmap& cBit, int cipher = 0, COLORREF crTransColor = RGB(0, 0, 0));
 	void GameClear();
 	void GameOver();
-	void CheckCollision();
-	void CheckCollision_Enemy();
 	void Init();
 
 	CRect rect;
