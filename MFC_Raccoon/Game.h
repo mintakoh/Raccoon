@@ -41,6 +41,7 @@ public:
 	int _iAni;
 	char _iLevel;
 
+	Map _Map;
 	Raccoon _Rac;
 	Enemy	_Ene[7];
 	Item	_Item[12];
@@ -82,7 +83,5 @@ public:
 
 	// 너구리가 죽어서 떨어질때 음악 연주 상태
 	BOOL _bIsDrop_Sound;
-
-	Map _Map;
 };
 
