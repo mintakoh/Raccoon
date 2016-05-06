@@ -15,14 +15,6 @@ CGame::CGame()
 	, _iItemScoreRate(0)
 	, _bIsDrop_Sound(FALSE)
 {
-	//이미지 처리 맵 구성품
-	_hMapEle[0].LoadBitmapW(IDB_MAP_A);
-	_hMapEle[1].LoadBitmapW(IDB_MAP_B);
-	_hMapEle[2].LoadBitmapW(IDB_MAP_C);
-	_hMapEle[3].LoadBitmapW(IDB_MAP_D);
-	_hMapEle[4].LoadBitmapW(IDB_MAP_E);
-	_hMapEle[5].LoadBitmapW(IDB_MAP_F);
-
 	//LETS
 	_hLets.LoadBitmapW(IDB_LETS);
 	//SCORE
@@ -225,7 +217,7 @@ void CGame::GamePlay()
 		else {
 			Raccoon::_iLive--;
 			Init();
-			LoadMap();
+			_Map.LoadMap(rect, _Ene, _Item, _Rac, _iLevel, _iScore, _hScore);
 		}
 	}
 
@@ -240,18 +232,18 @@ void CGame::GamePlay()
 
 	//// 맵(처음 시작 할때 맵 전체를 한번 그린다.)
 	if (_iAni == 1){
-		objectdc.SelectObject(&_hMap);
+		objectdc.SelectObject(&_Map._hMap);
 		memdc.BitBlt(0, 0, rect.Width(), rect.Height(), &objectdc, 0, 0, SRCCOPY);
 	}
 
 	else {
 		//너구리 주위  
-		objectdc.SelectObject(&_hMap);
+		objectdc.SelectObject(&_Map._hMap);
 		memdc.BitBlt(_Rac.x - 5, _Rac.y - 5, 60, 60, &objectdc, _Rac.x - 5, _Rac.y - 5, SRCCOPY);
 		//적 주위 
 		for (i = 0; i < Enemy::_EnemyCount; i++)
 		{
-			objectdc.SelectObject(&_hMap);
+			objectdc.SelectObject(&_Map._hMap);
 			memdc.BitBlt(_Ene[i].x - 2, _Ene[i].y + 5, 54, 53, &objectdc, _Ene[i].x - 2, _Ene[i].y + 5, SRCCOPY);
 		}
 	}
@@ -260,7 +252,7 @@ void CGame::GamePlay()
 	//// 점수 표시 (이전과 변화가 있을 때만 그린다.)
 	static int Score;
 	if (_iScore != Score || _iAni == 1){
-		objectdc.SelectObject(&_hMap);
+		objectdc.SelectObject(&_Map._hMap);
 		memdc.BitBlt(20, 50, 86, 25, &objectdc, 20, 50, SRCCOPY);
 		DrawDigit(memdc, 25, 50, _iScore, _hDigit, 7);
 		Score = _iScore;
@@ -268,7 +260,7 @@ void CGame::GamePlay()
 
 	// 시간 바 표시 
 	if (_iAni % 50 == 0 || _iAni == 1) {
-		objectdc.SelectObject(&_hMap);
+		objectdc.SelectObject(&_Map._hMap);
 		memdc.BitBlt(600 - _iTime, 25, 50, 25, &objectdc, 200, 0, SRCCOPY);
 		memdc.Rectangle(650 - _iTime, 25, 650, 50);
 	}
@@ -314,7 +306,7 @@ void CGame::GamePlay()
 
 			if (_ScoreShow == 0)
 			{
-				objectdc.SelectObject(&_hMap);
+				objectdc.SelectObject(&_Map._hMap);
 				memdc.BitBlt(_Item[i].x, _Item[i].y, 50, 50, &objectdc, 200, 0, SRCCOPY);
 			}
 
@@ -322,14 +314,14 @@ void CGame::GamePlay()
 
 			//점수를 10프레임 동안 보여짐 			
 			if (++_ScoreShow == 11) {
-				objectdc.SelectObject(&_hMap);
+				objectdc.SelectObject(&_Map._hMap);
 				memdc.BitBlt(_Item[i].x, _Item[i].y + 25, 40, 14, &objectdc, 200, 0, SRCCOPY);
 				_Item[i].ch = '.';
 				_ScoreShow = 0;
 			}
 		}
 		else if (_Item[i].ch == '#') {
-			objectdc.SelectObject(&_hMap);
+			objectdc.SelectObject(&_Map._hMap);
 			memdc.BitBlt(_Item[i].x, _Item[i].y, 50, 50, &objectdc, 200, 0, SRCCOPY);
 			_Item[i].ch = '.';
 		}
@@ -361,7 +353,7 @@ void CGame::GamePlay()
 			if (_Ene[i].state == FALSE) //방향(오른쪽을 보고 있을때)
 				if (_Ene[i].alpha != 255) {
 					_Ene[i].alpha += 5;	//선명하게
-					objectdc.SelectObject(&_hMap);
+					objectdc.SelectObject(&_Map._hMap);
 					memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, 200, 0, SRCCOPY); //검은색으로 기존의 것을 지우기 (200,0 ~ 250,50은 검정색)
 
 					BLENDFUNCTION bf;
@@ -385,7 +377,7 @@ void CGame::GamePlay()
 				}
 			else if (_Ene[i].alpha != 255) {
 				_Ene[i].alpha += 5;	//선명하게  
-				objectdc.SelectObject(&_hMap);
+				objectdc.SelectObject(&_Map._hMap);
 				memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, 200, 0, SRCCOPY); //검은색으로 기존의 것을 지우기 (200,0 ~ 250,50은 검정색)
 
 				BLENDFUNCTION bf;
@@ -667,101 +659,6 @@ void CGame::GameCycle()
 	}
 }
 
-void CGame::LoadMap()
-{
-	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
-	CChildView* pView = (CChildView*)pFrame->GetChildView();
-
-	CClientDC dc(pView);
-	CDC memdc, objectdc;
-	memdc.CreateCompatibleDC(&dc);
-	objectdc.CreateCompatibleDC(&memdc);
-
-	pView->GetClientRect(&rect);
-
-	HRSRC hRSrc = FindResource(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_MAP), _T("TEXT"));
-	DWORD size = SizeofResource(AfxGetInstanceHandle(), hRSrc);
-	HGLOBAL hMem = LoadResource(AfxGetInstanceHandle(), hRSrc);
-	PVOID ptr = LockResource(hMem);
-	char *str = (char*)malloc(size + 1);
-	memcpy(str, ptr, size);
-	str[size] = 0;
-	int m_index = 0;
-	m_index += 913 * (_iLevel - 1) + 3;
-	char ch;
-
-
-	static int i, j;
-
-	for (i = 0; i < 26; i++)
-	{
-		for (j = 0; j < 35; j++){
-			ch = str[m_index++];
-			if (ch != '\n')
-				_cMap[i][j] = ch;
-		}
-	}
-
-	if (_hMap.m_hObject == NULL)
-		_hMap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
-	memdc.SelectObject(&_hMap);
-
-	memdc.FillSolidRect(&rect, RGB(0, 0, 0));
-
-	int index = 0;
-
-	for (i = 0; i < 26; i++){
-		for (j = 0; j < 33; j++){
-			if (_cMap[i][j] >= 'A' && _cMap[i][j] <= 'F'){
-				objectdc.SelectObject(_hMapEle[_cMap[i][j] - 65]);
-				memdc.TransparentBlt(j * 25, i * 25, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
-			}
-			else if (_cMap[i][j] >= 'G' && _cMap[i][j] <= 'L'){
-				_Ene[Enemy::_EnemyCount].x = j * 25;
-				_Ene[Enemy::_EnemyCount].y = i * 25 - 25;
-				_Ene[Enemy::_EnemyCount].type = TRUE;
-				_Ene[Enemy::_EnemyCount].state = (_cMap[i][j] - 'G') % 2;
-				_Ene[Enemy::_EnemyCount].alpha = 255;
-				if (_Ene[Enemy::_EnemyCount].state)
-					_Ene[Enemy::_EnemyCount].speed = (2 + (_cMap[i][j] - 'G') / 2)* (-1);
-				else
-					_Ene[Enemy::_EnemyCount].speed = 2 + (_cMap[i][j] - 'G') / 2;
-				Enemy::_EnemyCount++;
-			}
-			else if (_cMap[i][j] >= 'M'){
-				_Item[index].x = j * 25;
-				_Item[index].y = i * 25 - 26;
-				_Item[index].ch = _cMap[i][j];
-				index++;
-			}
-		}
-	}
-
-	// 과일 (게임 상단에 현재 레벨을 알수 있는 과일들)
-	// 당근 , 앵두 ... 
-	for (i = 0; i < _iLevel; i++)
-	{
-		BITMAP info;
-		_Item[0]._hFruit[i].GetBitmap(&info);
-		objectdc.SelectObject(&_Item[0]._hFruit[i]);
-		memdc.TransparentBlt((670 - (_iLevel - 1) * 55) + i * 55, 70, info.bmWidth, info.bmHeight, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
-	}
-
-
-	// 'SCORE'
-	objectdc.SelectObject(&_hScore);
-	memdc.TransparentBlt(25, 25, 75, 23, &objectdc, 0, 0, 75, 23, RGB(0, 0, 0));
-
-	// 남은 너구리 수
-	for (i = 0; i < Raccoon::_iLive; i++)
-	{
-		objectdc.SelectObject(&_Rac._hStand);
-		memdc.BitBlt(840, 600 - (i * 55), 50, 50, &objectdc, 0, 0, SRCCOPY);
-	}
-
-	free(str);
-}
-
 void CGame::CheckCollision()
 {
 	static int x1, y1, x2, y2;
@@ -781,7 +678,7 @@ void CGame::CheckCollision()
 	}
 
 	if (_Rac.state == 2 || _Rac.state == 3){
-		if (_cMap[y2 / 25][x1 / 25] == 'E' || _cMap[y2 / 25 + 1][x1 / 25] == '.'){
+		if (_Map._cMap[y2 / 25][x1 / 25] == 'E' || _Map._cMap[y2 / 25 + 1][x1 / 25] == '.'){
 			xx1 = (x1 / 25 * 25) + 5;
 			xx2 = ((x1 / 25 + 1) * 25) - 5;
 			if ((xx1 > x1 && xx1 <x2) || (xx2 > x1 && xx2 < x2)){
@@ -789,7 +686,7 @@ void CGame::CheckCollision()
 				return;
 			}
 		}
-		if (_cMap[y2 / 25][x2 / 25] == 'E' || _cMap[y2 / 25 + 1][x2 / 25] == '.') {
+		if (_Map._cMap[y2 / 25][x2 / 25] == 'E' || _Map._cMap[y2 / 25 + 1][x2 / 25] == '.') {
 			xx1 = (x2 / 25 * 25) + 5;
 			xx2 = ((x2 / 25 + 1) * 25) - 5;
 			if ((xx1 > x1 && xx1 < x2) || (xx2 > x1 && xx2 < x2)) {
@@ -933,7 +830,7 @@ void CGame::GameClear()
 			_iScore += bonus;
 			_iLevel++;
 			Init();
-			LoadMap();
+			_Map.LoadMap(rect, _Ene, _Item, _Rac, _iLevel, _iScore, _hScore);
 			_GameState = 1;
 		}
 
@@ -1153,7 +1050,7 @@ void CGame::HandleKeys()
 			Raccoon::_iLive = LIVE;
 			_iScore = 0;
 			Init();
-			LoadMap();
+			_Map.LoadMap(rect, _Ene, _Item, _Rac, _iLevel, _iScore, _hScore);
 			_GameState = 1;
 			//스페이스를 조금 길게 누르면 게임이 시작하자 마자 너구리가 점프하므로 
 			//이를 방지 하기 위해 
@@ -1186,11 +1083,11 @@ void CGame::HandleKeys()
 
 			// 'F'는 사다리,  +20 한 것은 너구리의 중심을 맞추기 위해 
 			else if (GetAsyncKeyState(UP) < 0) {
-				if (_cMap[(_Rac.y) / 25][(_Rac.x + 20) / 25] == 'F')
+				if (_Map._cMap[(_Rac.y) / 25][(_Rac.x + 20) / 25] == 'F')
 					_Rac.state = 4;
 			}
 			else if (GetAsyncKeyState(DOWN) < 0) {
-				if (_cMap[(_Rac.y + 50) / 25][(_Rac.x + 20) / 25] == 'F')
+				if (_Map._cMap[(_Rac.y + 50) / 25][(_Rac.x + 20) / 25] == 'F')
 					_Rac.state = 4;
 			}
 			else if (GetAsyncKeyState(JUMP) < 0) {
@@ -1218,11 +1115,11 @@ void CGame::HandleKeys()
 				_Rac.state = 3;
 
 			else if (GetAsyncKeyState(UP) < 0) {
-				if (_cMap[(_Rac.y - 25) / 25][(_Rac.x + 20) / 25] == 'F')
+				if (_Map._cMap[(_Rac.y - 25) / 25][(_Rac.x + 20) / 25] == 'F')
 					_Rac.state = 4;
 			}
 			else if (GetAsyncKeyState(DOWN) < 0) {
-				if (_cMap[(_Rac.y + 50) / 25][(_Rac.x + 20) / 25] == 'F')
+				if (_Map._cMap[(_Rac.y + 50) / 25][(_Rac.x + 20) / 25] == 'F')
 					_Rac.state = 4;
 			}
 			else if (GetAsyncKeyState(JUMP) < 0) {
@@ -1250,11 +1147,11 @@ void CGame::HandleKeys()
 				}
 			}
 			else if (GetAsyncKeyState(UP) < 0) {
-				if (_cMap[(_Rac.y - 25) / 25][(_Rac.x + 20) / 25] == 'F')
+				if (_Map._cMap[(_Rac.y - 25) / 25][(_Rac.x + 20) / 25] == 'F')
 					_Rac.state = 4;
 			}
 			else if (GetAsyncKeyState(DOWN) < 0) {
-				if (_cMap[(_Rac.y + 50) / 25][(_Rac.x + 20) / 25] == 'F')
+				if (_Map._cMap[(_Rac.y + 50) / 25][(_Rac.x + 20) / 25] == 'F')
 					_Rac.state = 4;
 			}
 			else if (GetAsyncKeyState(JUMP) < 0) {
@@ -1266,7 +1163,7 @@ void CGame::HandleKeys()
 
 		case 4:
 			if (GetAsyncKeyState(UP) < 0)
-				if (_cMap[(_Rac.y + 20) / 25][(_Rac.x + 20) / 25] == 'F') {
+				if (_Map._cMap[(_Rac.y + 20) / 25][(_Rac.x + 20) / 25] == 'F') {
 					_Rac.y -= _Rac.speedy;
 					_Rac.step = !_Rac.step;
 					if ((_Rac.y - 3) % 20 == 0)
@@ -1276,7 +1173,7 @@ void CGame::HandleKeys()
 					_Rac.state = 1;
 
 			else if (GetAsyncKeyState(DOWN) < 0)
-				if (_cMap[(_Rac.y + 50) / 25][(_Rac.x + 20) / 25] == 'F') {
+				if (_Map._cMap[(_Rac.y + 50) / 25][(_Rac.x + 20) / 25] == 'F') {
 					_Rac.y += _Rac.speedy;
 					_Rac.step = !_Rac.step;
 					if ((_Rac.y - 3) % 20 == 0)

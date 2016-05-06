@@ -5,6 +5,7 @@
 #include "Raccoon.h"
 #include "Enemy.h"
 #include "Item.h"
+#include "Map.h"
 
 // 게임에서 사용하는 키 지정 
 #define LEFT		VK_LEFT
@@ -29,7 +30,6 @@ public:
 	void DrawDigit(CDC& cDC, int x, int y, int score, CBitmap& cBit, int cipher = 0, COLORREF crTransColor = RGB(0, 0, 0));
 	void GameClear();
 	void GameOver();
-	void LoadMap();
 	void CheckCollision();
 	void CheckCollision_Enemy();
 	void Init();
@@ -40,7 +40,6 @@ public:
 	char _GameState;
 	int _iAni;
 	char _iLevel;
-	char _cMap[26][33];
 
 	Raccoon _Rac;
 	Enemy	_Ene[7];
@@ -57,11 +56,6 @@ public:
 
 	// 점수
 	int			_iScore;
-
-
-	// 기본 맵 구성 이미지 
-	CBitmap _hMap;
-	CBitmap _hMapEle[6];
 
 	//LETS
 	CBitmap _hLets;
@@ -89,5 +83,6 @@ public:
 	// 너구리가 죽어서 떨어질때 음악 연주 상태
 	BOOL _bIsDrop_Sound;
 
+	Map _Map;
 };
 

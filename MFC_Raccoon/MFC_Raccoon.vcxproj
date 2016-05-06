@@ -111,6 +111,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="MFC_Raccoon.h" />
     <ClInclude Include="Raccoon.h" />
     <ClInclude Include="Resource.h" />
@@ -123,6 +124,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="MFC_Raccoon.cpp" />
     <ClCompile Include="Raccoon.cpp" />
     <ClCompile Include="stdafx.cpp">
