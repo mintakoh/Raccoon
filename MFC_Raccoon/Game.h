@@ -32,6 +32,8 @@ public:
 	void GameOver();
 	void Init();
 
+	void MoveOneLine();
+
 	CRect rect;
 
 	bool _bIsDrawAll;

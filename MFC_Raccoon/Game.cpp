@@ -230,8 +230,8 @@ void CGame::GamePlay()
 			_Rac.state = 10;	//너구리 죽음 		
 	}
 
-	//// 맵(처음 시작 할때 맵 전체를 한번 그린다.)
-	if (_iAni == 1){
+	//// 맵(처음 시작 할때 혹은 사다리를 탔을때 맵 전체를 한번 그린다.)
+	if (_iAni == 1 || _Rac.state == 4){
 		objectdc.SelectObject(&_Map._hMap);
 		memdc.BitBlt(0, 0, rect.Width(), rect.Height(), &objectdc, 0, 0, SRCCOPY);
 	}
@@ -251,7 +251,7 @@ void CGame::GamePlay()
 
 	//// 점수 표시 (이전과 변화가 있을 때만 그린다.)
 	static int Score;
-	if (_iScore != Score || _iAni == 1){
+	if (_iScore != Score || _iAni == 1 || _Rac.state == 4){
 		objectdc.SelectObject(&_Map._hMap);
 		memdc.BitBlt(20, 50, 86, 25, &objectdc, 20, 50, SRCCOPY);
 		DrawDigit(memdc, 25, 50, _iScore, _hDigit, 7);
@@ -259,7 +259,7 @@ void CGame::GamePlay()
 	}
 
 	// 시간 바 표시 
-	if (_iAni % 50 == 0 || _iAni == 1) {
+	if (_iAni % 50 == 0 || _iAni == 1 || _Rac.state == 4) {
 		objectdc.SelectObject(&_Map._hMap);
 		memdc.BitBlt(600 - _iTime, 25, 50, 25, &objectdc, 200, 0, SRCCOPY);
 		memdc.Rectangle(650 - _iTime, 25, 650, 50);
@@ -402,7 +402,6 @@ void CGame::GamePlay()
 			}
 		}
 	}
-
 
 
 	//일반적인 적 
@@ -630,8 +629,17 @@ void CGame::GamePlay()
 		break;
 
 	}
-
 	pView->Invalidate(FALSE);
+}
+
+void CGame::MoveOneLine() {
+	_Map.MoveMap();
+	for (int i = 0; i < Enemy::_EnemyCount; i++) {
+		_Ene[i].y += 25;
+	}
+	for (int i = 0; i < 12; i++) {
+		_Item[i].y += 25;
+	}
 }
 
 void CGame::GameCycle()
@@ -1029,7 +1037,17 @@ void CGame::HandleKeys()
 			break;
 
 		case 4:
-			if (GetAsyncKeyState(UP) < 0)
+			if (GetAsyncKeyState(UP) < 0) {
+				
+				if (_Map._cMap[(_Rac.y + 20) / 25][(_Rac.x + 20) / 25] == 'F') {
+					MoveOneLine();
+					_Rac.step = !_Rac.step;
+				}
+				else {
+					_Rac.state = 1;
+				}
+
+				/*
 				if (_Map._cMap[(_Rac.y + 20) / 25][(_Rac.x + 20) / 25] == 'F') {
 					_Rac.y -= _Rac.speedy;
 					_Rac.step = !_Rac.step;
@@ -1037,17 +1055,8 @@ void CGame::HandleKeys()
 						PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
 				}
 				else
-					_Rac.state = 1;
-
-			else if (GetAsyncKeyState(DOWN) < 0)
-				if (_Map._cMap[(_Rac.y + 50) / 25][(_Rac.x + 20) / 25] == 'F') {
-					_Rac.y += _Rac.speedy;
-					_Rac.step = !_Rac.step;
-					if ((_Rac.y - 3) % 20 == 0)
-						PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
-				}
-				else
-					_Rac.state = 1;
+					_Rac.state = 1;*/
+			}
 
 			break;
 		}
