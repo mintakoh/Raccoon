@@ -959,10 +959,10 @@ void CGame::HandleKeys()
 				if (_Map._cMap[(_Rac.y) / 25][(_Rac.x + 20) / 25] == 'F')
 					_Rac.state = 4;
 			}
-			else if (GetAsyncKeyState(DOWN) < 0) {
+			/*else if (GetAsyncKeyState(DOWN) < 0) {
 				if (_Map._cMap[(_Rac.y + 50) / 25][(_Rac.x + 20) / 25] == 'F')
 					_Rac.state = 4;
-			}
+			}*/
 			else if (GetAsyncKeyState(JUMP) < 0) {
 				PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 				_Rac.state = 5;
@@ -1054,9 +1054,7 @@ void CGame::HandleKeys()
 						PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
 				}
 				else
-					_Rac.state = 1;
-
-			
+					_Rac.state = 1;	
 		}
 
 		break;
