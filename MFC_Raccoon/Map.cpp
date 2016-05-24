@@ -21,6 +21,7 @@ Map::~Map()
 }
 
 
+
 void Map::LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLevel, int _iScore, CBitmap& _hScore)
 {
 	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
@@ -47,6 +48,9 @@ void Map::LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLe
 
 	static int i, j;
 
+
+	
+	
 	for (i = 0; i < 26; i++)
 	{
 		for (j = 0; j < 35; j++){
@@ -115,3 +119,87 @@ void Map::LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLe
 
 	free(str);
 }
+
+
+void Map::MoveMap()
+{
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	CChildView* pView = (CChildView*)pFrame->GetChildView();
+
+	CGame game;
+	CClientDC dc(pView);
+	CDC memdc, objectdc;
+	memdc.CreateCompatibleDC(&dc);
+	objectdc.CreateCompatibleDC(&memdc);
+
+	CRect rect;
+	pView->GetClientRect(&rect);
+
+	HRSRC hRSrc = FindResource(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_MAP), _T("TEXT"));
+	DWORD size = SizeofResource(AfxGetInstanceHandle(), hRSrc);
+	HGLOBAL hMem = LoadResource(AfxGetInstanceHandle(), hRSrc);
+	PVOID ptr = LockResource(hMem);
+	char *str = (char*)malloc(size + 1);
+	memcpy(str, ptr, size);
+	str[size] = 0;
+	int m_index = 0;
+	m_index += 913 * (game._iLevel - 1) + 3;
+	char ch;
+
+
+
+	// 맵 한줄씩 밀고, 위 5번째줄은 A 로, 옆 29번째 줄은 B로 채움
+	for (int i = 25; i - 1 > 0 ; i--){
+		for (int j = 32; j > 0; j--){
+			if (_cMap[i - 1][j] != 'A')
+				_cMap[i][j] = _cMap[i - 1][j];
+			if (j < 29)
+				_cMap[5][j] = 'A';
+			if (i < 5)
+				_cMap[i][29] = 'B';
+		}
+	}
+
+
+	if (_hMap.m_hObject == NULL){
+		_hMap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
+	}
+	memdc.SelectObject(&_hMap);
+
+	memdc.FillSolidRect(&rect, RGB(0, 0, 0));
+
+
+	int index = 0;
+	for (int i = 0; i < 26; i++){
+		for (int j = 0; j < 33; j++){
+			if (_cMap[i][j] >= 'A' && _cMap[i][j] <= 'F'){
+				objectdc.SelectObject(_hMapEle[_cMap[i][j] - 65]);
+				memdc.TransparentBlt(j * 25, i * 25, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
+			}
+		}
+	}
+
+	
+	for (int i = 0; i < game._iLevel; i++)
+	{
+		BITMAP info;
+		game._Item[0]._hFruit[i].GetBitmap(&info);
+		objectdc.SelectObject(&game._Item[0]._hFruit[i]);
+		memdc.TransparentBlt((670 - (game._iLevel - 1) * 55) + i * 55, 70, info.bmWidth, info.bmHeight, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
+	}
+
+
+	// 'SCORE'
+	objectdc.SelectObject(&game._hScore);
+	memdc.TransparentBlt(25, 25, 75, 23, &objectdc, 0, 0, 75, 23, RGB(0, 0, 0));
+
+	// 남은 너구리 수
+	for (int i = 0; i < Raccoon::_iLive; i++)
+	{
+		objectdc.SelectObject(&game._Rac._hStand);
+		memdc.BitBlt(840, 600 - (i * 55), 50, 50, &objectdc, 0, 0, SRCCOPY);
+	}
+	
+}
+
+

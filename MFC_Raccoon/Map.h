@@ -2,6 +2,7 @@
 
 #include "resource.h"
 
+
 // 상호 참조를 피하기 위해 이름만 선언 후 .cpp 에서 헤더파일 참조
 class Enemy;
 class Item;
@@ -23,7 +24,8 @@ public:
 	//맵정보 
 	//내부적으로 맵 처리를 하기 위해 
 	char _cMap[26][33];
-
+	
 	void LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLevel, int _iScore, CBitmap& _hScore);
+	void MoveMap();
 };
 
