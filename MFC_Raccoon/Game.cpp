@@ -14,6 +14,7 @@ CGame::CGame()
 	, _iScore(0)
 	, _iItemScoreRate(0)
 	, _bIsDrop_Sound(FALSE)
+	, is_up(false)
 {
 	//LETS
 	_hLets.LoadBitmapW(IDB_LETS);
@@ -231,7 +232,7 @@ void CGame::GamePlay()
 	}
 
 	//// 맵(처음 시작 할때 맵 전체를 한번 그린다.)
-	if (_iAni == 1){
+	if (_iAni == 1 || _Rac.state == 4){
 		objectdc.SelectObject(&_Map._hMap);
 		memdc.BitBlt(0, 0, rect.Width(), rect.Height(), &objectdc, 0, 0, SRCCOPY);
 	}
@@ -251,7 +252,7 @@ void CGame::GamePlay()
 
 	//// 점수 표시 (이전과 변화가 있을 때만 그린다.)
 	static int Score;
-	if (_iScore != Score || _iAni == 1){
+	if (_iScore != Score || _iAni == 1 || _Rac.state == 4){
 		objectdc.SelectObject(&_Map._hMap);
 		memdc.BitBlt(20, 50, 86, 25, &objectdc, 20, 50, SRCCOPY);
 		DrawDigit(memdc, 25, 50, _iScore, _hDigit, 7);
@@ -259,7 +260,7 @@ void CGame::GamePlay()
 	}
 
 	// 시간 바 표시 
-	if (_iAni % 50 == 0 || _iAni == 1) {
+	if (_iAni % 50 == 0 || _iAni == 1 || _Rac.state == 4) {
 		objectdc.SelectObject(&_Map._hMap);
 		memdc.BitBlt(600 - _iTime, 25, 50, 25, &objectdc, 200, 0, SRCCOPY);
 		memdc.Rectangle(650 - _iTime, 25, 650, 50);
@@ -267,7 +268,7 @@ void CGame::GamePlay()
 
 	//먹은 과일 수 (이전과 변화가 있을 때만 그린다.)
 	static char Eat;
-	if (Item::_iEat != Eat) {
+	if (Item::_iEat != Eat || _Rac.state == 4) {
 		for (i = 0; i < Item::_iEat; i++)
 		{
 			BITMAP info;
@@ -552,7 +553,7 @@ void CGame::GamePlay()
 	case 8:
 		//오른쪽 경계면 
 		//1층은 y좌표 775, 2층이상은 y좌표 670 
-		if (_Rac.x <= 670 || (_Rac.x <= 775 && _Rac.y >= 530))
+		if ((_Rac.x <= 670 && is_up == true) || (_Rac.x <= 775 && is_up == false))
 			_Rac.x -= _Rac._LeftShortJump[_Rac._JumpFrame].x;
 		_Rac.y += _Rac._LeftShortJump[_Rac._JumpFrame].y;
 
@@ -579,7 +580,7 @@ void CGame::GamePlay()
 	case 9:
 		//오른쪽 경계면 
 		//1층은 y좌표 775, 2층이상은 y좌표 670 
-		if (_Rac.x <= 670 || (_Rac.x <= 775 && _Rac.y >= 530))
+		if ((_Rac.x <= 670 && is_up == true) || (_Rac.x <= 775 && is_up == false))
 			_Rac.x -= _Rac._LeftLongJump[_Rac._JumpFrame].x;
 		_Rac.y += _Rac._LeftLongJump[_Rac._JumpFrame].y;
 
@@ -630,6 +631,7 @@ void CGame::GamePlay()
 		break;
 
 	}
+
 
 	pView->Invalidate(FALSE);
 }
@@ -869,6 +871,8 @@ void CGame::Init()
 
 	_ScoreShow = 0;			//먹은 과일 점수 표시 시간 
 	_Rac._JumpFrame = 0;			//점프를 보여 줄때 필요 (카운터)
+
+	is_up = false;
 }
 
 void CGame::DrawDigit(CDC& cDC, int x, int y, int score, CBitmap& cBit, int cipher, COLORREF crTransColor)
@@ -905,6 +909,8 @@ void CGame::DrawDigit(CDC& cDC, int x, int y, int score, CBitmap& cBit, int ciph
 
 void CGame::HandleKeys()
 {
+
+
 	switch (_GameState) {
 
 		//인트로 화면 
@@ -985,10 +991,10 @@ void CGame::HandleKeys()
 				if (_Map._cMap[(_Rac.y - 25) / 25][(_Rac.x + 20) / 25] == 'F')
 					_Rac.state = 4;
 			}
-			else if (GetAsyncKeyState(DOWN) < 0) {
+			/*else if (GetAsyncKeyState(DOWN) < 0) {
 				if (_Map._cMap[(_Rac.y + 50) / 25][(_Rac.x + 20) / 25] == 'F')
 					_Rac.state = 4;
-			}
+			}*/
 			else if (GetAsyncKeyState(JUMP) < 0) {
 				PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 				_Rac.state = 6;
@@ -1001,7 +1007,7 @@ void CGame::HandleKeys()
 				_Rac.state = 2;
 
 			else if (GetAsyncKeyState(RIGHT) < 0) {
-				if ((_Rac.x <= 670) || (_Rac.x <= 775 && _Rac.y == 578)) {
+				if ((_Rac.x <= 670 && is_up == true) || (_Rac.x <= 775 && is_up == false)) {
 					_Rac.x += _Rac.speedx;
 					_Rac.step = !_Rac.step;
 					if (_Rac.x % 20 == 0)
@@ -1017,10 +1023,10 @@ void CGame::HandleKeys()
 				if (_Map._cMap[(_Rac.y - 25) / 25][(_Rac.x + 20) / 25] == 'F')
 					_Rac.state = 4;
 			}
-			else if (GetAsyncKeyState(DOWN) < 0) {
+			/*else if (GetAsyncKeyState(DOWN) < 0) {
 				if (_Map._cMap[(_Rac.y + 50) / 25][(_Rac.x + 20) / 25] == 'F')
 					_Rac.state = 4;
-			}
+			}*/
 			else if (GetAsyncKeyState(JUMP) < 0) {
 				PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 				_Rac.state = 8;
@@ -1031,7 +1037,18 @@ void CGame::HandleKeys()
 		case 4:
 			if (GetAsyncKeyState(UP) < 0)
 				if (_Map._cMap[(_Rac.y + 20) / 25][(_Rac.x + 20) / 25] == 'F') {
-					_Rac.y -= _Rac.speedy;
+					//_Rac.y -= _Rac.speedy;
+					
+					_Map.MoveMap();
+					is_up = true;
+					
+					for (int i = 0; i < 12; i++){
+						_Item[i].y += 5*_Rac.speedy;
+					}
+					for (int i = 0; i < 7; i++){
+						_Ene[i].y += 5*_Rac.speedy;
+					}
+
 					_Rac.step = !_Rac.step;
 					if ((_Rac.y - 3) % 20 == 0)
 						PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
@@ -1039,17 +1056,7 @@ void CGame::HandleKeys()
 				else
 					_Rac.state = 1;
 
-			else if (GetAsyncKeyState(DOWN) < 0)
-				if (_Map._cMap[(_Rac.y + 50) / 25][(_Rac.x + 20) / 25] == 'F') {
-					_Rac.y += _Rac.speedy;
-					_Rac.step = !_Rac.step;
-					if ((_Rac.y - 3) % 20 == 0)
-						PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
-				}
-				else
-					_Rac.state = 1;
-
-			break;
+			
 		}
 
 		break;
