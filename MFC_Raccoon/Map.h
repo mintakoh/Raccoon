@@ -7,6 +7,7 @@
 class Enemy;
 class Item;
 class Raccoon;
+class CGame;
 
 class Map
 {
@@ -26,7 +27,7 @@ public:
 	char _cMap[26][33];
 	
 	void LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLevel, int _iScore, CBitmap& _hScore);
-	void MoveMap(Enemy* _Ene);
+	void MoveMap(CGame* _Ene);
 	int m_index;
 };
 
