@@ -162,6 +162,8 @@ void Map::MoveMap()
 
 	for (int i = 32; i >= 0; i--)
 	{
+		if (m_index < 0)				// 맵의 끝까지 갔을 때 index 가 - 값이 되서 맵 처음이 나오는 것 방지
+			break;
 		ch = str[m_index--];
 		if (ch != '\n')
 			_cMap[6][i] = ch;
