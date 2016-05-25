@@ -1045,6 +1045,7 @@ void CGame::HandleKeys()
 					for (int i = 0; i < 12; i++){
 						_Item[i].y += 5*_Rac.speedy;
 					}
+					for (int i = 0; i < 100; i++){
 						_Ene[i].y += 5*_Rac.speedy;
 					}
 
