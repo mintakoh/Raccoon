@@ -1039,13 +1039,12 @@ void CGame::HandleKeys()
 				if (_Map._cMap[(_Rac.y + 20) / 25][(_Rac.x + 20) / 25] == 'F') {
 					//_Rac.y -= _Rac.speedy;
 					
-					_Map.MoveMap();
+					_Map.MoveMap(_Ene);
 					is_up = true;
 					
 					for (int i = 0; i < 12; i++){
 						_Item[i].y += 5*_Rac.speedy;
 					}
-					for (int i = 0; i < 7; i++){
 						_Ene[i].y += 5*_Rac.speedy;
 					}
 

@@ -41,7 +41,7 @@ public:
 
 	Map _Map;
 	Raccoon _Rac;
-	Enemy	_Ene[7];
+	Enemy	_Ene[100];
 	Item	_Item[12];
 
 	//더블 버퍼링을 위해  

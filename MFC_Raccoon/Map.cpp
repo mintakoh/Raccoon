@@ -123,7 +123,7 @@ void Map::LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLe
 }
 
 
-void Map::MoveMap()
+void Map::MoveMap(Enemy* _Ene)
 {
 	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
 	CChildView* pView = (CChildView*)pFrame->GetChildView();
@@ -146,8 +146,6 @@ void Map::MoveMap()
 	str[size] = 0;
 	char ch;
 
-
-
 	// 맵 한줄씩 밀고, 위 5번째줄은 A 로, 옆 29번째 줄은 B로 채움
 	for (int i = 25; i - 1 > 0 ; i--){
 		for (int j = 32; j > 0; j--){
@@ -167,6 +165,20 @@ void Map::MoveMap()
 		ch = str[m_index--];
 		if (ch != '\n')
 			_cMap[6][i] = ch;
+
+		// 새로 보이는 줄에 적이 있으면 적 추가
+		if (_cMap[6][i] >= 'G' && _cMap[6][i] <= 'L'){
+			_Ene[Enemy::_EnemyCount].x = i * 25;
+			_Ene[Enemy::_EnemyCount].y = 6 * 25 - 50;
+			_Ene[Enemy::_EnemyCount].type = TRUE;
+			_Ene[Enemy::_EnemyCount].state = (_cMap[6][i] - 'G') % 2;
+			_Ene[Enemy::_EnemyCount].alpha = 255;
+			if (_Ene[Enemy::_EnemyCount].state)
+				_Ene[Enemy::_EnemyCount].speed = (2 + (_cMap[6][i] - 'G') / 2)* (-1);
+			else
+				_Ene[Enemy::_EnemyCount].speed = 2 + (_cMap[6][i] - 'G') / 2;
+			Enemy::_EnemyCount++;
+		}
 	}
 
 	m_index -= 2;
@@ -179,7 +191,6 @@ void Map::MoveMap()
 	memdc.FillSolidRect(&rect, RGB(0, 0, 0));
 
 
-	int index = 0;
 	for (int i = 0; i < 26; i++){
 		for (int j = 0; j < 33; j++){
 			if (_cMap[i][j] >= 'A' && _cMap[i][j] <= 'F'){
