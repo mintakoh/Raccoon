@@ -11,6 +11,9 @@ public:
 	int y;
 	char ch;
 
+	// 아이템 총 개수
+	static int _ItemCount;
+
 	//먹은 과일 수
 	static char		_iEat;
 

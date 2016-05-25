@@ -65,9 +65,7 @@ void Map::LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLe
 	memdc.SelectObject(&_hMap);
 
 	memdc.FillSolidRect(&rect, RGB(0, 0, 0));
-
-	int index = 0;
-
+	
 	for (i = 0; i < 26; i++){
 		for (j = 0; j < 33; j++){
 			if (_cMap[i][j] >= 'A' && _cMap[i][j] <= 'F'){
@@ -87,10 +85,10 @@ void Map::LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLe
 				Enemy::_EnemyCount++;
 			}
 			else if (_cMap[i][j] >= 'M'){
-				_Item[index].x = j * 25;
-				_Item[index].y = i * 25 - 26;
-				_Item[index].ch = _cMap[i][j];
-				index++;
+				_Item[Item::_ItemCount].x = j * 25;
+				_Item[Item::_ItemCount].y = i * 25 - 26;
+				_Item[Item::_ItemCount].ch = _cMap[i][j];
+				Item::_ItemCount++;
 			}
 		}
 	}
@@ -175,6 +173,12 @@ void Map::MoveMap()
 			else
 				m_game->_Ene[Enemy::_EnemyCount].speed = 2 + (_cMap[6][i] - 'G') / 2;
 			Enemy::_EnemyCount++;
+		}
+		else if (_cMap[6][i] >= 'M'){
+			m_game->_Item[Item::_ItemCount].x = i * 25;
+			m_game->_Item[Item::_ItemCount].y = 6 * 25 - 51;
+			m_game->_Item[Item::_ItemCount].ch = _cMap[6][i];
+			Item::_ItemCount++;
 		}
 	}
 
