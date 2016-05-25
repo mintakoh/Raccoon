@@ -12,8 +12,11 @@ class CGame;
 class Map
 {
 public:
-	Map();
+	Map(CGame *game);
 	~Map();
+
+	// 이 맵을 사용하고 있는 CGame 인스턴스
+	CGame* m_game;
 
 	// 기본 맵 구성 이미지
 	CBitmap _hMapEle[6];
@@ -27,7 +30,7 @@ public:
 	char _cMap[26][33];
 	
 	void LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLevel, int _iScore, CBitmap& _hScore);
-	void MoveMap(CGame* game);
+	void MoveMap();
 	int m_index;
 };
 

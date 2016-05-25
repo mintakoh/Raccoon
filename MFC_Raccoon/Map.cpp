@@ -4,8 +4,8 @@
 #include "Game.h"
 
 
-Map::Map()
-	: m_index(0)
+Map::Map(CGame* game)
+	: m_index(0), m_game(game)
 {
 	//이미지 처리 맵 구성품
 	_hMapEle[0].LoadBitmapW(IDB_MAP_A);
@@ -16,11 +16,9 @@ Map::Map()
 	_hMapEle[5].LoadBitmapW(IDB_MAP_F);
 }
 
-
 Map::~Map()
 {
 }
-
 
 
 void Map::LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLevel, int _iScore, CBitmap& _hScore)
@@ -123,7 +121,7 @@ void Map::LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLe
 }
 
 
-void Map::MoveMap(CGame* game)
+void Map::MoveMap()
 {
 	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
 	CChildView* pView = (CChildView*)pFrame->GetChildView();
@@ -167,15 +165,15 @@ void Map::MoveMap(CGame* game)
 
 		// 새로 보이는 줄에 적이 있으면 적 추가
 		if (_cMap[6][i] >= 'G' && _cMap[6][i] <= 'L'){
-			game->_Ene[Enemy::_EnemyCount].x = i * 25;
-			game->_Ene[Enemy::_EnemyCount].y = 6 * 25 - 50;
-			game->_Ene[Enemy::_EnemyCount].type = TRUE;
-			game->_Ene[Enemy::_EnemyCount].state = (_cMap[6][i] - 'G') % 2;
-			game->_Ene[Enemy::_EnemyCount].alpha = 255;
-			if (game->_Ene[Enemy::_EnemyCount].state)
-				game->_Ene[Enemy::_EnemyCount].speed = (2 + (_cMap[6][i] - 'G') / 2)* (-1);
+			m_game->_Ene[Enemy::_EnemyCount].x = i * 25;
+			m_game->_Ene[Enemy::_EnemyCount].y = 6 * 25 - 50;
+			m_game->_Ene[Enemy::_EnemyCount].type = TRUE;
+			m_game->_Ene[Enemy::_EnemyCount].state = (_cMap[6][i] - 'G') % 2;
+			m_game->_Ene[Enemy::_EnemyCount].alpha = 255;
+			if (m_game->_Ene[Enemy::_EnemyCount].state)
+				m_game->_Ene[Enemy::_EnemyCount].speed = (2 + (_cMap[6][i] - 'G') / 2)* (-1);
 			else
-				game->_Ene[Enemy::_EnemyCount].speed = 2 + (_cMap[6][i] - 'G') / 2;
+				m_game->_Ene[Enemy::_EnemyCount].speed = 2 + (_cMap[6][i] - 'G') / 2;
 			Enemy::_EnemyCount++;
 		}
 	}
@@ -200,22 +198,22 @@ void Map::MoveMap(CGame* game)
 	}
 
 	
-	for (int i = 0; i < game->_iLevel; i++)
+	for (int i = 0; i < m_game->_iLevel; i++)
 	{
 		BITMAP info;
-		game->_Item[0]._hFruit[i].GetBitmap(&info);
-		objectdc.SelectObject(&game->_Item[0]._hFruit[i]);
-		memdc.TransparentBlt((670 - (game->_iLevel - 1) * 55) + i * 55, 70, info.bmWidth, info.bmHeight, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
+		m_game->_Item[0]._hFruit[i].GetBitmap(&info);
+		objectdc.SelectObject(&m_game->_Item[0]._hFruit[i]);
+		memdc.TransparentBlt((670 - (m_game->_iLevel - 1) * 55) + i * 55, 70, info.bmWidth, info.bmHeight, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
 	}
 
 	// 'SCORE'
-	objectdc.SelectObject(&game->_hScore);
+	objectdc.SelectObject(&m_game->_hScore);
 	memdc.TransparentBlt(25, 25, 75, 23, &objectdc, 0, 0, 75, 23, RGB(0, 0, 0));
 
 	// 남은 너구리 수
 	for (int i = 0; i < Raccoon::_iLive; i++)
 	{
-		objectdc.SelectObject(&game->_Rac._hStand);
+		objectdc.SelectObject(&m_game->_Rac._hStand);
 		memdc.BitBlt(840, 600 - (i * 55), 50, 50, &objectdc, 0, 0, SRCCOPY);
 	}
 	
