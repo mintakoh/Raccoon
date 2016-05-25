@@ -5,6 +5,7 @@
 
 
 Map::Map()
+	: m_index(0)
 {
 	//捞固瘤 贸府 甘 备己前
 	_hMapEle[0].LoadBitmapW(IDB_MAP_A);
@@ -41,8 +42,7 @@ void Map::LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLe
 	char *str = (char*)malloc(size + 1);
 	memcpy(str, ptr, size);
 	str[size] = 0;
-	int m_index = 0;
-	m_index += 913 * (_iLevel - 1) + 3;
+	m_index = size - 913 + 3;
 	char ch;
 
 
@@ -59,6 +59,8 @@ void Map::LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLe
 				_cMap[i][j] = ch;
 		}
 	}
+
+	m_index = size - 913;
 
 	if (_hMap.m_hObject == NULL)
 		_hMap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
@@ -142,8 +144,6 @@ void Map::MoveMap()
 	char *str = (char*)malloc(size + 1);
 	memcpy(str, ptr, size);
 	str[size] = 0;
-	int m_index = 0;
-	m_index += 913 * (game._iLevel - 1) + 3;
 	char ch;
 
 
@@ -160,6 +160,14 @@ void Map::MoveMap()
 		}
 	}
 
+	for (int i = 32; i >= 0; i--)
+	{
+		ch = str[m_index--];
+		if (ch != '\n')
+			_cMap[6][i] = ch;
+	}
+
+	m_index -= 2;
 
 	if (_hMap.m_hObject == NULL){
 		_hMap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
@@ -187,7 +195,6 @@ void Map::MoveMap()
 		objectdc.SelectObject(&game._Item[0]._hFruit[i]);
 		memdc.TransparentBlt((670 - (game._iLevel - 1) * 55) + i * 55, 70, info.bmWidth, info.bmHeight, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
 	}
-
 
 	// 'SCORE'
 	objectdc.SelectObject(&game._hScore);

@@ -27,5 +27,6 @@ public:
 	
 	void LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLevel, int _iScore, CBitmap& _hScore);
 	void MoveMap();
+	int m_index;
 };
 
