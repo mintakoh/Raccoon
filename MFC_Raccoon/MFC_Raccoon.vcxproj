@@ -110,6 +110,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MFC_Raccoon.h" />
@@ -123,6 +124,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MFC_Raccoon.cpp" />
