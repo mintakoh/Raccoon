@@ -191,7 +191,7 @@ void CGame::GamePlay()
 	//// 시간 바를 표시할 브러시와 펜 
 	pen.CreatePen(PS_SOLID, 0, RGB(0, 0, 0));
 	OldPen = memdc.SelectObject(&pen);
-	brush.CreateSolidBrush(RGB(25, 184, 5));
+	brush.CreateSolidBrush(RGB(255, 50, 50));
 	OldBrush = memdc.SelectObject(&brush);
 
 	////에니메이션 구현을 위해 	
@@ -216,14 +216,51 @@ void CGame::GamePlay()
 		PlaySound(NULL, AfxGetInstanceHandle(), 0);
 		PlaySound(MAKEINTRESOURCE(IDR_RAC_DIE), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 		Sleep(1500);
-		if (Raccoon::_iLive == 0) { // 마지막 너구리가 죽으면 
-			Init();
-			_GameState = 3;	//gameover
+
+		Init();
+		_GameState = 3;	// gameover
+			
+		//if (Raccoon::_iLive == 0) { // 마지막 너구리가 죽으면 
+		//	Init();
+		//	_GameState = 3;	//gameover
+		//}
+		//else {
+		//	Raccoon::_iLive--;
+		//	Init();
+		//	_Map.LoadMap(rect, _Ene, _Item, _Rac, _iLevel, _iScore, _hScore);
+		//}
+	}
+
+	// 장애물이나 적에 부딪히면 체력을 줄이고 잠시 무적 모드
+	else if (_Rac.is_collision && _Rac.is_ghost == false)
+	{
+		Sleep(100);
+
+		_iTime -= 30;
+
+		if (_iTime <= 0)
+		{
+			_iTime = 0;
+			_Rac.is_ghost = false;
+			_Rac.is_collision = false;
+			_Rac.ghost_time = 0;
+			_Rac.state = 10;	//gameover
 		}
-		else {
-			Raccoon::_iLive--;
-			Init();
-			_Map.LoadMap(rect, _Ene, _Item, _Rac, _iLevel, _iScore, _hScore);
+
+		else
+			_Rac.is_ghost = true;
+	}
+
+	// 무적 모드인 동안 모든 피해와 낭떠러지를 무시 ( 200 )
+	if (_Rac.is_ghost)
+	{
+		_Rac.ghost_time += 1;
+
+		if (_Rac.ghost_time >= 200)
+		{
+			_Rac.is_ghost = false;
+			_Rac.is_collision = false;
+			_Rac.ghost_time = 0;
 		}
 	}
 
@@ -237,7 +274,7 @@ void CGame::GamePlay()
 	}
 
 	//// 맵(처음 시작 할때 맵 전체를 한번 그린다.)
-	if (_iAni == 1 || _Rac.state == 4){
+ 	if (_iAni == 1 || _Rac.state == 4){
 		objectdc.SelectObject(&_Map._hMap);
 		memdc.BitBlt(0, 0, rect.Width(), rect.Height(), &objectdc, 0, 0, SRCCOPY);
 	}
@@ -252,6 +289,8 @@ void CGame::GamePlay()
 			objectdc.SelectObject(&_Map._hMap);
 			memdc.BitBlt(_Ene[i].x - 2, _Ene[i].y + 5, 54, 53, &objectdc, _Ene[i].x - 2, _Ene[i].y + 5, SRCCOPY);
 		}
+
+		memdc.BitBlt(_Rac.x - 5, _Rac.y - 15, 70, 12, &objectdc, _Rac.x - 5, _Rac.y - 15, SRCCOPY);
 	}
 
 
@@ -648,6 +687,16 @@ void CGame::GamePlay()
 
 	}
 
+	// 무적 모드 남은 시간 출력 
+	if (_Rac.is_ghost)
+	{
+		if (200 - _Rac.ghost_time > 100)
+			DrawDigit(memdc, _Rac.x + 16, _Rac.y - 15, 200 - _Rac.ghost_time, _hDigit_sm);
+		else if (200 - _Rac.ghost_time > 10)
+			DrawDigit(memdc, _Rac.x + 26, _Rac.y - 15, 200 - _Rac.ghost_time, _hDigit_sm);
+		else if (200 - _Rac.ghost_time > 100)
+			DrawDigit(memdc, _Rac.x + 28, _Rac.y - 15, 200 - _Rac.ghost_time, _hDigit_sm);
+	}
 
 	pView->Invalidate(FALSE);
 }
@@ -887,10 +936,15 @@ void CGame::Init()
 	Item::_ItemCount = 0;	//아이템의 숫자
 
 	_ScoreShow = 0;			//먹은 과일 점수 표시 시간 
-	_Rac._JumpFrame = 0;			//점프를 보여 줄때 필요 (카운터)
+	_Rac._JumpFrame = 0;	//점프를 보여 줄때 필요 (카운터)
 
 	_adjY = 0;
 	is_up = false;
+
+	// 너구리 무적 정보
+	_Rac.is_ghost = false;
+	_Rac.is_collision = false;
+	_Rac.ghost_time = 0;
 }
 
 void CGame::DrawDigit(CDC& cDC, int x, int y, int score, CBitmap& cBit, int cipher, COLORREF crTransColor)
@@ -938,7 +992,7 @@ void CGame::HandleKeys()
 			PlaySound(NULL, AfxGetInstanceHandle(), 0);
 			// 초기화 
 			_iLevel = 1;
-			Raccoon::_iLive = LIVE;
+			//Raccoon::_iLive = LIVE;
 			_iScore = 0;
 			Init();
 			_Map.LoadMap(rect, _Ene, _Item, _Rac, _iLevel, _iScore, _hScore);

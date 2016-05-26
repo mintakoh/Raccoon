@@ -108,12 +108,12 @@ void Map::LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLe
 	objectdc.SelectObject(&_hScore);
 	memdc.TransparentBlt(25, 25, 75, 23, &objectdc, 0, 0, 75, 23, RGB(0, 0, 0));
 
-	// 남은 너구리 수
-	for (i = 0; i < Raccoon::_iLive; i++)
-	{
-		objectdc.SelectObject(&_Rac._hStand);
-		memdc.BitBlt(840, 600 - (i * 55), 50, 50, &objectdc, 0, 0, SRCCOPY);
-	}
+	//// 남은 너구리 수
+	//for (i = 0; i < Raccoon::_iLive; i++)
+	//{
+	//	objectdc.SelectObject(&_Rac._hStand);
+	//	memdc.BitBlt(840, 600 - (i * 55), 50, 50, &objectdc, 0, 0, SRCCOPY);
+	//}
 
 	free(str);
 }
@@ -216,12 +216,12 @@ void Map::MoveMap()
 	objectdc.SelectObject(&m_game->_hScore);
 	memdc.TransparentBlt(25, 25, 75, 23, &objectdc, 0, 0, 75, 23, RGB(0, 0, 0));
 
-	// 남은 너구리 수
-	for (int i = 0; i < Raccoon::_iLive; i++)
-	{
-		objectdc.SelectObject(&m_game->_Rac._hStand);
-		memdc.BitBlt(840, 600 - (i * 55), 50, 50, &objectdc, 0, 0, SRCCOPY);
-	}
+	//// 남은 너구리 수
+	//for (int i = 0; i < Raccoon::_iLive; i++)
+	//{
+	//	objectdc.SelectObject(&m_game->_Rac._hStand);
+	//	memdc.BitBlt(840, 600 - (i * 55), 50, 50, &objectdc, 0, 0, SRCCOPY);
+	//}
 	
 }
 

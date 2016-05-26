@@ -8,10 +8,13 @@
 #include "Game.h"
 
 // static 변수 사용을 위해 초기화
-char Raccoon::_iLive = 0;
+//char Raccoon::_iLive = 0;
 
 Raccoon::Raccoon()
 : _JumpFrame(0)
+, ghost_time(0)
+, is_ghost(false)
+, is_collision(false)
 {
 	// 제자리 점프 
 	_StandJump[0] = { 1, -5, 0 };
@@ -96,21 +99,47 @@ void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemSco
 		y2 = y + 40;
 	}
 
-	if (state == 2 || state == 3){
-		if (_Map._cMap[y2 / 25][x1 / 25] == 'E' || _Map._cMap[y2 / 25 + 1][x1 / 25] == '.'){
-			xx1 = (x1 / 25 * 25) + 5;
-			xx2 = ((x1 / 25 + 1) * 25) - 5;
-			if ((xx1 > x1 && xx1 <x2) || (xx2 > x1 && xx2 < x2)){
-				state = 10;
-				return;
+	if (is_ghost == false)
+	{
+		if (state == 2 || state == 3){
+			// 떨어질 때 바로 죽음
+			if (_Map._cMap[y2 / 25 + 1][x1 / 25] == '.'){
+				xx1 = (x1 / 25 * 25) + 5;
+				xx2 = ((x1 / 25 + 1) * 25) - 5;
+				if ((xx1 > x1 && xx1 <x2) || (xx2 > x1 && xx2 < x2)){
+					state = 10;
+					return;
+				}
 			}
-		}
-		if (_Map._cMap[y2 / 25][x2 / 25] == 'E' || _Map._cMap[y2 / 25 + 1][x2 / 25] == '.') {
-			xx1 = (x2 / 25 * 25) + 5;
-			xx2 = ((x2 / 25 + 1) * 25) - 5;
-			if ((xx1 > x1 && xx1 < x2) || (xx2 > x1 && xx2 < x2)) {
-				state = 10;
-				return;
+
+			// 압정 밟을 때 체력 감소
+			else if (_Map._cMap[y2 / 25][x1 / 25] == 'E')
+			{
+				xx1 = (x1 / 25 * 25) + 5;
+				xx2 = ((x1 / 25 + 1) * 25) - 5;
+				if ((xx1 > x1 && xx1 <x2) || (xx2 > x1 && xx2 < x2)){
+					is_collision = true;
+					return;
+				}
+			}
+
+			if (_Map._cMap[y2 / 25 + 1][x2 / 25] == '.') {
+				xx1 = (x2 / 25 * 25) + 5;
+				xx2 = ((x2 / 25 + 1) * 25) - 5;
+				if ((xx1 > x1 && xx1 < x2) || (xx2 > x1 && xx2 < x2)) {
+					state = 10;
+					return;
+				}
+			}
+
+			else if (_Map._cMap[y2 / 25][x2 / 25] == 'E')
+			{
+				xx1 = (x2 / 25 * 25) + 5;
+				xx2 = ((x2 / 25 + 1) * 25) - 5;
+				if ((xx1 > x1 && xx1 < x2) || (xx2 > x1 && xx2 < x2)) {
+					is_collision = true;
+					return;
+				}
 			}
 		}
 	}
@@ -170,6 +199,9 @@ void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemSco
 
 void Raccoon::CheckCollision_Enemy(Enemy* _Ene)
 {
+	if (is_ghost)
+		return;
+
 	static int x1, y1, x2, y2;
 	static int xx1, yy1, xx2, yy2;
 
@@ -207,7 +239,7 @@ void Raccoon::CheckCollision_Enemy(Enemy* _Ene)
 				(x1 > xx1 && x1 < xx2 && y2 > yy1 && y2 < yy2) ||
 				(x2 > xx1 && x2 < xx2 && y1 > yy1 && y2 < yy2) ||
 				(x2 > xx1 && x2 < xx2 && y2 > yy1 && y2 < yy2))
-				state = 10;
+				is_collision = true;
 
 		}
 	}
