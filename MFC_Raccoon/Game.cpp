@@ -465,6 +465,17 @@ void CGame::GamePlay()
 		}
 	}
 
+	// 스코어보드 그리기
+	for (int i = 0; i < 7; i++){
+		for (int j = 0; j < 33; j++){
+			if (i == 6 && j != 29) continue;
+			if (_Map._cMap[i][j] >= 'A' && _Map._cMap[i][j] <= 'F'){
+				objectdc.SelectObject(_Map._hMapEle[_Map._cMap[i][j] - 65]);
+				memdc.TransparentBlt(j * 25, i * 25, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
+			}
+		}
+	}
+
 	////적 충돌 감지 
 	_Rac.CheckCollision_Enemy(_Ene);
 

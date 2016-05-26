@@ -195,7 +195,7 @@ void Map::MoveMap()
 	memdc.FillSolidRect(&rect, RGB(0, 0, 0));
 
 
-	for (int i = 0; i < 26; i++){
+	for (int i = 6; i < 26; i++){
 		for (int j = 0; j < 33; j++){
 			if (_cMap[i][j] >= 'A' && _cMap[i][j] <= 'F'){
 				objectdc.SelectObject(_hMapEle[_cMap[i][j] - 65]);
@@ -203,7 +203,6 @@ void Map::MoveMap()
 			}
 		}
 	}
-
 	
 	for (int i = 0; i < m_game->_iLevel; i++)
 	{
@@ -212,6 +211,7 @@ void Map::MoveMap()
 		objectdc.SelectObject(&m_game->_Item[0]._hFruit[i]);
 		memdc.TransparentBlt((670 - (m_game->_iLevel - 1) * 55) + i * 55, 70, info.bmWidth, info.bmHeight, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
 	}
+
 
 	// 'SCORE'
 	objectdc.SelectObject(&m_game->_hScore);
