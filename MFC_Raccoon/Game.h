@@ -81,6 +81,9 @@ public:
 
 	// 너구리가 죽어서 떨어질때 음악 연주 상태
 	BOOL _bIsDrop_Sound;
+	
+	// 너구리 맵 상대위치 보정값
+	int			_adjY;
 
 	bool is_up;
 };

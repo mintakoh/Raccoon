@@ -144,41 +144,43 @@ void Map::MoveMap()
 	char ch;
 
 	// 맵 한줄씩 밀고, 위 5번째줄은 A 로, 옆 29번째 줄은 B로 채움
-	for (int i = 25; i - 1 > 0 ; i--){
-		for (int j = 32; j > 0; j--){
-			if (_cMap[i - 1][j] != 'A')
-				_cMap[i][j] = _cMap[i - 1][j];
-			if (j < 29)
-				_cMap[5][j] = 'A';
-			if (i < 5)
-				_cMap[i][29] = 'B';
+	if (m_game->_adjY == 0) {
+		for (int i = 25; i - 1 > 0 ; i--){
+			for (int j = 32; j > 0; j--){
+				if (_cMap[i - 1][j] != 'A')
+					_cMap[i][j] = _cMap[i - 1][j];
+				if (j < 29)
+					_cMap[5][j] = 'A';
+				if (i < 5)
+					_cMap[i][29] = 'B';
+			}
 		}
-	}
+	
+		for (int i = 32; i >= 0; i--)
+		{
+			if (m_index < 0)				// 맵의 끝까지 갔을 때 index 가 - 값이 되서 맵 처음이 나오는 것 방지
+				break;
+			ch = str[m_index--];
+			if (ch != '\n')
+				_cMap[6][i] = ch;
 
-	for (int i = 32; i >= 0; i--)
-	{
-		if (m_index < 0)				// 맵의 끝까지 갔을 때 index 가 - 값이 되서 맵 처음이 나오는 것 방지
-			break;
-		ch = str[m_index--];
-		if (ch != '\n')
-			_cMap[6][i] = ch;
-
-		// 새로 보이는 줄에 적이 있으면 적 추가
-		if (_cMap[6][i] >= 'G' && _cMap[6][i] <= 'L'){
-			m_game->_Ene[Enemy::_EnemyCount].x = i * 25;
-			m_game->_Ene[Enemy::_EnemyCount].y = 6 * 25 - 50;
-			m_game->_Ene[Enemy::_EnemyCount].type = TRUE;
-			m_game->_Ene[Enemy::_EnemyCount].state = (_cMap[6][i] - 'G') % 2;
-			m_game->_Ene[Enemy::_EnemyCount].alpha = 255;
-			if (m_game->_Ene[Enemy::_EnemyCount].state)
-				m_game->_Ene[Enemy::_EnemyCount].speed = (2 + (_cMap[6][i] - 'G') / 2)* (-1);
-			else
-				m_game->_Ene[Enemy::_EnemyCount].speed = 2 + (_cMap[6][i] - 'G') / 2;
-			Enemy::_EnemyCount++;
+			// 새로 보이는 줄에 적이 있으면 적 추가
+			if (_cMap[6][i] >= 'G' && _cMap[6][i] <= 'L'){
+				m_game->_Ene[Enemy::_EnemyCount].x = i * 25;
+				m_game->_Ene[Enemy::_EnemyCount].y = 6 * 25 - 25;
+				m_game->_Ene[Enemy::_EnemyCount].type = TRUE;
+				m_game->_Ene[Enemy::_EnemyCount].state = (_cMap[6][i] - 'G') % 2;
+				m_game->_Ene[Enemy::_EnemyCount].alpha = 255;
+				if (m_game->_Ene[Enemy::_EnemyCount].state)
+					m_game->_Ene[Enemy::_EnemyCount].speed = (2 + (_cMap[6][i] - 'G') / 2)* (-1);
+				else
+					m_game->_Ene[Enemy::_EnemyCount].speed = 2 + (_cMap[6][i] - 'G') / 2;
+				Enemy::_EnemyCount++;
+			}
 		}
-	}
 
-	m_index -= 2;
+		m_index -= 2;
+	}
 
 	if (_hMap.m_hObject == NULL){
 		_hMap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
@@ -192,7 +194,7 @@ void Map::MoveMap()
 		for (int j = 0; j < 33; j++){
 			if (_cMap[i][j] >= 'A' && _cMap[i][j] <= 'F'){
 				objectdc.SelectObject(_hMapEle[_cMap[i][j] - 65]);
-				memdc.TransparentBlt(j * 25, i * 25, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
+				memdc.TransparentBlt(j * 25, i * 25 + m_game->_adjY, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
 			}
 		}
 	}

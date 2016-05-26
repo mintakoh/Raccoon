@@ -16,6 +16,7 @@ CGame::CGame()
 	, _bIsDrop_Sound(FALSE)
 	, is_up(false)
 	, _Map(this)
+	, _adjY(0)
 {
 	//LETS
 	_hLets.LoadBitmapW(IDB_LETS);
@@ -1040,14 +1041,19 @@ void CGame::HandleKeys()
 				if (_Map._cMap[(_Rac.y + 20) / 25][(_Rac.x + 20) / 25] == 'F') {
 					//_Rac.y -= _Rac.speedy;
 					
-					_Map.MoveMap();
+					_adjY += _Rac.speedy;
+					if (_adjY >= _Rac.speedy * 5) {
+						_adjY = 0;
+					}
 					is_up = true;
+
+					_Map.MoveMap();
 					
 					for (int i = 0; i < 12; i++){
-						_Item[i].y += 5*_Rac.speedy;
+						_Item[i].y += _Rac.speedy;
 					}
 					for (int i = 0; i < 100; i++){
-						_Ene[i].y += 5*_Rac.speedy;
+						_Ene[i].y += _Rac.speedy;
 					}
 
 					_Rac.step = !_Rac.step;
