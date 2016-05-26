@@ -6,6 +6,7 @@
 #include "Enemy.h"
 #include "Item.h"
 #include "Map.h"
+#include "Logger.h"
 
 // 게임에서 사용하는 키 지정 
 #define LEFT		VK_LEFT
@@ -84,6 +85,9 @@ public:
 	
 	// 너구리 맵 상대위치 보정값
 	int			_adjY;
+
+	// Logger
+	CLogger		_log;
 
 	bool is_up;
 };
