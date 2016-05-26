@@ -889,6 +889,7 @@ void CGame::Init()
 	_ScoreShow = 0;			//먹은 과일 점수 표시 시간 
 	_Rac._JumpFrame = 0;			//점프를 보여 줄때 필요 (카운터)
 
+	_adjY = 0;
 	is_up = false;
 }
 

@@ -142,7 +142,8 @@ void Map::MoveMap()
 	char ch;
 
 	// 맵 한줄씩 밀고, 위 5번째줄은 A 로, 옆 29번째 줄은 B로 채움
-	if (m_game->_adjY == 0) {
+	if (m_game->_adjY == 0 && m_game->is_up) {
+
 		for (int i = 25; i - 1 > 0 ; i--){
 			for (int j = 32; j > 0; j--){
 				if (_cMap[i - 1][j] != 'A')
@@ -191,9 +192,7 @@ void Map::MoveMap()
 		_hMap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
 	}
 	memdc.SelectObject(&_hMap);
-
 	memdc.FillSolidRect(&rect, RGB(0, 0, 0));
-
 
 	for (int i = 6; i < 26; i++){
 		for (int j = 0; j < 33; j++){
