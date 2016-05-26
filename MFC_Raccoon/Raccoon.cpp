@@ -118,7 +118,7 @@ void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemSco
 	//과일, 항아리 충돌 검사
 	char i;
 
-	for (i = 0; i < 12; i++){
+	for (i = 0; i < Item::_ItemCount; i++){
 		if (_Item[i].ch >= 'M'){
 			xx1 = _Item[i].x + 10;
 			yy1 = _Item[i].y + 30;

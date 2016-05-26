@@ -3,6 +3,7 @@
 #include "resource.h"
 
 // static 변수 사용을 위해 초기화
+int Item::_ItemCount = 0;
 char Item::_iEat = 0;
 
 Item::Item()

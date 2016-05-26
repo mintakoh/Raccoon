@@ -206,7 +206,10 @@ void CGame::GamePlay()
 	if (Item::_iEat == 8 && _ScoreShow == 1) {
 		Sleep(500);
 		_iAni = 0;
-		_GameState = 2;
+		_iScore = 0;
+		_iItemScoreRate = 5;
+		Item::_iEat = 0;
+		//_GameState = 2;		// 잠시 게임 스테이지 클리어 기능 정지
 	}
 	//// 너구리 죽음 	
 	if (_Rac.state == 11) {
@@ -282,7 +285,7 @@ void CGame::GamePlay()
 	}
 
 	// 항아리 & 과일 표시 
-	for (i = 0; i < 12; i++) {
+	for (i = 0; i < Item::_ItemCount; i++) {
 		//항아리 
 		if (_Item[i].ch == 'M' || _Item[i].ch == 'N' || _Item[i].ch == 'O')
 		{
@@ -869,7 +872,8 @@ void CGame::Init()
 	_iAni = 0;				//애니메이션 효과를 위해 
 	_bIsDrop_Sound = FALSE;	//너구리가 떨어질때 나는 소리 상태 
 
-	Enemy::_EnemyCount = 0;	//적의 숫자 
+	Enemy::_EnemyCount = 0;	//적의 숫자
+	Item::_ItemCount = 0;	//아이템의 숫자
 
 	_ScoreShow = 0;			//먹은 과일 점수 표시 시간 
 	_Rac._JumpFrame = 0;			//점프를 보여 줄때 필요 (카운터)
@@ -1049,10 +1053,10 @@ void CGame::HandleKeys()
 
 					_Map.MoveMap();
 					
-					for (int i = 0; i < 12; i++){
+					for (int i = 0; i < Item::_ItemCount; i++){
 						_Item[i].y += _Rac.speedy;
 					}
-					for (int i = 0; i < 100; i++){
+					for (int i = 0; i < Enemy::_EnemyCount; i++){
 						_Ene[i].y += _Rac.speedy;
 					}
 
