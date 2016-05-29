@@ -536,6 +536,9 @@ void CGame::GamePlay()
 		break;
 
 	case 4:
+		objectdc.SelectObject(&_Map._hMap);
+		memdc.BitBlt(_Rac.x, _Rac.y - 50, 25, 100, &objectdc, _Rac.x, _Rac.y - 50, SRCCOPY);
+
 		objectdc.SelectObject(&_Rac._hUpDown);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, _Rac.step * 50, 0, 50, 50, RGB(0, 0, 0));
 		break;
@@ -1039,6 +1042,14 @@ void CGame::HandleKeys()
 				PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 				_Rac.state = 5;
 			}
+			else if (GetAsyncKeyState('Z') < 0) {
+				for (int i = -1; i < 4; i++)
+					_Map._cMap[((_Rac.y) / 25) - i][(_Rac.x + 20) / 25] = 'F';
+				
+				_Map.MakeRadder();
+				_Rac.state = 4;
+				
+			}
 
 			break;
 
@@ -1071,6 +1082,13 @@ void CGame::HandleKeys()
 				PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 				_Rac.state = 6;
 			}
+			else if (GetAsyncKeyState('Z') < 0) {
+				for (int i = -1; i < 4; i++)
+					_Map._cMap[((_Rac.y) / 25) - i][(_Rac.x + 20) / 25] = 'F';
+				
+				_Map.MakeRadder();
+				_Rac.state = 4;
+			}
 
 			break;
 
@@ -1102,6 +1120,13 @@ void CGame::HandleKeys()
 			else if (GetAsyncKeyState(JUMP) < 0) {
 				PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 				_Rac.state = 8;
+			}
+			else if (GetAsyncKeyState('Z') < 0) {
+				for (int i = -1; i < 4; i++)
+					_Map._cMap[((_Rac.y) / 25) - i][(_Rac.x + 20) / 25] = 'F';
+				
+				_Map.MakeRadder();
+				_Rac.state = 4;
 			}
 
 			break;
