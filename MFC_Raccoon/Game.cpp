@@ -363,6 +363,9 @@ void CGame::GamePlay()
 				memdc.BitBlt(_Item[i].x, _Item[i].y + 25, 40, 14, &objectdc, 200, 0, SRCCOPY);
 				_Item[i].ch = '.';
 				_ScoreShow = 0;
+
+				objectdc.SelectObject(&_Map._hMap);
+				memdc.BitBlt(_Item[i].x, _Item[i].y, 50, 50, &objectdc, _Item[i].x, _Item[i].y, SRCCOPY);
 			}
 		}
 		else if (_Item[i].ch == '#') {
@@ -536,9 +539,6 @@ void CGame::GamePlay()
 		break;
 
 	case 4:
-		objectdc.SelectObject(&_Map._hMap);
-		memdc.BitBlt(_Rac.x, _Rac.y - 50, 25, 100, &objectdc, _Rac.x, _Rac.y - 50, SRCCOPY);
-
 		objectdc.SelectObject(&_Rac._hUpDown);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, _Rac.step * 50, 0, 50, 50, RGB(0, 0, 0));
 		break;
