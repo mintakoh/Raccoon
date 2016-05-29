@@ -226,3 +226,46 @@ void Map::MoveMap()
 }
 
 
+
+
+void Map::MakeRadder()
+{
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	CChildView* pView = (CChildView*)pFrame->GetChildView();
+
+	CClientDC dc(pView);
+	CDC memdc, objectdc;
+	memdc.CreateCompatibleDC(&dc);
+	objectdc.CreateCompatibleDC(&memdc);
+
+	CRect rect;
+	pView->GetClientRect(&rect);
+
+	if (_hMap.m_hObject == NULL){
+		_hMap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
+	}
+	memdc.SelectObject(&_hMap);
+	memdc.FillSolidRect(&rect, RGB(0, 0, 0));
+
+	for (int i = 6; i < 26; i++){
+		for (int j = 0; j < 33; j++){
+			if (_cMap[i][j] >= 'A' && _cMap[i][j] <= 'F'){
+				objectdc.SelectObject(_hMapEle[_cMap[i][j] - 65]);
+				memdc.TransparentBlt(j * 25, i * 25 + m_game->_adjY, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
+			}
+		}
+	}
+
+	for (int i = 0; i < m_game->_iLevel; i++)
+	{
+		BITMAP info;
+		m_game->_Item[0]._hFruit[i].GetBitmap(&info);
+		objectdc.SelectObject(&m_game->_Item[0]._hFruit[i]);
+		memdc.TransparentBlt((670 - (m_game->_iLevel - 1) * 55) + i * 55, 70, info.bmWidth, info.bmHeight, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
+	}
+
+
+	// 'SCORE'
+	objectdc.SelectObject(&m_game->_hScore);
+	memdc.TransparentBlt(25, 25, 75, 23, &objectdc, 0, 0, 75, 23, RGB(0, 0, 0));
+}
