@@ -80,7 +80,7 @@ Raccoon::~Raccoon()
 }
 
 
-void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemScoreRate, int& _iScore)
+void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemScoreRate, int& _iScore, const int& _adjY)
 {
 	static int x1, y1, x2, y2;
 	static int xx1, yy1, xx2, yy2;
@@ -98,6 +98,9 @@ void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemSco
 		x2 = x + 40;
 		y2 = y + 40;
 	}
+
+	y1 -= _adjY;
+	y2 -= _adjY;
 
 	if (is_ghost == false)
 	{

@@ -3,6 +3,7 @@
 #include "resource.h"
 #include "MainFrm.h"
 
+const int DEFAULT_RACCOON_Y = 376;
 
 CGame::CGame()
 	: _bIsDrawAll(false)
@@ -579,7 +580,7 @@ void CGame::GamePlay()
 			//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
 			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
 			//따라서 착지하면 충돌검사를 한다.
-			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore);
+			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _adjY);
 		}
 
 		break;
@@ -604,7 +605,7 @@ void CGame::GamePlay()
 			//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
 			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
 			//따라서 착지하면 충돌검사를 한다.
-			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore);
+			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _adjY);
 		}
 		break;
 
@@ -629,7 +630,7 @@ void CGame::GamePlay()
 			//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
 			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
 			//따라서 착지하면 충돌검사를 한다.
-			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore);
+			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _adjY);
 
 		}
 
@@ -655,7 +656,7 @@ void CGame::GamePlay()
 			//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
 			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
 			//따라서 착지하면 충돌검사를 한다.
-			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore);
+			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _adjY);
 		}
 
 		break;
@@ -926,7 +927,7 @@ void CGame::Init()
 	//초기화
 	_Rac.state = 1;			//너구리는 정면을 보고 있다 
 	_Rac.x = 375;			//너구리의 시작 위치 
-	_Rac.y = 376;			//너구리의 시작 위치 
+	_Rac.y = DEFAULT_RACCOON_Y;			//너구리의 시작 위치 
 	_Rac.speedx = 5;		//너구리 이동 속도 
 	_Rac.speedy = 5;		//너구리 이동 속도 
 	_iTime = 500;			//게임 제한 시간 
@@ -1062,7 +1063,7 @@ void CGame::HandleKeys()
 					_Rac.step = !_Rac.step;
 					if (_Rac.x % 20 == 0)
 						PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
-					_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore);
+					_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _adjY);
 				} //키 버퍼 
 				if (GetAsyncKeyState(JUMP) < 0) {
 					PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
@@ -1107,7 +1108,7 @@ void CGame::HandleKeys()
 					_Rac.step = !_Rac.step;
 					if (_Rac.x % 20 == 0)
 						PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
-					_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore);
+					_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _adjY);
 				} // 키 버퍼 
 				if (GetAsyncKeyState(JUMP) < 0)  {
 					PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
@@ -1140,10 +1141,17 @@ void CGame::HandleKeys()
 			break;
 
 		case 4:
-			if (GetAsyncKeyState(UP) < 0)
+			if (GetAsyncKeyState(UP) < 0) {
+
+				if (DEFAULT_RACCOON_Y < _Rac.y) {
+					_Rac.y -= _Rac.speedy;
+					_Rac.step = !_Rac.step;
+					return;
+				}
+
 				if (_Map._cMap[(_Rac.y + 20) / 25][(_Rac.x + 20) / 25] == 'F') {
 					//_Rac.y -= _Rac.speedy;
-					
+
 					_adjY += _Rac.speedy;
 					if (_adjY >= _Rac.speedy * 5) {
 						_adjY = 0;
@@ -1151,7 +1159,7 @@ void CGame::HandleKeys()
 					is_up = true;
 
 					_Map.MoveMap();
-					
+
 					for (int i = 0; i < Item::_ItemCount; i++){
 						_Item[i].y += _Rac.speedy;
 					}
@@ -1163,8 +1171,21 @@ void CGame::HandleKeys()
 					if ((_Rac.y - 3) % 20 == 0)
 						PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
 				}
-				else
-					_Rac.state = 1;	
+				else {
+					_Rac.state = 1;
+				}
+			}
+			else if (GetAsyncKeyState(DOWN) < 0) {
+				if (_Map._cMap[(_Rac.y + 50 - _adjY) / 25][(_Rac.x + 20) / 25] == 'F') {
+					_Rac.y += _Rac.speedy;
+					_Rac.step = !_Rac.step;
+					if ((_Rac.y - 3) % 20 == 0)
+						PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
+				}
+				else {
+					_Rac.state = 1;
+				}
+			}
 		}
 
 		break;
