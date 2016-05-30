@@ -1035,10 +1035,10 @@ void CGame::HandleKeys()
 				if (_Map._cMap[(_Rac.y) / 25][(_Rac.x + 20) / 25] == 'F')
 					_Rac.state = 4;
 			}
-			/*else if (GetAsyncKeyState(DOWN) < 0) {
-				if (_Map._cMap[(_Rac.y + 50) / 25][(_Rac.x + 20) / 25] == 'F')
+			else if (GetAsyncKeyState(DOWN) < 0) {
+				if (_Map._cMap[(_Rac.y + 50 - _adjY) / 25][(_Rac.x + 20) / 25] == 'F')
 					_Rac.state = 4;
-			}*/
+			}
 			else if (GetAsyncKeyState(JUMP) < 0) {
 				PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 				_Rac.state = 5;
@@ -1077,10 +1077,10 @@ void CGame::HandleKeys()
 				if (_Map._cMap[(_Rac.y - 25) / 25][(_Rac.x + 20) / 25] == 'F')
 					_Rac.state = 4;
 			}
-			/*else if (GetAsyncKeyState(DOWN) < 0) {
-				if (_Map._cMap[(_Rac.y + 50) / 25][(_Rac.x + 20) / 25] == 'F')
+			else if (GetAsyncKeyState(DOWN) < 0) {
+				if (_Map._cMap[(_Rac.y + 50 - _adjY) / 25][(_Rac.x + 20) / 25] == 'F')
 					_Rac.state = 4;
-			}*/
+			}
 			else if (GetAsyncKeyState(JUMP) < 0) {
 				PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 				_Rac.state = 6;
@@ -1119,10 +1119,10 @@ void CGame::HandleKeys()
 				if (_Map._cMap[(_Rac.y - 25) / 25][(_Rac.x + 20) / 25] == 'F')
 					_Rac.state = 4;
 			}
-			/*else if (GetAsyncKeyState(DOWN) < 0) {
-				if (_Map._cMap[(_Rac.y + 50) / 25][(_Rac.x + 20) / 25] == 'F')
+			else if (GetAsyncKeyState(DOWN) < 0) {
+				if (_Map._cMap[(_Rac.y + 50 - _adjY) / 25][(_Rac.x + 20) / 25] == 'F')
 					_Rac.state = 4;
-			}*/
+			}
 			else if (GetAsyncKeyState(JUMP) < 0) {
 				PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 				_Rac.state = 8;
@@ -1143,14 +1143,14 @@ void CGame::HandleKeys()
 		case 4:
 			if (GetAsyncKeyState(UP) < 0) {
 
-				if (DEFAULT_RACCOON_Y < _Rac.y) {
-					_Rac.y -= _Rac.speedy;
-					_Rac.step = !_Rac.step;
-					return;
-				}
-
-				if (_Map._cMap[(_Rac.y + 20) / 25][(_Rac.x + 20) / 25] == 'F') {
+				if (_Map._cMap[(_Rac.y + 20 - _adjY) / 25][(_Rac.x + 20) / 25] == 'F') {
 					//_Rac.y -= _Rac.speedy;
+
+					if (DEFAULT_RACCOON_Y < _Rac.y) {
+						_Rac.y -= _Rac.speedy;
+						_Rac.step = !_Rac.step;
+						return;
+					}
 
 					_adjY += _Rac.speedy;
 					if (_adjY >= _Rac.speedy * 5) {
