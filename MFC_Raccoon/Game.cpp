@@ -1043,13 +1043,16 @@ void CGame::HandleKeys()
 				PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 				_Rac.state = 5;
 			}
-			else if (GetAsyncKeyState('Z') < 0) {
+			else if (GetAsyncKeyState('Z') < 0 && _Rac.ladder_count > 0) {
 				if ((_Map._cMap[((_Rac.y) / 25) - 3][(_Rac.x + 20) / 25] == 'E' || _Map._cMap[((_Rac.y) / 25) - 2][(_Rac.x + 20) / 25] == '.') == false) // 사다리 놓는곳이 공중이거나 압정이면 안놓음
 				{
 					for (int i = -1; i < 4; i++)
 						_Map._cMap[((_Rac.y) / 25) - i][(_Rac.x + 20) / 25] = 'F';
 
 					_Map.MakeRadder();
+					_Rac.ladder_count--;
+					if (_Rac.ladder_count < 0)
+						_Rac.ladder_count = 0;
 					_Rac.state = 4;
 				}
 			}
@@ -1085,13 +1088,16 @@ void CGame::HandleKeys()
 				PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 				_Rac.state = 6;
 			}
-			else if (GetAsyncKeyState('Z') < 0) {
+			else if (GetAsyncKeyState('Z') < 0 && _Rac.ladder_count > 0) {
 				if ((_Map._cMap[((_Rac.y) / 25) - 3][(_Rac.x + 20) / 25] == 'E' || _Map._cMap[((_Rac.y) / 25) - 2][(_Rac.x + 20) / 25] == '.') == false) // 사다리 놓는곳이 공중이거나 압정이면 안놓음
 				{
 					for (int i = -1; i < 4; i++)
 						_Map._cMap[((_Rac.y) / 25) - i][(_Rac.x + 20) / 25] = 'F';
 
 					_Map.MakeRadder();
+					_Rac.ladder_count--;
+					if (_Rac.ladder_count < 0)
+						_Rac.ladder_count = 0;
 					_Rac.state = 4;
 				}
 			}
@@ -1127,13 +1133,16 @@ void CGame::HandleKeys()
 				PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 				_Rac.state = 8;
 			}
-			else if (GetAsyncKeyState('Z') < 0) {
+			else if (GetAsyncKeyState('Z') < 0 && _Rac.ladder_count > 0) {
 				if ((_Map._cMap[((_Rac.y) / 25) - 3][(_Rac.x + 20) / 25] == 'E' || _Map._cMap[((_Rac.y) / 25) - 2][(_Rac.x + 20) / 25] == '.') == false) // 사다리 놓는곳이 공중이거나 압정이면 안놓음
 				{
 					for (int i = -1; i < 4; i++)
 						_Map._cMap[((_Rac.y) / 25) - i][(_Rac.x + 20) / 25] = 'F';
 
 					_Map.MakeRadder();
+					_Rac.ladder_count--;
+					if (_Rac.ladder_count < 0)
+						_Rac.ladder_count = 0;
 					_Rac.state = 4;
 				};
 			}

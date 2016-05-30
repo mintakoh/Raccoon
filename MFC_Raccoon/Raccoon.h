@@ -59,8 +59,12 @@ public:
 	void CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemScoreRate, int& _iScore, const int& _adjY);
 	void CheckCollision_Enemy(Enemy* _Ene);
 
+	// 무적
 	int ghost_time;
 	bool is_ghost;
 	bool is_collision;
+
+	// 사다리 개수
+	int ladder_count;
 };
 

@@ -15,6 +15,7 @@ Raccoon::Raccoon()
 , ghost_time(0)
 , is_ghost(false)
 , is_collision(false)
+, ladder_count(3)
 {
 	// 제자리 점프 
 	_StandJump[0] = { 1, -5, 0 };
