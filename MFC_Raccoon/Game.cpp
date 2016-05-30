@@ -204,12 +204,12 @@ void CGame::GamePlay()
 
 	//// 과일 다 먹음 
 	//// _ScoreShow == 1 을 한 이유는 마지막으로 먹은 과일 점수 까지 보여주려고 
-	if (Item::_iEat == 8 && _ScoreShow == 1) {
+	if (Item::_iEat[_iLevel-1] == 8 && _ScoreShow == 1) {
 		Sleep(500);
 		_iAni = 0;
 		_iScore = 0;
 		_iItemScoreRate = 5;
-		Item::_iEat = 0;
+		_iLevel++;
 		//_GameState = 2;		// 잠시 게임 스테이지 클리어 기능 정지
 	}
 	//// 너구리 죽음 	
@@ -312,16 +312,38 @@ void CGame::GamePlay()
 	}
 
 	//먹은 과일 수 (이전과 변화가 있을 때만 그린다.)
-	static char Eat;
-	if (Item::_iEat != Eat || _Rac.state == 4) {
-		for (i = 0; i < Item::_iEat; i++)
+	static char Eat = -1;
+	if (Item::_iEat[_iLevel - 1] != Eat || _Rac.state == 4) {
+		for (i = 3; i >= 0; i--)
 		{
 			BITMAP info;
 			_Item[0]._hFruit[_iLevel - 1].GetBitmap(&info);
-			objectdc.SelectObject(&_Item[0]._hFruit[_iLevel - 1]);
-			memdc.BitBlt(750, 490 - (i * 55), info.bmWidth, info.bmHeight, &objectdc, 0, 0, SRCCOPY);
+
+			// 먹은 과일 수 지움
+			objectdc.SelectObject(&_Map._hMap);
+			memdc.BitBlt(760, 510 - (i * 120), 100, 50, &objectdc, 760, 510 - (i * 120), SRCCOPY);
+
+			objectdc.SelectObject(&_Item[0]._hFruit[i]);
+			memdc.BitBlt(750, 433 - (i * 120), info.bmWidth, info.bmHeight, &objectdc, 0, 0, SRCCOPY);
+			DrawDigit(memdc, 760, 510 - (i * 120), Item::_iEat[i], _hDigit);
 		}
-		Eat = Item::_iEat;
+
+		// 다음 레벨로 가거나 죽었다가 다시 시작하는 등 맵을 전부 다 그릴 때도 출력할 수 있도록 위의 조건을 만족시키기 위함
+		if (Item::_iEat[_iLevel - 1] != 0)
+			Eat = Item::_iEat[_iLevel - 1];
+	}
+
+	// 과일 (게임 상단에 현재 레벨을 알수 있는 과일들)
+	// 당근 , 앵두 ...		레벨이 오를 때 반영하기 위해서
+	objectdc.SelectObject(&_Map._hMap);
+	memdc.BitBlt((670 - (_iLevel - 1) * 55), 70, 55 * _iLevel, 50, &objectdc, 200, 0, SRCCOPY);
+
+	for (i = 0; i < _iLevel; i++)
+	{
+		BITMAP info;
+		_Item[0]._hFruit[i].GetBitmap(&info);
+		objectdc.SelectObject(&_Item[0]._hFruit[i]);
+		memdc.TransparentBlt((670 - (_iLevel - 1) * 55) + i * 55, 70, info.bmWidth, info.bmHeight, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
 	}
 
 	// 사다리 개수 표시
@@ -586,7 +608,7 @@ void CGame::GamePlay()
 			//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
 			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
 			//따라서 착지하면 충돌검사를 한다.
-			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _adjY);
+			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _iLevel, _adjY);
 		}
 
 		break;
@@ -611,7 +633,7 @@ void CGame::GamePlay()
 			//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
 			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
 			//따라서 착지하면 충돌검사를 한다.
-			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _adjY);
+			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _iLevel, _adjY);
 		}
 		break;
 
@@ -636,7 +658,7 @@ void CGame::GamePlay()
 			//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
 			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
 			//따라서 착지하면 충돌검사를 한다.
-			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _adjY);
+			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _iLevel, _adjY);
 
 		}
 
@@ -662,7 +684,7 @@ void CGame::GamePlay()
 			//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
 			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
 			//따라서 착지하면 충돌검사를 한다.
-			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _adjY);
+			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _iLevel, _adjY);
 		}
 
 		break;
@@ -938,7 +960,10 @@ void CGame::Init()
 	_Rac.speedy = 5;		//너구리 이동 속도 
 	_iTime = 500;			//게임 제한 시간 
 	_iItemScoreRate = 5;	//아이템 점수, 2배씩 곱해지면서 증가 
-	Item::_iEat = 0;		//먹은 과일수 
+	Item::_iEat[0] = 0;		//먹은 과일수 
+	Item::_iEat[1] = 0;		//먹은 과일수 
+	Item::_iEat[2] = 0;		//먹은 과일수 
+	Item::_iEat[3] = 0;		//먹은 과일수 
 	_iAni = 0;				//애니메이션 효과를 위해 
 	_bIsDrop_Sound = FALSE;	//너구리가 떨어질때 나는 소리 상태 
 
@@ -1072,7 +1097,7 @@ void CGame::HandleKeys()
 					_Rac.step = !_Rac.step;
 					if (_Rac.x % 20 == 0)
 						PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
-					_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _adjY);
+					_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _iLevel, _adjY);
 				} //키 버퍼 
 				if (GetAsyncKeyState(JUMP) < 0) {
 					PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
@@ -1120,7 +1145,7 @@ void CGame::HandleKeys()
 					_Rac.step = !_Rac.step;
 					if (_Rac.x % 20 == 0)
 						PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
-					_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _adjY);
+					_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _iLevel, _adjY);
 				} // 키 버퍼 
 				if (GetAsyncKeyState(JUMP) < 0)  {
 					PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);

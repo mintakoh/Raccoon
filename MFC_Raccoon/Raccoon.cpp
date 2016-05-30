@@ -5,7 +5,6 @@
 #include "Enemy.h"
 #include "Item.h"
 #include "Map.h"
-#include "Game.h"
 
 // static 변수 사용을 위해 초기화
 //char Raccoon::_iLive = 0;
@@ -81,7 +80,7 @@ Raccoon::~Raccoon()
 }
 
 
-void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemScoreRate, int& _iScore, const int& _adjY)
+void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemScoreRate, int& _iScore, char& _iLevel, const int& _adjY)
 {
 	static int x1, y1, x2, y2;
 	static int xx1, yy1, xx2, yy2;
@@ -165,7 +164,7 @@ void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemSco
 
 				PlaySound(MAKEINTRESOURCE(IDR_RAC_EAT), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 
-				if (_Item[i].ch >= 'Q') Item::_iEat++;
+				if (_Item[i].ch >= 'Q') Item::_iEat[_iLevel - 1]++;
 
 				if (_Item[i].ch == 'N' || _Item[i].ch == 'M'){
 					PlaySound(MAKEINTRESOURCE(IDR_SNAKE), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);

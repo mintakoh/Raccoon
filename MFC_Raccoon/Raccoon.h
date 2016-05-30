@@ -56,7 +56,7 @@ public:
 	CBitmap _hSurprise;
 
 	// 충돌 검사
-	void CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemScoreRate, int& _iScore, const int& _adjY);
+	void CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemScoreRate, int& _iScore, char& _iLevel, const int& _adjY);
 	void CheckCollision_Enemy(Enemy* _Ene);
 
 	// 무적
