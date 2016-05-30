@@ -1043,12 +1043,14 @@ void CGame::HandleKeys()
 				_Rac.state = 5;
 			}
 			else if (GetAsyncKeyState('Z') < 0) {
-				for (int i = -1; i < 4; i++)
-					_Map._cMap[((_Rac.y) / 25) - i][(_Rac.x + 20) / 25] = 'F';
-				
-				_Map.MakeRadder();
-				_Rac.state = 4;
-				
+				if ((_Map._cMap[((_Rac.y) / 25) - 3][(_Rac.x + 20) / 25] == 'E' || _Map._cMap[((_Rac.y) / 25) - 2][(_Rac.x + 20) / 25] == '.') == false) // 사다리 놓는곳이 공중이거나 압정이면 안놓음
+				{
+					for (int i = -1; i < 4; i++)
+						_Map._cMap[((_Rac.y) / 25) - i][(_Rac.x + 20) / 25] = 'F';
+
+					_Map.MakeRadder();
+					_Rac.state = 4;
+				}
 			}
 
 			break;
@@ -1083,11 +1085,14 @@ void CGame::HandleKeys()
 				_Rac.state = 6;
 			}
 			else if (GetAsyncKeyState('Z') < 0) {
-				for (int i = -1; i < 4; i++)
-					_Map._cMap[((_Rac.y) / 25) - i][(_Rac.x + 20) / 25] = 'F';
-				
-				_Map.MakeRadder();
-				_Rac.state = 4;
+				if ((_Map._cMap[((_Rac.y) / 25) - 3][(_Rac.x + 20) / 25] == 'E' || _Map._cMap[((_Rac.y) / 25) - 2][(_Rac.x + 20) / 25] == '.') == false) // 사다리 놓는곳이 공중이거나 압정이면 안놓음
+				{
+					for (int i = -1; i < 4; i++)
+						_Map._cMap[((_Rac.y) / 25) - i][(_Rac.x + 20) / 25] = 'F';
+
+					_Map.MakeRadder();
+					_Rac.state = 4;
+				}
 			}
 
 			break;
@@ -1122,11 +1127,14 @@ void CGame::HandleKeys()
 				_Rac.state = 8;
 			}
 			else if (GetAsyncKeyState('Z') < 0) {
-				for (int i = -1; i < 4; i++)
-					_Map._cMap[((_Rac.y) / 25) - i][(_Rac.x + 20) / 25] = 'F';
-				
-				_Map.MakeRadder();
-				_Rac.state = 4;
+				if ((_Map._cMap[((_Rac.y) / 25) - 3][(_Rac.x + 20) / 25] == 'E' || _Map._cMap[((_Rac.y) / 25) - 2][(_Rac.x + 20) / 25] == '.') == false) // 사다리 놓는곳이 공중이거나 압정이면 안놓음
+				{
+					for (int i = -1; i < 4; i++)
+						_Map._cMap[((_Rac.y) / 25) - i][(_Rac.x + 20) / 25] = 'F';
+
+					_Map.MakeRadder();
+					_Rac.state = 4;
+				};
 			}
 
 			break;
