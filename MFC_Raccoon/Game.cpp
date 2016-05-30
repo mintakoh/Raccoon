@@ -324,6 +324,12 @@ void CGame::GamePlay()
 		Eat = Item::_iEat;
 	}
 
+	// 사다리 개수 표시
+	objectdc.SelectObject(&_Map._hMapEle[5]);
+	memdc.BitBlt(810, 510, 25, 25, &objectdc, 0, 0, SRCCOPY);
+	
+	DrawDigit(memdc, 840, 510, _Rac.ladder_count, _hDigit);
+
 	// 항아리 & 과일 표시 
 	for (i = 0; i < Item::_ItemCount; i++) {
 		//항아리 
