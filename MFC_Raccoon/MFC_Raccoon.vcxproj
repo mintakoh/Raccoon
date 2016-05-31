@@ -141,8 +141,58 @@
     <None Include="res\MFC_Raccoon.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\baby.bmp" />
+    <Image Include="res\bitmap1.bmp" />
+    <Image Include="res\bmp00001.bmp" />
+    <Image Include="res\bmp00002.bmp" />
+    <Image Include="res\bonus.bmp" />
+    <Image Include="res\die.bmp" />
+    <Image Include="res\digit.bmp" />
+    <Image Include="res\digit_sm.bmp" />
+    <Image Include="res\drop.bmp" />
+    <Image Include="res\ending.bmp" />
+    <Image Include="res\EnemyLeft.bmp" />
+    <Image Include="res\EnemyLeftRed.bmp" />
+    <Image Include="res\EnemyRight.bmp" />
+    <Image Include="res\EnemyRightRed.bmp" />
+    <Image Include="res\GameOver.bmp" />
+    <Image Include="res\left.bmp" />
+    <Image Include="res\LeftJump.bmp" />
+    <Image Include="res\Lets.bmp" />
+    <Image Include="res\map_a.bmp" />
+    <Image Include="res\map_b.bmp" />
+    <Image Include="res\map_c.bmp" />
+    <Image Include="res\map_d.bmp" />
+    <Image Include="res\map_e.bmp" />
+    <Image Include="res\map_f.bmp" />
+    <Image Include="res\map_n.bmp" />
+    <Image Include="res\map_q.bmp" />
+    <Image Include="res\map_r.bmp" />
+    <Image Include="res\map_s.bmp" />
+    <Image Include="res\map_t.bmp" />
     <Image Include="res\MFC_Raccoon.ico" />
+    <Image Include="res\next.bmp" />
+    <Image Include="res\Raccoon.ico" />
+    <Image Include="res\right.bmp" />
+    <Image Include="res\RightJump.bmp" />
+    <Image Include="res\score.bmp" />
+    <Image Include="res\SnakeLeft.bmp" />
+    <Image Include="res\SnakeRight.bmp" />
+    <Image Include="res\stand.bmp" />
+    <Image Include="res\surprise.bmp" />
     <Image Include="res\Toolbar.bmp" />
+    <Image Include="res\updown.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\clear.wav" />
+    <Media Include="res\gameover.wav" />
+    <Media Include="res\intro.wav" />
+    <Media Include="res\rac_die.wav" />
+    <Media Include="res\rac_drop.wav" />
+    <Media Include="res\rac_eat.wav" />
+    <Media Include="res\rac_jump.wav" />
+    <Media Include="res\rac_step.wav" />
+    <Media Include="res\snake.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -66,5 +66,8 @@ public:
 
 	// 사다리 개수
 	int ladder_count;
+
+	void CheckCollision_Magma(int& _Magma_index, bool& _OnMagma);
+
 };
 

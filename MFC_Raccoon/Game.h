@@ -8,6 +8,7 @@
 #include "Map.h"
 #include "Logger.h"
 
+
 // 게임에서 사용하는 키 지정 
 #define LEFT		VK_LEFT
 #define RIGHT		VK_RIGHT
@@ -90,5 +91,18 @@ public:
 	CLogger		_log;
 
 	bool is_up;
+	
+	
+	//마그마함수
+	void Magma();
+	//용암이미지
+	CBitmap _hLava;
+	//경고 이미지
+	CBitmap _hWarn;
+	// 마그마 활성화됐니 안됐니
+	bool _OnMagma;
+	int _Magma_time;	//현재 남은시간과의 비교를 위해
+	// 용암 랜덤 인덱스
+	int _Magma_index;
 };
 
