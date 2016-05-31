@@ -4,6 +4,7 @@
 #include "MainFrm.h"
 
 
+
 CGame::CGame()
 	: _bIsDrawAll(false)
 	, _GameState(0)
@@ -16,6 +17,9 @@ CGame::CGame()
 	, _bIsDrop_Sound(FALSE)
 	, is_up(false)
 	, _Map(this)
+	, _OnMagma(false)
+	, _Magma_time(0)
+	, _Magma_index(0)
 {
 	//LETS
 	_hLets.LoadBitmapW(IDB_LETS);
@@ -36,6 +40,12 @@ CGame::CGame()
 
 	//아기
 	_hBaby.LoadBitmapW(IDB_BABY);
+
+	//용암
+	_hLava.LoadBitmapW(IDB_LAVA);
+	//경고
+	_hWarn.LoadBitmapW(IDB_WARNING);
+
 }
 
 
@@ -231,9 +241,35 @@ void CGame::GamePlay()
 	//// 너구리가 떨어지거나 죽으면 시간은 멈춘다.
 	if (_iAni % 5 == 0 && _Rac.state != 10 && _Rac.state != 11) {
 		_iTime--;
+		//용암
+		_Magma_time += 1;
+		if (_Magma_time == 10){
+			_OnMagma = true;
+		}
+		if (_Magma_time == 20){
+			_OnMagma = false;
+			_Magma_time = 0;
+			if (_OnMagma == false){
+
+				objectdc.SelectObject(&_Map._hMap);
+				memdc.BitBlt(_Magma_index * 25, 150 - 8, 25, 550, &objectdc, _Magma_index * 25, 150 - 8, SRCCOPY);
+				//경고영역
+				memdc.BitBlt(_Magma_index * 25, 150 - 58, 25, 25, &objectdc, _Magma_index * 25, 150 - 58, SRCCOPY);
+				
+				while (1){
+					srand((unsigned)time(NULL));
+					_Magma_index = rand() % 30;
+					if (_Magma_index != 0)
+						break;
+				}
+			}
+			
+		}
+
 		if (_iTime == 0)
 			_Rac.state = 10;	//너구리 죽음 		
 	}
+	
 
 	//// 맵(처음 시작 할때 맵 전체를 한번 그린다.)
 	if (_iAni == 1 || _Rac.state == 4){
@@ -251,8 +287,16 @@ void CGame::GamePlay()
 			objectdc.SelectObject(&_Map._hMap);
 			memdc.BitBlt(_Ene[i].x - 2, _Ene[i].y + 5, 54, 53, &objectdc, _Ene[i].x - 2, _Ene[i].y + 5, SRCCOPY);
 		}
+		//용암영역
+		if (_OnMagma == false){
+			
+			objectdc.SelectObject(&_Map._hMap);
+			memdc.BitBlt(_Magma_index * 25, 150 - 8, 25, 550, &objectdc, _Magma_index * 25, 150 - 8, SRCCOPY);
+			//경고영역
+			memdc.BitBlt(_Magma_index * 25, 150 - 58, 25, 25, &objectdc, _Magma_index * 25, 150 - 58, SRCCOPY);
+		}
+		
 	}
-
 
 	//// 점수 표시 (이전과 변화가 있을 때만 그린다.)
 	static int Score;
@@ -282,6 +326,8 @@ void CGame::GamePlay()
 		}
 		Eat = Item::_iEat;
 	}
+
+	
 
 	// 항아리 & 과일 표시 
 	for (i = 0; i < Item::_ItemCount; i++) {
@@ -463,9 +509,34 @@ void CGame::GamePlay()
 			}
 		}
 	}
-
+	//경고
+	objectdc.SelectObject(&_hWarn);
+	if (_Magma_time % 2 == 0)
+		memdc.TransparentBlt(_Magma_index * 25, 150 - 58, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
+	//용암택
+	objectdc.SelectObject(_hLava);
+	if (_OnMagma == true){
+		for (int i = 6; i < 28; i++){
+			//if (i % 2 == 0){
+				if (_Magma_time % 2 == 0)
+					memdc.TransparentBlt(_Magma_index * 25, (i * 25) - 8, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
+				else
+					memdc.TransparentBlt(_Magma_index * 25, (i * 25) - 8, 25, 25, &objectdc, 25, 0, 25, 25, RGB(0, 0, 0));
+			//}
+			//else{
+				if (_Magma_time % 2 == 0)
+					memdc.TransparentBlt(_Magma_index * 25, (i * 25) - 8, 25, 25, &objectdc, 25, 0, 25, 25, RGB(0, 0, 0));
+				else
+					memdc.TransparentBlt(_Magma_index * 25, (i * 25) - 8, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
+			//}
+		}
+		_Rac.CheckCollision_Magma(_Magma_index, _OnMagma);
+	}
+	Magma();
+	
 	////적 충돌 감지 
 	_Rac.CheckCollision_Enemy(_Ene);
+	_Rac.CheckCollision_Magma(_Magma_index, _OnMagma);
 
 	////너구리 
 	switch (_Rac.state) {
@@ -526,6 +597,9 @@ void CGame::GamePlay()
 			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
 			//따라서 착지하면 충돌검사를 한다.
 			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore);
+			//용암충돌감지
+			//_Rac.CheckCollision_Magma(_Magma_index, _OnMagma);
+
 		}
 
 		break;
@@ -551,6 +625,9 @@ void CGame::GamePlay()
 			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
 			//따라서 착지하면 충돌검사를 한다.
 			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore);
+			//용암충돌감지
+			//_Rac.CheckCollision_Magma(_Magma_index, _OnMagma);
+
 		}
 		break;
 
@@ -576,6 +653,8 @@ void CGame::GamePlay()
 			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
 			//따라서 착지하면 충돌검사를 한다.
 			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore);
+			//용암충돌감지
+			//_Rac.CheckCollision_Magma(_Magma_index, _OnMagma);
 
 		}
 
@@ -602,6 +681,9 @@ void CGame::GamePlay()
 			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
 			//따라서 착지하면 충돌검사를 한다.
 			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore);
+			//용암충돌감지
+			//_Rac.CheckCollision_Magma(_Magma_index, _OnMagma);
+
 		}
 
 		break;
@@ -878,6 +960,16 @@ void CGame::Init()
 	_Rac._JumpFrame = 0;			//점프를 보여 줄때 필요 (카운터)
 
 	is_up = false;
+
+	//랜덤 인덱스 생성 __ 랜덤한 열에다가 용암 경고 / 용암 출력
+	//이때, 오른쪽 세줄, 맨 왼쪽 첫줄은 제외해주자. 열 33개, 행 26
+	
+	if (_OnMagma == false){
+		while (_Magma_index == 0){
+			srand((unsigned)time(NULL));
+			_Magma_index = rand() % 30;
+		}
+	}
 }
 
 void CGame::DrawDigit(CDC& cDC, int x, int y, int score, CBitmap& cBit, int cipher, COLORREF crTransColor)
@@ -983,6 +1075,9 @@ void CGame::HandleKeys()
 					if (_Rac.x % 20 == 0)
 						PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
 					_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore);
+					//용암충돌감지
+					_Rac.CheckCollision_Magma(_Magma_index, _OnMagma);
+
 				} //키 버퍼 
 				if (GetAsyncKeyState(JUMP) < 0) {
 					PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
@@ -1018,6 +1113,9 @@ void CGame::HandleKeys()
 					if (_Rac.x % 20 == 0)
 						PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
 					_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore);
+					//용암충돌감지
+					_Rac.CheckCollision_Magma(_Magma_index, _OnMagma);
+
 				} // 키 버퍼 
 				if (GetAsyncKeyState(JUMP) < 0)  {
 					PlaySound(MAKEINTRESOURCE(IDR_RAC_JUMP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
@@ -1080,4 +1178,7 @@ void CGame::HandleKeys()
 
 	}
 
+}
+void CGame::Magma()
+{	
 }

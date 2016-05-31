@@ -1,6 +1,7 @@
 #pragma once
 
 #include "resource.h"
+#include "afxwin.h"
 
 
 // 상호 참조를 피하기 위해 이름만 선언 후 .cpp 에서 헤더파일 참조
@@ -32,5 +33,7 @@ public:
 	void LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLevel, int _iScore, CBitmap& _hScore);
 	void MoveMap();
 	int m_index;
+	
+	
 };
 

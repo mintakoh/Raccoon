@@ -14,6 +14,8 @@ Map::Map(CGame* game)
 	_hMapEle[3].LoadBitmapW(IDB_MAP_D);
 	_hMapEle[4].LoadBitmapW(IDB_MAP_E);
 	_hMapEle[5].LoadBitmapW(IDB_MAP_F);
+
+	
 }
 
 Map::~Map()
@@ -32,7 +34,7 @@ void Map::LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLe
 	objectdc.CreateCompatibleDC(&memdc);
 
 	pView->GetClientRect(&rect);
-
+	
 	HRSRC hRSrc = FindResource(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_MAP), _T("TEXT"));
 	DWORD size = SizeofResource(AfxGetInstanceHandle(), hRSrc);
 	HGLOBAL hMem = LoadResource(AfxGetInstanceHandle(), hRSrc);
@@ -222,5 +224,8 @@ void Map::MoveMap()
 	}
 	
 }
+
+
+
 
 

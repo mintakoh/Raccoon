@@ -4,7 +4,7 @@
 class Map;
 class Enemy;
 class Item;
-
+class CGame;
 // 처음에 주어지는 너구리 수 
 #define	LIVE		7
 
@@ -64,5 +64,6 @@ public:
 	// 충돌 검사
 	void CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemScoreRate, int& _iScore);
 	void CheckCollision_Enemy(Enemy* _Ene);
+	void CheckCollision_Magma(int& _Magma_index, bool& _OnMagma);
 };
 

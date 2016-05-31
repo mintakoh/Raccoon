@@ -113,6 +113,7 @@ void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemSco
 				return;
 			}
 		}
+		
 	}
 
 	//과일, 항아리 충돌 검사
@@ -125,10 +126,10 @@ void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemSco
 			xx2 = _Item[i].x + 40;
 			yy2 = _Item[i].y + 40;
 
-			if ((xx1 > x1 && xx1 < x2 && yy1 > y1 && yy1 < y2) ||
-				(xx1 > x1 && xx1 < x2 && yy2 > y1 && yy2 < y2) ||
-				(xx2 > x1 && xx2 < x2 && yy1 > y1 && yy1 < y2) ||
-				(xx2 > x1 && xx2 < x2 && yy2 > y1 && yy2 < y2)){
+			if ((xx1 >= x1 && xx1 <= x2 && yy1 >= y1 && yy1 <= y2) ||
+				(xx1 >= x1 && xx1 <= x2 && yy2 >= y1 && yy2 <= y2) ||
+				(xx2 >= x1 && xx2 <= x2 && yy1 >= y1 && yy1 <= y2) ||
+				(xx2 >= x1 && xx2 <= x2 && yy2 >= y1 && yy2 <= y2)){
 
 				PlaySound(MAKEINTRESOURCE(IDR_RAC_EAT), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 
@@ -211,4 +212,55 @@ void Raccoon::CheckCollision_Enemy(Enemy* _Ene)
 
 		}
 	}
+}
+
+void Raccoon::CheckCollision_Magma(int& _Magma_index, bool& _OnMagma)
+{
+	static int x1, y1, x2, y2;
+	static int xx1, yy1, xx2, yy2;
+
+	if (state == 2 || state == 6 || state == 7){
+		x1 = x + 5;
+		y1 = y + 5;
+		x2 = x + 30;
+		y2 = y + 45;
+	}
+
+	else if (state == 3 || state == 8 || state == 9){
+		x1 = x + 17;
+		y1 = y + 5;
+		x2 = x + 47;
+		y2 = y + 45;
+	}
+
+	else{
+		x1 = x + 5;
+		y1 = y + 5;
+		x2 = x + 40;
+		y2 = y + 45;
+	}
+	if (_OnMagma == true){
+		for (int i = 6; i < 26; i++){
+			
+				xx1 = _Magma_index * 25 ;
+				yy1 = (i * 25) - 8;
+				xx2 = (_Magma_index+1) * 25 ;
+				yy2 = ((i + 1) * 25) - 8;
+				//용암부분
+			
+				//xx1 = (x1 / 25 * 25) + 5;
+				//xx2 = ((x1 / 25 + 1) * 25) - 5;
+				if ((x1 >= xx1 && x1 <= xx2 && y1 >= yy1 && y1 <= yy2) ||
+					(x1 >= xx1 && x1 <= xx2 && y2 >= yy1 && y2 <= yy2) ||
+					(x2 >= xx1 && x2 <= xx2 && y1 >= yy1 && y2 <= yy2) ||
+					(x2 >= xx1 && x2 <= xx2 && y2 >= yy1 && y2 <= yy2)){
+					_OnMagma = false;
+					state = 10;
+					
+					//return;
+				}
+			
+		}
+	}
+	
 }
