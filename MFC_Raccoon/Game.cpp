@@ -230,7 +230,7 @@ void CGame::GamePlay()
 
 		Init();
 		_GameState = 3;	// gameover
-			
+		_OnMagma = false;
 		//if (Raccoon::_iLive == 0) { // 마지막 너구리가 죽으면 
 		//	Init();
 		//	_GameState = 3;	//gameover
@@ -297,8 +297,8 @@ void CGame::GamePlay()
 				
 				while (1){
 					srand((unsigned)time(NULL));
-					_Magma_index = rand() % 30;
-					if (_Magma_index != 0)
+					_Magma_index = rand() % 29;
+					if (_Magma_index != 0 && _Magma_index != 1 )
 						break;
 				}
 			}
@@ -583,7 +583,13 @@ void CGame::GamePlay()
 			}
 		}
 	}
-
+	//용암지대
+	objectdc.SelectObject(_hLava);
+	for (int i = 22; i < 27; i++){
+		for (int j = 1; j < 29; j++){	
+			memdc.BitBlt(j * 25, i * 25 - 8, 25, 25, &objectdc, (_iTime % 2) * 25, 0, SRCCOPY);
+		}
+	}
 
 	// 스코어보드 그리기
 	for (int i = 0; i < 7; i++){
@@ -604,7 +610,7 @@ void CGame::GamePlay()
 	//용암택
 	objectdc.SelectObject(_hLava);
 	if (_OnMagma == true){
-		for (int i = 6; i < 28; i++){
+		for (int i = 6; i < 26; i++){
 			
 				if (_Magma_time % 2 == 0)
 					memdc.TransparentBlt(_Magma_index * 25, (i * 25) - 8, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
@@ -1071,9 +1077,12 @@ void CGame::Init()
 	//이때, 오른쪽 세줄, 맨 왼쪽 첫줄은 제외해주자. 열 33개, 행 26
 	
 	if (_OnMagma == false){
-		while (_Magma_index == 0){
+		while (1){
+			
 			srand((unsigned)time(NULL));
-			_Magma_index = rand() % 30;
+			_Magma_index = rand() % 28;
+			if (_Magma_index != 0 && _Magma_index != 15 && _Magma_index != 1)
+				break;
 		}
 	}
 

@@ -289,7 +289,7 @@ void Raccoon::CheckCollision_Magma(int& _Magma_index, bool& _OnMagma)
 					(x1 >= xx1 && x1 <= xx2 && y2 >= yy1 && y2 <= yy2) ||
 					(x2 >= xx1 && x2 <= xx2 && y1 >= yy1 && y2 <= yy2) ||
 					(x2 >= xx1 && x2 <= xx2 && y2 >= yy1 && y2 <= yy2)){
-					_OnMagma = false;
+					
 					state = 10;
 					
 					//return;
