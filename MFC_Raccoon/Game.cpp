@@ -221,6 +221,7 @@ void CGame::GamePlay()
 		_iItemScoreRate = 5;
 		_iLevel++;
 		Item::_iEat = 0;
+		_iTime += 100;
 		//_GameState = 2;		// 잠시 게임 스테이지 클리어 기능 정지
 	}
 	//// 너구리 죽음 	
