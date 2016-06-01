@@ -214,12 +214,13 @@ void CGame::GamePlay()
 
 	//// 과일 다 먹음 
 	//// _ScoreShow == 1 을 한 이유는 마지막으로 먹은 과일 점수 까지 보여주려고 
-	if (Item::_iEat[_iLevel-1] == 8 && _ScoreShow == 1) {
+	if (Item::_iEat == 8 && _ScoreShow == 1) {
 		Sleep(500);
 		_iAni = 0;
 		_iScore = 0;
 		_iItemScoreRate = 5;
 		_iLevel++;
+		Item::_iEat = 0;
 		//_GameState = 2;		// 잠시 게임 스테이지 클리어 기능 정지
 	}
 	//// 너구리 죽음 	
@@ -360,24 +361,23 @@ void CGame::GamePlay()
 
 	//먹은 과일 수 (이전과 변화가 있을 때만 그린다.)
 	static char Eat = -1;
-	if (Item::_iEat[_iLevel - 1] != Eat || _Rac.state == 4) {
-		for (i = 3; i >= 0; i--)
-		{
-			BITMAP info;
-			_Item[0]._hFruit[_iLevel - 1].GetBitmap(&info);
+	if (Item::_iEat != Eat || _Rac.state == 4) {
+	
+		BITMAP info;
+		_Item[0]._hFruit[_iLevel - 1].GetBitmap(&info);
 
-			// 먹은 과일 수 지움
-			objectdc.SelectObject(&_Map._hMap);
-			memdc.BitBlt(760, 510 - (i * 120), 100, 50, &objectdc, 760, 510 - (i * 120), SRCCOPY);
+		// 먹은 과일 수 지움
+		objectdc.SelectObject(&_Map._hMap);
+		memdc.BitBlt(760, 510, 100, 50, &objectdc, 760, 510, SRCCOPY);
 
-			objectdc.SelectObject(&_Item[0]._hFruit[i]);
-			memdc.BitBlt(750, 433 - (i * 120), info.bmWidth, info.bmHeight, &objectdc, 0, 0, SRCCOPY);
-			DrawDigit(memdc, 760, 510 - (i * 120), Item::_iEat[i], _hDigit);
-		}
+		objectdc.SelectObject(&_Item[0]._hFruit[_iLevel - 1]);
+		memdc.BitBlt(750, 433, info.bmWidth, info.bmHeight, &objectdc, 0, 0, SRCCOPY);
+		DrawDigit(memdc, 760, 510, Item::_iEat, _hDigit);
+	
 
 		// 다음 레벨로 가거나 죽었다가 다시 시작하는 등 맵을 전부 다 그릴 때도 출력할 수 있도록 위의 조건을 만족시키기 위함
-		if (Item::_iEat[_iLevel - 1] != 0)
-			Eat = Item::_iEat[_iLevel - 1];
+		if (Item::_iEat != 0)
+			Eat = Item::_iEat;
 	}
 
 	// 과일 (게임 상단에 현재 레벨을 알수 있는 과일들)
@@ -1050,12 +1050,9 @@ void CGame::Init()
 	_Rac.y = DEFAULT_RACCOON_Y;			//너구리의 시작 위치 
 	_Rac.speedx = 5;		//너구리 이동 속도 
 	_Rac.speedy = 5;		//너구리 이동 속도 
+	Item::_iEat = 0;
 	_iTime = 500;			//게임 제한 시간 
-	_iItemScoreRate = 5;	//아이템 점수, 2배씩 곱해지면서 증가 
-	Item::_iEat[0] = 0;		//먹은 과일수 
-	Item::_iEat[1] = 0;		//먹은 과일수 
-	Item::_iEat[2] = 0;		//먹은 과일수 
-	Item::_iEat[3] = 0;		//먹은 과일수 
+	_iItemScoreRate = 5;	//아이템 점수, 2배씩 곱해지면서 증가
 	_iAni = 0;				//애니메이션 효과를 위해 
 	_bIsDrop_Sound = FALSE;	//너구리가 떨어질때 나는 소리 상태 
 

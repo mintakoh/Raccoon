@@ -15,7 +15,7 @@ public:
 	static int _ItemCount;
 
 	//먹은 과일 수
-	static char		_iEat[4];
+	static char		_iEat;
 
 	// 항아리
 	CBitmap		_hPot;
