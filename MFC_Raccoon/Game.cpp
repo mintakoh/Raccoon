@@ -635,12 +635,18 @@ void CGame::GamePlay()
 		break;
 
 	case 2:
-		objectdc.SelectObject(&_Rac._hLeft);
+		if (_Rac.is_ghost)
+			objectdc.SelectObject(&_Rac._hSuperLeft);
+		else
+			objectdc.SelectObject(&_Rac._hLeft);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, _Rac.step * 50, 0, 50, 50, RGB(0, 0, 0));
 		break;
 
 	case 3:
-		objectdc.SelectObject(&_Rac._hRight);
+		if (_Rac.is_ghost)
+			objectdc.SelectObject(&_Rac._hSuperRight);
+		else
+			objectdc.SelectObject(&_Rac._hRight);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, _Rac.step * 50, 0, 50, 50, RGB(0, 0, 0));
 		break;
 
@@ -671,7 +677,10 @@ void CGame::GamePlay()
 			_Rac.x += _Rac._LeftShortJump[_Rac._JumpFrame].x;
 		_Rac.y += _Rac._LeftShortJump[_Rac._JumpFrame].y;
 
-		objectdc.SelectObject(&_Rac._hLeftJump);
+		if (_Rac.is_ghost)
+			objectdc.SelectObject(&_Rac._hSuperLeftJump);
+		else
+			objectdc.SelectObject(&_Rac._hLeftJump);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_Rac._LeftShortJump[_Rac._JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
 
 
@@ -701,7 +710,10 @@ void CGame::GamePlay()
 			_Rac.x += _Rac._LeftLongJump[_Rac._JumpFrame].x;
 		_Rac.y += _Rac._LeftLongJump[_Rac._JumpFrame].y;
 
-		objectdc.SelectObject(&_Rac._hLeftJump);
+		if (_Rac.is_ghost)
+			objectdc.SelectObject(&_Rac._hSuperLeftJump);
+		else
+			objectdc.SelectObject(&_Rac._hLeftJump);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_Rac._LeftLongJump[_Rac._JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
 
 
@@ -728,7 +740,10 @@ void CGame::GamePlay()
 			_Rac.x -= _Rac._LeftShortJump[_Rac._JumpFrame].x;
 		_Rac.y += _Rac._LeftShortJump[_Rac._JumpFrame].y;
 
-		objectdc.SelectObject(&_Rac._hRightJump);
+		if (_Rac.is_ghost)
+			objectdc.SelectObject(&_Rac._hSuperRightJump);
+		else
+			objectdc.SelectObject(&_Rac._hRightJump);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_Rac._LeftShortJump[_Rac._JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
 
 
@@ -759,7 +774,10 @@ void CGame::GamePlay()
 			_Rac.x -= _Rac._LeftLongJump[_Rac._JumpFrame].x;
 		_Rac.y += _Rac._LeftLongJump[_Rac._JumpFrame].y;
 
-		objectdc.SelectObject(&_Rac._hRightJump);
+		if (_Rac.is_ghost)
+			objectdc.SelectObject(&_Rac._hSuperRightJump);
+		else
+			objectdc.SelectObject(&_Rac._hRightJump);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_Rac._LeftLongJump[_Rac._JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
 
 		_Rac._JumpFrame++;

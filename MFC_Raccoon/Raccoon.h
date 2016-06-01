@@ -44,11 +44,15 @@ public:
 
 	// 너구리 이미지 
 	CBitmap		_hLeft;
+	CBitmap		_hSuperLeft;
 	CBitmap		_hRight;
+	CBitmap		_hSuperRight;
 	CBitmap		_hUpDown;
 	CBitmap		_hStand;
 	CBitmap		_hLeftJump;
+	CBitmap		_hSuperLeftJump;
 	CBitmap		_hRightJump;
+	CBitmap		_hSuperRightJump;
 	CBitmap		_hDrop;
 	CBitmap		_hDie;
 

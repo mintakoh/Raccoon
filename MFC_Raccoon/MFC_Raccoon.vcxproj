@@ -179,6 +179,10 @@
     <Image Include="res\SnakeLeft.bmp" />
     <Image Include="res\SnakeRight.bmp" />
     <Image Include="res\stand.bmp" />
+    <Image Include="res\super_left.bmp" />
+    <Image Include="res\super_LeftJump.bmp" />
+    <Image Include="res\super_right.bmp" />
+    <Image Include="res\super_RightJump.bmp" />
     <Image Include="res\surprise.bmp" />
     <Image Include="res\Toolbar.bmp" />
     <Image Include="res\updown.bmp" />

@@ -222,6 +222,18 @@
     <Image Include="res\bmp00002.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="res\super_left.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\super_right.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\super_LeftJump.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\super_RightJump.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Media Include="res\clear.wav">

@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ generated include file.
-// Used by MFC_Raccoon.rc
+// Microsoft Visual C++에서 생성한 포함 파일입니다.
+// MFC_Raccoon.rc에서 사용되고 있습니다.
 //
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
@@ -57,12 +57,18 @@
 #define IDB_WARNING                     359
 #define IDB_BITMAP1                     360
 #define IDB_GHOST                       360
+#define IDB_SUPER_LEFT                  361
+#define IDB_SUPER_RIGHT                 362
+#define IDB_SUPER_LEFT_JUMP             363
+#define IDB_SUPER_RIGHT_JUMP            364
+#define IDB_BITMAP2                     365
+#define IDB_BACKGROUND                  365
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        361
+#define _APS_NEXT_RESOURCE_VALUE        366
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310

@@ -17,7 +17,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Korean (Korea) resources
+// 한국어(대한민국) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR)
 LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
@@ -116,6 +116,11 @@ IDB_UPDOWN              BITMAP                  "res\\updown.bmp"
 IDB_LAVA                BITMAP                  "res\\bitmap1.bmp"
 IDB_WARNING             BITMAP                  "res\\bmp00001.bmp"
 IDB_GHOST               BITMAP                  "res\\bmp00002.bmp"
+IDB_SUPER_LEFT          BITMAP                  "res\\super_left.bmp"
+IDB_SUPER_RIGHT         BITMAP                  "res\\super_right.bmp"
+IDB_SUPER_LEFT_JUMP     BITMAP                  "res\\super_LeftJump.bmp"
+IDB_SUPER_RIGHT_JUMP    BITMAP                  "res\\super_RightJump.bmp"
+IDB_BACKGROUND          BITMAP                  "res\\map_bg.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -380,7 +385,7 @@ BEGIN
     AFX_IDS_PREVIEW_CLOSE   "인쇄 미리 보기 모드를 닫습니다.\n미리 보기 취소"
 END
 
-#endif    // Korean (Korea) resources
+#endif    // 한국어(대한민국) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
