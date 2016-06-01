@@ -717,7 +717,10 @@ void CGame::GamePlay()
 	////³Ê±¸¸® 
 	switch (_Rac.state) {
 	case 1:
-		objectdc.SelectObject(&_Rac._hStand);
+		if (_Rac.is_ghost)
+			objectdc.SelectObject(&_Rac._hSuperStand);
+		else
+			objectdc.SelectObject(&_Rac._hStand);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, 0, 0, 50, 50, RGB(0, 0, 0));
 		break;
 
@@ -738,7 +741,10 @@ void CGame::GamePlay()
 		break;
 
 	case 4:
-		objectdc.SelectObject(&_Rac._hUpDown);
+		if (_Rac.is_ghost)
+			objectdc.SelectObject(&_Rac._hSuperUpDown);
+		else
+			objectdc.SelectObject(&_Rac._hUpDown);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, _Rac.step * 50, 0, 50, 50, RGB(0, 0, 0));
 		break;
 

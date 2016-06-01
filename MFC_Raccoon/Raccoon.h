@@ -48,7 +48,9 @@ public:
 	CBitmap		_hRight;
 	CBitmap		_hSuperRight;
 	CBitmap		_hUpDown;
+	CBitmap		_hSuperUpDown;
 	CBitmap		_hStand;
+	CBitmap		_hSuperStand;
 	CBitmap		_hLeftJump;
 	CBitmap		_hSuperLeftJump;
 	CBitmap		_hRightJump;

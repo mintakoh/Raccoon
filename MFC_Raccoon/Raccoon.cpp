@@ -64,9 +64,11 @@ Raccoon::Raccoon()
 	_hLeft.LoadBitmapW(IDB_LEFT);
 	_hSuperLeft.LoadBitmapW(IDB_SUPER_LEFT);
 	_hStand.LoadBitmapW(IDB_STAND);
+	_hSuperStand.LoadBitmapW(IDB_SUPER_STAND);
 	_hRight.LoadBitmapW(IDB_RIGHT);
 	_hSuperRight.LoadBitmapW(IDB_SUPER_RIGHT);
 	_hUpDown.LoadBitmapW(IDB_UPDOWN);
+	_hSuperUpDown.LoadBitmapW(IDB_SUPER_UPDOWN);
 	_hLeftJump.LoadBitmapW(IDB_LEFT_JUMP);
 	_hSuperLeftJump.LoadBitmapW(IDB_SUPER_LEFT_JUMP);
 	_hRightJump.LoadBitmapW(IDB_RIGHT_JUMP);

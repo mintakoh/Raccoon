@@ -185,6 +185,8 @@
     <Image Include="res\super_LeftJump.bmp" />
     <Image Include="res\super_right.bmp" />
     <Image Include="res\super_RightJump.bmp" />
+    <Image Include="res\super_stand.bmp" />
+    <Image Include="res\super_updown.bmp" />
     <Image Include="res\surprise.bmp" />
     <Image Include="res\Toolbar.bmp" />
     <Image Include="res\updown.bmp" />

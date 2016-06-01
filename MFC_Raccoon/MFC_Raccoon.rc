@@ -122,6 +122,8 @@ IDB_SUPER_LEFT_JUMP     BITMAP                  "res\\super_LeftJump.bmp"
 IDB_SUPER_RIGHT_JUMP    BITMAP                  "res\\super_RightJump.bmp"
 IDB_BACKGROUND          BITMAP                  "res\\map_bg.bmp"
 IDB_GHOST_LEFT          BITMAP                  "res\\ghost_left.bmp"
+IDB_SUPER_STAND         BITMAP                  "res\\super_stand.bmp"
+IDB_SUPER_UPDOWN        BITMAP                  "res\\super_updown.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
