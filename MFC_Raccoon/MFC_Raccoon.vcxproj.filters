@@ -237,6 +237,9 @@
     <Image Include="res\map_bg.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="res\ghost_left.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Media Include="res\clear.wav">

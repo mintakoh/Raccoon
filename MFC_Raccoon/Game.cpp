@@ -459,7 +459,7 @@ void CGame::GamePlay()
 	for (i = 0; i < Enemy::_EnemyCount; i++) {
 
 		//뱀
-		if (_Ene[i].type == FALSE) {
+		if (_Ene[i].type == 1) {
 
 			//너구리가 살아있고 (너구리가 죽으면 화면이 멈춰야 되므로)
 			//알파 값이 255가 되면 뱀은 움직인다.
@@ -527,6 +527,93 @@ void CGame::GamePlay()
 				memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni / 5 % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, RGB(0, 0, 0));
 			}
 		}
+
+		//유령
+		else if (_Ene[i].type == 2)
+		{
+			if (_Rac.state != 10 && _Rac.state != 11 && _Ene[i].alpha == 255)
+			{
+				_Ene[i].x += _Ene[i].speed;
+				_Ene[i].y += _Ene[i].speed_y;
+			}
+
+			if (_Ene[i].x <= 20) {	//왼쪽 끝
+				_Ene[i].x = 20;
+				_Ene[i].speed = (rand() % 3 + 1);
+				_Ene[i].state = !_Ene[i].state;
+			}
+			else if (_Ene[i].x >= 680) { //오른쪽 끝
+				_Ene[i].x = 680;
+				_Ene[i].speed = - (rand() % 3 + 1);
+				_Ene[i].state = !_Ene[i].state;
+			}
+
+			if (_Ene[i].y < 150)
+			{
+				_Ene[i].y = 150;
+				_Ene[i].speed_y = (rand() % 3 + 1);
+				_Ene[i].state_y = !_Ene[i].state;
+			}
+
+			else if (_Ene[i].y > 500)
+			{
+				_Ene[i].y = 500;
+				_Ene[i].speed_y = - (rand() % 3 + 1);
+				_Ene[i].state_y = !_Ene[i].state;
+			}
+
+			if (_Ene[i].state == FALSE) //방향(오른쪽을 보고 있을때)
+				if (_Ene[i].alpha != 255) {
+					_Ene[i].alpha += 5;	//선명하게
+					objectdc.SelectObject(&_Map._hMap);
+					memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, _Ene[i].x, _Ene[i].y, SRCCOPY); //기존의 것을 지우기
+
+					BLENDFUNCTION bf;
+					bf.BlendOp = AC_SRC_OVER;
+					bf.BlendFlags = 0;
+					bf.SourceConstantAlpha = _Ene[i].alpha;
+					bf.AlphaFormat = 0;
+
+					objectdc.SelectObject(&_Ene[0]._hGhostRight);
+
+					BITMAP info;
+					_Ene[0]._hGhostRight.GetBitmap(&info);
+					memdc.AlphaBlend(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, 0, 0, info.bmWidth, info.bmHeight, bf);
+				}
+				else
+				{
+					objectdc.SelectObject(&_Ene[0]._hGhostRight);
+					BITMAP info;
+					_Ene[0]._hGhostRight.GetBitmap(&info);
+					memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
+				}
+
+			else if (_Ene[i].alpha != 255) {
+				_Ene[i].alpha += 5;	//선명하게  
+				objectdc.SelectObject(&_Map._hMap);
+				memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, _Ene[i].x, _Ene[i].y, SRCCOPY); //기존의 것을 지우기
+
+				BLENDFUNCTION bf;
+				bf.BlendOp = AC_SRC_OVER;
+				bf.BlendFlags = 0;
+				bf.SourceConstantAlpha = _Ene[i].alpha;
+				bf.AlphaFormat = 0;
+
+				objectdc.SelectObject(&_Ene[0]._hGhostLeft);
+
+				BITMAP info;
+				_Ene[0]._hGhostLeft.GetBitmap(&info);
+				memdc.AlphaBlend(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, 0, 0, info.bmWidth, info.bmHeight, bf);
+			}
+
+			else // 방향(왼쪽을 보고 있을때)
+			{
+				objectdc.SelectObject(&_Ene[0]._hGhostLeft);
+				BITMAP info;
+				_Ene[0]._hGhostLeft.GetBitmap(&info);
+				memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
+			}
+		}
 	}
 
 
@@ -534,7 +621,7 @@ void CGame::GamePlay()
 	//일반적인 적 
 	for (i = 0; i < Enemy::_EnemyCount; i++) {
 
-		if (_Ene[i].type == TRUE) {
+		if (_Ene[i].type == 0) {
 
 			if (_Rac.state != 10 && _Rac.state != 11) _Ene[i].x += _Ene[i].speed;
 

@@ -179,7 +179,7 @@ void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemSco
 
 					_Ene[Enemy::_EnemyCount].x = _Item[i].x;
 					_Ene[Enemy::_EnemyCount].y = _Item[i].y;
-					_Ene[Enemy::_EnemyCount].type = FALSE;
+					_Ene[Enemy::_EnemyCount].type = 1;
 					_Ene[Enemy::_EnemyCount].alpha = 10;
 
 					if (_Item[i].ch == 'N') {

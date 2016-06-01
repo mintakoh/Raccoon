@@ -156,6 +156,7 @@
     <Image Include="res\EnemyRight.bmp" />
     <Image Include="res\EnemyRightRed.bmp" />
     <Image Include="res\GameOver.bmp" />
+    <Image Include="res\ghost_left.bmp" />
     <Image Include="res\left.bmp" />
     <Image Include="res\LeftJump.bmp" />
     <Image Include="res\Lets.bmp" />

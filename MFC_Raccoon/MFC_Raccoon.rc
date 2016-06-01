@@ -115,12 +115,13 @@ IDB_SURPRISE            BITMAP                  "res\\surprise.bmp"
 IDB_UPDOWN              BITMAP                  "res\\updown.bmp"
 IDB_LAVA                BITMAP                  "res\\bitmap1.bmp"
 IDB_WARNING             BITMAP                  "res\\bmp00001.bmp"
-IDB_GHOST               BITMAP                  "res\\bmp00002.bmp"
+IDB_GHOST_RIGHT         BITMAP                  "res\\bmp00002.bmp"
 IDB_SUPER_LEFT          BITMAP                  "res\\super_left.bmp"
 IDB_SUPER_RIGHT         BITMAP                  "res\\super_right.bmp"
 IDB_SUPER_LEFT_JUMP     BITMAP                  "res\\super_LeftJump.bmp"
 IDB_SUPER_RIGHT_JUMP    BITMAP                  "res\\super_RightJump.bmp"
 IDB_BACKGROUND          BITMAP                  "res\\map_bg.bmp"
+IDB_GHOST_LEFT          BITMAP                  "res\\ghost_left.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //

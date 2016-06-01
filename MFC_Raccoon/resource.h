@@ -57,18 +57,19 @@
 #define IDB_WARNING                     359
 #define IDB_BITMAP1                     360
 #define IDB_GHOST                       360
+#define IDB_GHOST_RIGHT                 360
 #define IDB_SUPER_LEFT                  361
 #define IDB_SUPER_RIGHT                 362
 #define IDB_SUPER_LEFT_JUMP             363
 #define IDB_SUPER_RIGHT_JUMP            364
-#define IDB_BITMAP2                     365
 #define IDB_BACKGROUND                  365
+#define IDB_GHOST_LEFT                  367
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        366
+#define _APS_NEXT_RESOURCE_VALUE        368
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310

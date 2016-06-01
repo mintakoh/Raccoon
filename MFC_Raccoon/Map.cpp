@@ -82,10 +82,47 @@ void Map::LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLe
 				objectdc.SelectObject(_hMapEle[_cMap[i][j] - 65]);
 				memdc.TransparentBlt(j * 25, i * 25, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
 			}
-			else if (_cMap[i][j] >= 'G' && _cMap[i][j] <= 'L'){
+
+			else if (_cMap[i][j] >= 'G' && _cMap[i][j] <= 'H')
+			{
+				PlaySound(MAKEINTRESOURCE(IDR_SNAKE), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
+
 				_Ene[Enemy::_EnemyCount].x = j * 25;
 				_Ene[Enemy::_EnemyCount].y = i * 25 - 25;
-				_Ene[Enemy::_EnemyCount].type = TRUE;
+				_Ene[Enemy::_EnemyCount].type = 2;
+				_Ene[Enemy::_EnemyCount].alpha = 10;
+
+				if (rand() % 2)
+					_Ene[Enemy::_EnemyCount].state_y = TRUE;		// 위
+				else
+					_Ene[Enemy::_EnemyCount].state_y = FALSE;		// 아래
+
+				if (_cMap[i][j] == 'G') {
+					_Ene[Enemy::_EnemyCount].state = TRUE;
+					_Ene[Enemy::_EnemyCount].speed = - (rand() % 3 + 1);
+					if (_Ene[Enemy::_EnemyCount].state_y)
+						_Ene[Enemy::_EnemyCount].speed_y = - (rand() % 3 + 1);
+					else
+						_Ene[Enemy::_EnemyCount].speed_y = (rand() % 3 + 1);
+
+				}
+				else {
+					_Ene[Enemy::_EnemyCount].state = FALSE;
+					_Ene[Enemy::_EnemyCount].speed = (rand() % 3 + 1);
+					if (_Ene[Enemy::_EnemyCount].state_y)
+						_Ene[Enemy::_EnemyCount].speed_y = - (rand() % 3 + 1);
+					else
+						_Ene[Enemy::_EnemyCount].speed_y = (rand() % 3 + 1);
+				}
+
+				//_Item[i].ch = '.';
+				Enemy::_EnemyCount++;
+			}
+
+			else if (_cMap[i][j] >= 'I' && _cMap[i][j] <= 'L'){
+				_Ene[Enemy::_EnemyCount].x = j * 25;
+				_Ene[Enemy::_EnemyCount].y = i * 25 - 25;
+				_Ene[Enemy::_EnemyCount].type = 0;
 				_Ene[Enemy::_EnemyCount].state = (_cMap[i][j] - 'G') % 2;
 				_Ene[Enemy::_EnemyCount].alpha = 255;
 				if (_Ene[Enemy::_EnemyCount].state)
@@ -174,10 +211,47 @@ void Map::MoveMap()
 				_cMap[6][i] = ch;
 
 			// 새로 보이는 줄에 적이 있으면 적 추가
-			if (_cMap[6][i] >= 'G' && _cMap[6][i] <= 'L'){
+
+			if (_cMap[6][i] >= 'G' && _cMap[6][i] <= 'H')
+			{
+				PlaySound(MAKEINTRESOURCE(IDR_SNAKE), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
+
 				m_game->_Ene[Enemy::_EnemyCount].x = i * 25;
 				m_game->_Ene[Enemy::_EnemyCount].y = 6 * 25 - 25;
-				m_game->_Ene[Enemy::_EnemyCount].type = TRUE;
+				m_game->_Ene[Enemy::_EnemyCount].type = 2;
+				m_game->_Ene[Enemy::_EnemyCount].alpha = 10;
+
+				if (rand() % 2)
+					m_game->_Ene[Enemy::_EnemyCount].state_y = TRUE;		// 위
+				else
+					m_game->_Ene[Enemy::_EnemyCount].state_y = FALSE;		// 아래
+
+				if (_cMap[6][i] == 'G') {
+					m_game->_Ene[Enemy::_EnemyCount].state = TRUE;
+					m_game->_Ene[Enemy::_EnemyCount].speed = - (rand() % 3 + 1);
+					if (m_game->_Ene[Enemy::_EnemyCount].state_y)
+						m_game->_Ene[Enemy::_EnemyCount].speed_y = - (rand() % 3 + 1);
+					else
+						m_game->_Ene[Enemy::_EnemyCount].speed_y = (rand() % 3 + 1);
+
+				}
+				else {
+					m_game->_Ene[Enemy::_EnemyCount].state = FALSE;
+					m_game->_Ene[Enemy::_EnemyCount].speed = (rand() % 3 + 1);
+					if (m_game->_Ene[Enemy::_EnemyCount].state_y)
+						m_game->_Ene[Enemy::_EnemyCount].speed_y = - (rand() % 3 + 1);
+					else
+						m_game->_Ene[Enemy::_EnemyCount].speed_y = (rand() % 3 + 1);
+				}
+
+				//_Item[i].ch = '.';
+				Enemy::_EnemyCount++;
+			}
+
+			else if (_cMap[6][i] >= 'I' && _cMap[6][i] <= 'L'){
+				m_game->_Ene[Enemy::_EnemyCount].x = i * 25;
+				m_game->_Ene[Enemy::_EnemyCount].y = 6 * 25 - 25;
+				m_game->_Ene[Enemy::_EnemyCount].type = 0;
 				m_game->_Ene[Enemy::_EnemyCount].state = (_cMap[6][i] - 'G') % 2;
 				m_game->_Ene[Enemy::_EnemyCount].alpha = 255;
 				if (m_game->_Ene[Enemy::_EnemyCount].state)
@@ -264,6 +338,13 @@ void Map::MakeRadder()
 	}
 	memdc.SelectObject(&_hMap);
 	memdc.FillSolidRect(&rect, RGB(0, 0, 0));
+
+	for (int i = 6; i < 26; i++){
+		for (int j = 1; j < 29; j++){
+			objectdc.SelectObject(_hBackground);
+			memdc.TransparentBlt(j * 25, i * 25, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
+		}
+	}
 
 	for (int i = 6; i < 26; i++){
 		for (int j = 0; j < 33; j++){
