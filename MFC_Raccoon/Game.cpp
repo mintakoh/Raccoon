@@ -326,7 +326,7 @@ void CGame::GamePlay()
 		for (i = 0; i < Enemy::_EnemyCount; i++)
 		{
 			objectdc.SelectObject(&_Map._hMap);
-			memdc.BitBlt(_Ene[i].x - 2, _Ene[i].y + 5, 54, 53, &objectdc, _Ene[i].x - 2, _Ene[i].y + 5, SRCCOPY);
+			memdc.BitBlt(_Ene[i].x, _Ene[i].y, 55, 55, &objectdc, _Ene[i].x, _Ene[i].y, SRCCOPY);
 		}
 
 
@@ -430,7 +430,7 @@ void CGame::GamePlay()
 			if (_ScoreShow == 0)
 			{
 				objectdc.SelectObject(&_Map._hMap);
-				memdc.BitBlt(_Item[i].x, _Item[i].y, 50, 50, &objectdc, 200, 0, SRCCOPY);
+				memdc.BitBlt(_Item[i].x, _Item[i].y, 50, 50, &objectdc, _Item[i].x, _Item[i].y, SRCCOPY);
 			}
 
 			DrawDigit(memdc, _Item[i].x, _Item[i].y + 25, _iItemScoreRate, _hDigit_sm);

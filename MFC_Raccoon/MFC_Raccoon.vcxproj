@@ -161,6 +161,7 @@
     <Image Include="res\Lets.bmp" />
     <Image Include="res\map_a.bmp" />
     <Image Include="res\map_b.bmp" />
+    <Image Include="res\map_bg.bmp" />
     <Image Include="res\map_c.bmp" />
     <Image Include="res\map_d.bmp" />
     <Image Include="res\map_e.bmp" />

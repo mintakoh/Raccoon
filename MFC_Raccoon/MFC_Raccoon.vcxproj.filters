@@ -234,6 +234,9 @@
     <Image Include="res\super_RightJump.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="res\map_bg.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Media Include="res\clear.wav">

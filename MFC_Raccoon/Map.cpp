@@ -15,7 +15,7 @@ Map::Map(CGame* game)
 	_hMapEle[4].LoadBitmapW(IDB_MAP_E);
 	_hMapEle[5].LoadBitmapW(IDB_MAP_F);
 
-	
+	_hBackground.LoadBitmapW(IDB_BACKGROUND);
 }
 
 Map::~Map()
@@ -34,7 +34,7 @@ void Map::LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLe
 	objectdc.CreateCompatibleDC(&memdc);
 
 	pView->GetClientRect(&rect);
-	
+
 	HRSRC hRSrc = FindResource(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_MAP), _T("TEXT"));
 	DWORD size = SizeofResource(AfxGetInstanceHandle(), hRSrc);
 	HGLOBAL hMem = LoadResource(AfxGetInstanceHandle(), hRSrc);
@@ -49,8 +49,8 @@ void Map::LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLe
 	static int i, j;
 
 
-	
-	
+
+
 	for (i = 0; i < 26; i++)
 	{
 		for (j = 0; j < 35; j++){
@@ -64,9 +64,17 @@ void Map::LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLe
 
 	if (_hMap.m_hObject == NULL)
 		_hMap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
+
 	memdc.SelectObject(&_hMap);
 
 	memdc.FillSolidRect(&rect, RGB(0, 0, 0));
+
+	for (int i = 6; i < 26; i++){
+		for (int j = 1; j < 29; j++){
+			objectdc.SelectObject(_hBackground);
+			memdc.TransparentBlt(j * 25, i * 25, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
+		}
+	}
 	
 	for (i = 0; i < 26; i++){
 		for (j = 0; j < 33; j++){
@@ -195,6 +203,13 @@ void Map::MoveMap()
 	}
 	memdc.SelectObject(&_hMap);
 	memdc.FillSolidRect(&rect, RGB(0, 0, 0));
+
+	for (int i = 6; i < 26; i++){
+		for (int j = 1; j < 29; j++){
+			objectdc.SelectObject(_hBackground);
+			memdc.TransparentBlt(j * 25, i * 25, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
+		}
+	}
 
 	for (int i = 6; i < 26; i++){
 		for (int j = 0; j < 33; j++){

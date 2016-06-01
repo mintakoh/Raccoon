@@ -21,6 +21,7 @@ public:
 
 	// 기본 맵 구성 이미지
 	CBitmap _hMapEle[6];
+	CBitmap _hBackground;
 
 	//완성된 맵이미지 
 	//위의 맵 구성부품으로 맵을 만든뒤 완성된 맵을 하나의 이미지로 저장 
