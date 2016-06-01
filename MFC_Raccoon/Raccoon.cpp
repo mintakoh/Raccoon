@@ -82,6 +82,9 @@ Raccoon::~Raccoon()
 
 void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemScoreRate, int& _iScore, char& _iLevel, const int& _adjY)
 {
+	if (state == 10 || state == 11)
+		return;
+		
 	static int x1, y1, x2, y2;
 	static int xx1, yy1, xx2, yy2;
 
@@ -203,6 +206,9 @@ void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemSco
 
 void Raccoon::CheckCollision_Enemy(Enemy* _Ene)
 {
+	if (state == 10 || state == 11)
+		return;
+
 	if (is_ghost)
 		return;
 
