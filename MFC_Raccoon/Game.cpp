@@ -374,7 +374,7 @@ void CGame::GamePlay()
 		memdc.BitBlt(760, 510, 100, 50, &objectdc, 760, 510, SRCCOPY);
 
 		objectdc.SelectObject(&_Item[0]._hFruit[_iLevel - 1]);
-		memdc.BitBlt(750, 433, info.bmWidth, info.bmHeight, &objectdc, 0, 0, SRCCOPY);
+		memdc.TransparentBlt(750, 433, info.bmWidth, info.bmHeight, &objectdc, 0, 0, 50, 50, RGB(0, 0, 0));
 		DrawDigit(memdc, 760, 510, Item::_iEat, _hDigit);
 	
 
@@ -386,15 +386,15 @@ void CGame::GamePlay()
 	// 과일 (게임 상단에 현재 레벨을 알수 있는 과일들)
 	// 당근 , 앵두 ...		레벨이 오를 때 반영하기 위해서
 	objectdc.SelectObject(&_Map._hMap);
-	memdc.BitBlt((670 - (_iLevel - 1) * 55), 70, 55 * _iLevel, 50, &objectdc, 200, 0, SRCCOPY);
+	memdc.TransparentBlt((670 - (_iLevel - 1) * 55), 70, 55 * _iLevel, 50, &objectdc, 200, 0, 50, 50, RGB(0, 0, 0));
 
-	for (i = 0; i < _iLevel; i++)
+	/*for (i = 0; i < _iLevel; i++)
 	{
 		BITMAP info;
 		_Item[0]._hFruit[i].GetBitmap(&info);
 		objectdc.SelectObject(&_Item[0]._hFruit[i]);
 		memdc.TransparentBlt((670 - (_iLevel - 1) * 55) + i * 55, 70, info.bmWidth, info.bmHeight, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
-	}
+	}*/
 
 
 	// 사다리 개수 표시

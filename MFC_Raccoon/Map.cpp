@@ -142,13 +142,13 @@ void Map::LoadMap(CRect& rect, Enemy* _Ene, Item* _Item, Raccoon& _Rac, int _iLe
 
 	// 과일 (게임 상단에 현재 레벨을 알수 있는 과일들)
 	// 당근 , 앵두 ... 
-	for (i = 0; i < _iLevel; i++)
+	/*for (i = 0; i < _iLevel; i++)
 	{
 		BITMAP info;
 		_Item[0]._hFruit[i].GetBitmap(&info);
 		objectdc.SelectObject(&_Item[0]._hFruit[i]);
 		memdc.TransparentBlt((670 - (_iLevel - 1) * 55) + i * 55, 70, info.bmWidth, info.bmHeight, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
-	}
+	}*/
 
 
 	// 'SCORE'
@@ -294,13 +294,13 @@ void Map::MoveMap()
 		}
 	}
 	
-	for (int i = 0; i < m_game->_iLevel; i++)
+	/*for (int i = 0; i < m_game->_iLevel; i++)
 	{
 		BITMAP info;
 		m_game->_Item[0]._hFruit[i].GetBitmap(&info);
 		objectdc.SelectObject(&m_game->_Item[0]._hFruit[i]);
 		memdc.TransparentBlt((670 - (m_game->_iLevel - 1) * 55) + i * 55, 70, info.bmWidth, info.bmHeight, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
-	}
+	}*/
 
 
 	// 'SCORE'
