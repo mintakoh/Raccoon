@@ -309,5 +309,7 @@ void Raccoon::CheckCollision_Magma(int& _Magma_index, bool& _OnMagma)
 			
 		}
 	}
-	
+	//밑으로 가면 주근다
+	if (y2 >= 550)
+		state = 10;
 }

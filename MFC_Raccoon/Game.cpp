@@ -232,7 +232,8 @@ void CGame::GamePlay()
 
 		Init();
 		_GameState = 3;	// gameover
-		_OnMagma = false;
+		//_OnMagma = false;
+
 		//if (Raccoon::_iLive == 0) { // 마지막 너구리가 죽으면 
 		//	Init();
 		//	_GameState = 3;	//gameover
@@ -290,6 +291,7 @@ void CGame::GamePlay()
 		if (_Magma_time == 20){
 			_OnMagma = false;
 			_Magma_time = 0;
+			//_OnMqmq가 꺼졌을때, 마그마 나왓던 영역을 다시 그려준다
 			if (_OnMagma == false){
 
 				objectdc.SelectObject(&_Map._hMap);
@@ -298,7 +300,7 @@ void CGame::GamePlay()
 				memdc.BitBlt(_Magma_index * 25, 150 - 58, 25, 25, &objectdc, _Magma_index * 25, 150 - 58, SRCCOPY);
 				
 				while (1){
-					srand((unsigned)time(NULL));
+					//srand((unsigned)time(NULL));
 					_Magma_index = rand() % 29;
 					if (_Magma_index != 0 && _Magma_index != 1 )
 						break;
@@ -673,10 +675,19 @@ void CGame::GamePlay()
 	}
 	//용암지대
 	objectdc.SelectObject(_hLava);
-	for (int i = 22; i < 27; i++){
+	for (int i = 22; i < 28; i++){
 		for (int j = 1; j < 29; j++){	
 			memdc.BitBlt(j * 25, i * 25 - 8, 25, 25, &objectdc, (_iTime % 2) * 25, 0, SRCCOPY);
 		}
+	}
+	//좌측 벽
+	objectdc.SelectObject(_Map._hMapEle[1]);
+	for (int i = 2; i < 28; i++){
+		memdc.TransparentBlt(9, i * 25, 25, 25, &objectdc, 0,0,25,25,RGB(0,0,0));
+	}
+	//우측벽 보수공사
+	for (int i = 25; i < 28; i++){
+		memdc.TransparentBlt(725, i * 25, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
 	}
 
 	// 스코어보드 그리기
@@ -1187,7 +1198,7 @@ void CGame::Init()
 
 	//랜덤 인덱스 생성 __ 랜덤한 열에다가 용암 경고 / 용암 출력
 	//이때, 오른쪽 세줄, 맨 왼쪽 첫줄은 제외해주자. 열 33개, 행 26
-	
+	_OnMagma = false;
 	if (_OnMagma == false){
 		while (1){
 			
