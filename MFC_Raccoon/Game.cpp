@@ -1199,6 +1199,7 @@ void CGame::Init()
 	//랜덤 인덱스 생성 __ 랜덤한 열에다가 용암 경고 / 용암 출력
 	//이때, 오른쪽 세줄, 맨 왼쪽 첫줄은 제외해주자. 열 33개, 행 26
 	_OnMagma = false;
+	_Magma_time = 0;
 	if (_OnMagma == false){
 		while (1){
 			
