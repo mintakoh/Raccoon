@@ -1191,6 +1191,9 @@ void CGame::Init()
 	_adjY = 0;
 	is_up = false;
 
+	// 사다리 개수
+	_Rac.ladder_count = 3;
+
 	// 너구리 무적 정보
 	_Rac.is_ghost = false;
 	_Rac.is_collision = false;
