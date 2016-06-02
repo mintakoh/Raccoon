@@ -16,7 +16,6 @@ CGame::CGame()
 	, _iScore(0)
 	, _iItemScoreRate(0)
 	, _bIsDrop_Sound(FALSE)
-	, is_up(false)
 	, _Map(this)
 	, _adjY(0)
 	, _OnMagma(false)
@@ -843,7 +842,7 @@ void CGame::GamePlay()
 	case 8:
 		//오른쪽 경계면 
 		//1층은 y좌표 775, 2층이상은 y좌표 670 
-		if ((_Rac.x <= 670 && is_up == true) || (_Rac.x <= 775 && is_up == false))
+		if (_Rac.x <= 670)
 			_Rac.x -= _Rac._LeftShortJump[_Rac._JumpFrame].x;
 		_Rac.y += _Rac._LeftShortJump[_Rac._JumpFrame].y;
 
@@ -877,7 +876,7 @@ void CGame::GamePlay()
 	case 9:
 		//오른쪽 경계면 
 		//1층은 y좌표 775, 2층이상은 y좌표 670 
-		if ((_Rac.x <= 670 && is_up == true) || (_Rac.x <= 775 && is_up == false))
+		if (_Rac.x <= 670)
 			_Rac.x -= _Rac._LeftLongJump[_Rac._JumpFrame].x;
 		_Rac.y += _Rac._LeftLongJump[_Rac._JumpFrame].y;
 
@@ -1189,7 +1188,6 @@ void CGame::Init()
 	_Rac._JumpFrame = 0;	//점프를 보여 줄때 필요 (카운터)
 
 	_adjY = 0;
-	is_up = false;
 
 	// 사다리 개수
 	_Rac.ladder_count = 3;
@@ -1378,7 +1376,7 @@ void CGame::HandleKeys()
 				_Rac.state = 2;
 
 			else if (GetAsyncKeyState(RIGHT) < 0) {
-				if ((_Rac.x <= 670 && is_up == true) || (_Rac.x <= 775 && is_up == false)) {
+				if (_Rac.x <= 670) {
 					_Rac.x += _Rac.speedx;
 					_Rac.step = !_Rac.step;
 					if (_Rac.x % 20 == 0)
@@ -1439,7 +1437,6 @@ void CGame::HandleKeys()
 					if (_adjY >= _Rac.speedy * 5) {
 						_adjY = 0;
 					}
-					is_up = true;
 
 					_Map.MoveMap();
 

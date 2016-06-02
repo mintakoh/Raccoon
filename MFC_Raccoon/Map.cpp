@@ -189,7 +189,7 @@ void Map::MoveMap()
 	char ch;
 
 	// 맵 한줄씩 밀고, 위 5번째줄은 A 로, 옆 29번째 줄은 B로 채움
-	if (m_game->_adjY == 0 && m_game->is_up) {
+	if (m_game->_adjY == 0) {
 
 		for (int i = 25; i - 1 > 0 ; i--){
 			for (int j = 32; j > 0; j--){

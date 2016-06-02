@@ -90,8 +90,7 @@ public:
 	// Logger
 	CLogger		_log;
 
-	bool is_up;
-	
+
 	
 	//마그마함수
 	void Magma();
