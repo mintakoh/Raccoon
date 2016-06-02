@@ -753,7 +753,10 @@ void CGame::GamePlay()
 		_Rac.x += _Rac._StandJump[_Rac._JumpFrame].x;
 		_Rac.y += _Rac._StandJump[_Rac._JumpFrame].y;
 
-		objectdc.SelectObject(&_Rac._hStand);
+		if (_Rac.is_ghost)
+			objectdc.SelectObject(&_Rac._hSuperStand);
+		else
+			objectdc.SelectObject(&_Rac._hStand);
 		memdc.TransparentBlt(_Rac.x, _Rac.y, 50, 50, &objectdc, (_Rac._StandJump[_Rac._JumpFrame].frame) * 50, 0, 50, 50, RGB(0, 0, 0));
 
 		_Rac._JumpFrame++;
