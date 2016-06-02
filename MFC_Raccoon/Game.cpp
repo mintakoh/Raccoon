@@ -409,7 +409,7 @@ void CGame::GamePlay()
 			objectdc.SelectObject(&_Item[0]._hPot);
 			BITMAP info;
 			_Item[0]._hPot.GetBitmap(&info);
-			memdc.BitBlt(_Item[i].x, _Item[i].y, info.bmWidth, info.bmHeight, &objectdc, 0, 0, SRCCOPY);
+			memdc.TransparentBlt(_Item[i].x, _Item[i].y, info.bmWidth, info.bmHeight, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
 		}
 
 		//과일 
@@ -418,7 +418,7 @@ void CGame::GamePlay()
 			objectdc.SelectObject(&_Item[0]._hFruit[_iLevel - 1]);
 			BITMAP info;
 			_Item[0]._hFruit[_iLevel - 1].GetBitmap(&info);
-			memdc.BitBlt(_Item[i].x, _Item[i].y, info.bmWidth, info.bmHeight, &objectdc, 0, 0, SRCCOPY);
+			memdc.TransparentBlt(_Item[i].x, _Item[i].y, info.bmWidth, info.bmHeight, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
 		}
 
 		//너구리가 먹은 것에 대한 점수 표시 
