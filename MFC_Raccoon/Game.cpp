@@ -264,12 +264,12 @@ void CGame::GamePlay()
 			_Rac.is_ghost = true;
 	}
 
-	// 무적 모드인 동안 모든 피해와 낭떠러지를 무시 ( 200 )
+	// 무적 모드인 동안 모든 피해와 낭떠러지를 무시 ( 150 )
 	if (_Rac.is_ghost)
 	{
 		_Rac.ghost_time += 1;
 
-		if (_Rac.ghost_time >= 200)
+		if (_Rac.ghost_time >= 150)
 		{
 			_Rac.is_ghost = false;
 			_Rac.is_collision = false;
@@ -681,10 +681,10 @@ void CGame::GamePlay()
 	}
 	//좌측 벽
 	objectdc.SelectObject(_Map._hMapEle[1]);
-	for (int i = 2; i < 28; i++){
+	for (int i = 5; i < 28; i++){
 		memdc.TransparentBlt(9, i * 25, 25, 25, &objectdc, 0,0,25,25,RGB(0,0,0));
 	}
-	//우측벽 보수공사
+	//우측벽  하단 일부 보수공사
 	for (int i = 25; i < 28; i++){
 		memdc.TransparentBlt(725, i * 25, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
 	}
@@ -939,12 +939,12 @@ void CGame::GamePlay()
 	// 무적 모드 남은 시간 출력 
 	if (_Rac.is_ghost)
 	{
-		if (200 - _Rac.ghost_time > 100)
-			DrawDigit(memdc, _Rac.x + 16, _Rac.y - 15, 200 - _Rac.ghost_time, _hDigit_sm);
-		else if (200 - _Rac.ghost_time > 10)
-			DrawDigit(memdc, _Rac.x + 26, _Rac.y - 15, 200 - _Rac.ghost_time, _hDigit_sm);
-		else if (200 - _Rac.ghost_time > 100)
-			DrawDigit(memdc, _Rac.x + 28, _Rac.y - 15, 200 - _Rac.ghost_time, _hDigit_sm);
+		if (150 - _Rac.ghost_time > 100)
+			DrawDigit(memdc, _Rac.x + 16, _Rac.y - 15, 150 - _Rac.ghost_time, _hDigit_sm);
+		else if (150 - _Rac.ghost_time > 10)
+			DrawDigit(memdc, _Rac.x + 26, _Rac.y - 15, 150 - _Rac.ghost_time, _hDigit_sm);
+		else if (150 - _Rac.ghost_time > 100)
+			DrawDigit(memdc, _Rac.x + 28, _Rac.y - 15, 150 - _Rac.ghost_time, _hDigit_sm);
 	}
 
 	pView->Invalidate(FALSE);

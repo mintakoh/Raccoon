@@ -190,18 +190,20 @@ void Map::MoveMap()
 
 	// 맵 한줄씩 밀고, 위 5번째줄은 A 로, 옆 29번째 줄은 B로 채움
 	if (m_game->_adjY == 0) {
-
+		
 		for (int i = 25; i - 1 > 0 ; i--){
 			for (int j = 32; j > 0; j--){
 				if (_cMap[i - 1][j] != 'A')
 					_cMap[i][j] = _cMap[i - 1][j];
 				if (j < 29)
 					_cMap[5][j] = 'A';
-				if (i < 5)
+				
+				if ( i == 5)
 					_cMap[i][29] = 'B';
+				
 			}
 		}
-	
+		
 		for (int i = 32; i >= 0; i--)
 		{
 			if (m_index < 0)				// 맵의 끝까지 갔을 때 index 가 - 값이 되서 맵 처음이 나오는 것 방지
