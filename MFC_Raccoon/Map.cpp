@@ -339,6 +339,7 @@ void Map::MakeRadder()
 		_hMap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height());
 	}
 	memdc.SelectObject(&_hMap);
+	
 	memdc.FillSolidRect(&rect, RGB(0, 0, 0));
 
 	for (int i = 6; i < 26; i++){
@@ -356,7 +357,7 @@ void Map::MakeRadder()
 			}
 		}
 	}
-
+	
 	for (int i = 0; i < m_game->_iLevel; i++)
 	{
 		BITMAP info;

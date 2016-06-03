@@ -246,6 +246,15 @@
     <Image Include="res\super_updown.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="res\bitmap2.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Magma_bg.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\hotfloor_top.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Media Include="res\clear.wav">

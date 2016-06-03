@@ -7,6 +7,7 @@
 #include "Item.h"
 #include "Map.h"
 #include "Logger.h"
+#include "afxwin.h"
 
 
 // 게임에서 사용하는 키 지정 
@@ -103,5 +104,7 @@ public:
 	int _Magma_time;	//현재 남은시간과의 비교를 위해
 	// 용암 랜덤 인덱스
 	int _Magma_index;
+	// 용암바닥
+	CBitmap _hotfloor[2];
 };
 

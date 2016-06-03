@@ -46,7 +46,9 @@ CGame::CGame()
 	_hLava.LoadBitmapW(IDB_LAVA);
 	//경고
 	_hWarn.LoadBitmapW(IDB_WARNING);
-
+	//용암바닥
+	_hotfloor[0].LoadBitmapW(IDB_HOTFLOOR);
+	_hotfloor[1].LoadBitmapW(IDB_HOTFLOOR_TOP);
 }
 
 
@@ -672,13 +674,7 @@ void CGame::GamePlay()
 			}
 		}
 	}
-	//용암지대
-	objectdc.SelectObject(_hLava);
-	for (int i = 22; i < 28; i++){
-		for (int j = 1; j < 29; j++){	
-			memdc.BitBlt(j * 25, i * 25 - 8, 25, 25, &objectdc, (_iTime % 2) * 25, 0, SRCCOPY);
-		}
-	}
+	
 	//좌측 벽
 	objectdc.SelectObject(_Map._hMapEle[1]);
 	for (int i = 5; i < 28; i++){
@@ -708,7 +704,7 @@ void CGame::GamePlay()
 	//용암택
 	objectdc.SelectObject(_hLava);
 	if (_OnMagma == true){
-		for (int i = 6; i < 26; i++){
+		for (int i = 6; i < 22; i++){
 			
 				if (_Magma_time % 2 == 0)
 					memdc.TransparentBlt(_Magma_index * 25, (i * 25) - 8, 25, 25, &objectdc, 0, 0, 25, 25, RGB(0, 0, 0));
@@ -718,7 +714,21 @@ void CGame::GamePlay()
 		}
 		_Rac.CheckCollision_Magma(_Magma_index, _OnMagma);
 	}
-	Magma();
+	
+	//용암지대
+	
+	for (int i = 11; i < 14; i++){
+		for (int j = 0; j < 14; j++){
+			if (i == 11){
+				objectdc.SelectObject(_hotfloor[1]);
+				memdc.TransparentBlt(j * 50 + 25, i * 50 - 10, 50, 50, &objectdc, (_iTime % 2) * 50, 0, 50, 50, RGB(0, 0, 0));
+			}
+			else{
+				objectdc.SelectObject(_hotfloor[0]);
+				memdc.BitBlt(j * 50 + 25, i * 50 - 10, 50, 50, &objectdc, (_iTime % 2) * 50, 0, SRCCOPY);
+			}
+		}
+	}
 	
 	////적 충돌 감지 
 	_Rac.CheckCollision_Enemy(_Ene);

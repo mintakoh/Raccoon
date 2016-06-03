@@ -143,6 +143,7 @@
   <ItemGroup>
     <Image Include="res\baby.bmp" />
     <Image Include="res\bitmap1.bmp" />
+    <Image Include="res\bitmap2.bmp" />
     <Image Include="res\bmp00001.bmp" />
     <Image Include="res\bmp00002.bmp" />
     <Image Include="res\bonus.bmp" />
@@ -157,9 +158,11 @@
     <Image Include="res\EnemyRightRed.bmp" />
     <Image Include="res\GameOver.bmp" />
     <Image Include="res\ghost_left.bmp" />
+    <Image Include="res\hotfloor_top.bmp" />
     <Image Include="res\left.bmp" />
     <Image Include="res\LeftJump.bmp" />
     <Image Include="res\Lets.bmp" />
+    <Image Include="res\Magma_bg.bmp" />
     <Image Include="res\map_a.bmp" />
     <Image Include="res\map_b.bmp" />
     <Image Include="res\map_bg.bmp" />
