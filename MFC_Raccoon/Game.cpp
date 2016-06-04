@@ -1432,6 +1432,39 @@ void CGame::HandleKeys()
 			break;
 
 		case 4:
+			if (GetAsyncKeyState(LEFT) < 0)
+			{
+				if (_Map._cMap[(_Rac.y + 20 - _adjY) / 25][(_Rac.x - _Rac.speedx + 20) / 25] == 'F')
+				{
+					if (_Rac.x >= 25) {
+						_Rac.x -= _Rac.speedx;
+						_Rac.step = !_Rac.step;
+						if (_Rac.x % 20 == 0)
+							PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
+
+						_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iTime, _iScore, _iLevel, _adjY);
+						//용암충돌감지
+						_Rac.CheckCollision_Magma(_Magma_index, _OnMagma);
+					}
+				}
+			}
+
+			else if (GetAsyncKeyState(RIGHT) < 0) {
+				if (_Map._cMap[(_Rac.y + 20 - _adjY) / 25][(_Rac.x + _Rac.speedx + 20) / 25] == 'F')
+				{
+					if (_Rac.x <= 670) {
+						_Rac.x += _Rac.speedx;
+						_Rac.step = !_Rac.step;
+						if (_Rac.x % 20 == 0)
+							PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
+
+						_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iTime, _iScore, _iLevel, _adjY);
+						//용암충돌감지
+						_Rac.CheckCollision_Magma(_Magma_index, _OnMagma);
+					}
+				}
+			}
+
 			if (GetAsyncKeyState(UP) < 0) {
 
 				if (_Map._cMap[(_Rac.y + 20 - _adjY) / 25][(_Rac.x + 20) / 25] == 'F') {
