@@ -218,8 +218,8 @@ void CGame::GamePlay()
 	if (Item::_iEat == 8 && _ScoreShow == 1) {
 		Sleep(500);
 		_iAni = 0;
-		_iScore = 0;
-		_iItemScoreRate = 5;
+		//_iScore = 0;
+		_iItemScoreRate += 500;
 		_iLevel++;
 		Item::_iEat = 0;
 		_iTime += 100;
@@ -389,7 +389,7 @@ void CGame::GamePlay()
 	objectdc.SelectObject(&_Map._hMap);
 	memdc.TransparentBlt((670 - (_iLevel - 1) * 55), 70, 55 * _iLevel, 50, &objectdc, 200, 0, 50, 50, RGB(0, 0, 0));
 
-	/*for (i = 0; i < _iLevel; i++)
+	/*for (i = 0; i < _iLevel; i++)(_Item[i].ch == 'N' || _Item[i].ch == 'M')
 	{
 		BITMAP info;
 		_Item[0]._hFruit[i].GetBitmap(&info);
@@ -407,7 +407,7 @@ void CGame::GamePlay()
 	// 항아리 & 과일 표시 
 	for (i = 0; i < Item::_ItemCount; i++) {
 		//항아리 
-		if (_Item[i].ch == 'M' || _Item[i].ch == 'N' || _Item[i].ch == 'O')
+		if (_Item[i].ch == 'M' || _Item[i].ch == 'N' || _Item[i].ch == 'O' || _Item[i].ch == 'P' || _Item[i].ch == 'Z')
 		{
 			objectdc.SelectObject(&_Item[0]._hPot);
 			BITMAP info;
@@ -811,7 +811,7 @@ void CGame::GamePlay()
 			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
 			//따라서 착지하면 충돌검사를 한다.
 
-			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _iLevel, _adjY);
+			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate,_iTime, _iScore, _iLevel, _adjY);
 
 			//용암충돌감지
 			_Rac.CheckCollision_Magma(_Magma_index, _OnMagma);
@@ -843,7 +843,7 @@ void CGame::GamePlay()
 			//문제는 너구리가 점프를 끝내고 바닥에 착지 하면 
 			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
 			//따라서 착지하면 충돌검사를 한다.
-			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _iLevel, _adjY);
+			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate,_iTime, _iScore, _iLevel, _adjY);
 			//용암충돌감지
 			_Rac.CheckCollision_Magma(_Magma_index, _OnMagma);
 		}
@@ -874,7 +874,7 @@ void CGame::GamePlay()
 			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
 			//따라서 착지하면 충돌검사를 한다.
 
-			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _iLevel, _adjY);
+			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iTime, _iScore, _iLevel, _adjY);
 			//용암충돌감지
 			_Rac.CheckCollision_Magma(_Magma_index, _OnMagma);
 
@@ -907,7 +907,7 @@ void CGame::GamePlay()
 			//방향키를 안눌렀기 때문에 충돌 검사가 안된다.
 			//따라서 착지하면 충돌검사를 한다.
 
-			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _iLevel, _adjY);
+			_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iTime, _iScore, _iLevel, _adjY);
 			//용암충돌감지
 			_Rac.CheckCollision_Magma(_Magma_index, _OnMagma);
 
@@ -1187,7 +1187,7 @@ void CGame::Init()
 	_Rac.speedy = 5;		//너구리 이동 속도 
 	Item::_iEat = 0;
 	_iTime = 500;			//게임 제한 시간 
-	_iItemScoreRate = 5;	//아이템 점수, 2배씩 곱해지면서 증가
+	_iItemScoreRate = 500;	//아이템 점수, 2배씩 곱해지면서 증가
 	_iAni = 0;				//애니메이션 효과를 위해 
 	_bIsDrop_Sound = FALSE;	//너구리가 떨어질때 나는 소리 상태 
 
@@ -1339,7 +1339,7 @@ void CGame::HandleKeys()
 					if (_Rac.x % 20 == 0)
 						PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
 
-					_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _iLevel, _adjY);
+					_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iTime, _iScore, _iLevel, _adjY);
 					//용암충돌감지
 					_Rac.CheckCollision_Magma(_Magma_index, _OnMagma);
 
@@ -1392,7 +1392,7 @@ void CGame::HandleKeys()
 					if (_Rac.x % 20 == 0)
 						PlaySound(MAKEINTRESOURCE(IDR_RAC_STEP), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC | SND_NOSTOP);
 
-					_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iScore, _iLevel, _adjY);
+					_Rac.CheckCollision(_Map, _Item, _Ene, _iItemScoreRate, _iTime, _iScore, _iLevel, _adjY);
 					//용암충돌감지
 					_Rac.CheckCollision_Magma(_Magma_index, _OnMagma);
 

@@ -86,7 +86,7 @@ Raccoon::~Raccoon()
 }
 
 
-void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemScoreRate, int& _iScore, char& _iLevel, const int& _adjY)
+void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemScoreRate,int& _iTime, int& _iScore, char& _iLevel, const int& _adjY)
 {
 	if (state == 10 || state == 11)
 		return;
@@ -197,12 +197,23 @@ void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemSco
 					_Item[i].ch = '.';
 					Enemy::_EnemyCount++;
 				}
+				else if (_Item[i].ch == 'P'){
+					//사다리 충전
+					ladder_count++;
+					_Item[i].ch = '*';
+
+				}
+				else if (_Item[i].ch == 'Z'){
+					//체력 충전
+					_iTime += 50;
+					_Item[i].ch = '*';
+				}
 				else{
 					//점수 표시 준비
 					//나중에 점수 표시하고 '.'으로 교체
 					_Item[i].ch = '*';
 					//점수 계산
-					_iItemScoreRate *= 2;
+					_iItemScoreRate *= 1;
 					_iScore += _iItemScoreRate;
 				}
 			}
