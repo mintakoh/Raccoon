@@ -483,20 +483,17 @@ void CGame::GamePlay()
 				if (_Ene[i].alpha != 255) {
 					_Ene[i].alpha += 5;	//선명하게
 					objectdc.SelectObject(&_Map._hMap);
-					memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, 200, 0, SRCCOPY); //검은색으로 기존의 것을 지우기 (200,0 ~ 250,50은 검정색)
-
-					BLENDFUNCTION bf;
-					bf.BlendOp = AC_SRC_OVER;
-					bf.BlendFlags = 0;
-					bf.SourceConstantAlpha = _Ene[i].alpha;
-					bf.AlphaFormat = 0;
+					memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, _Ene[i].x, _Ene[i].y, SRCCOPY); //검은색으로 기존의 것을 지우기 (200,0 ~ 250,50은 검정색)
 
 					objectdc.SelectObject(&_Ene[0]._hSnakeRight);
 
 					BITMAP info;
 					_Ene[0]._hSnakeRight.GetBitmap(&info);
-					memdc.AlphaBlend(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni / 5 % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, bf);
+					memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni / 5 % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, RGB(0, 0, 0));
+
+					DrawDigit(memdc, _Ene[i].x + 15, _Ene[i].y + 10, (255 - _Ene[i].alpha) / 50, _hDigit);
 				}
+
 				else
 				{
 					objectdc.SelectObject(&_Ene[0]._hSnakeRight);
@@ -507,24 +504,21 @@ void CGame::GamePlay()
 			else if (_Ene[i].alpha != 255) {
 				_Ene[i].alpha += 5;	//선명하게  
 				objectdc.SelectObject(&_Map._hMap);
-				memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, 200, 0, SRCCOPY); //검은색으로 기존의 것을 지우기 (200,0 ~ 250,50은 검정색)
-
-				BLENDFUNCTION bf;
-				bf.BlendOp = AC_SRC_OVER;
-				bf.BlendFlags = 0;
-				bf.SourceConstantAlpha = _Ene[i].alpha;
-				bf.AlphaFormat = 0;
+				memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, _Ene[i].x, _Ene[i].y, SRCCOPY); //검은색으로 기존의 것을 지우기 (200,0 ~ 250,50은 검정색)
 
 				objectdc.SelectObject(&_Ene[0]._hSnakeLeft);
 
 				BITMAP info;
 				_Ene[0]._hSnakeLeft.GetBitmap(&info);
-				memdc.AlphaBlend(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni / 5 % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, bf);
+				memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni / 5 % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, RGB(0, 0, 0));
+
+				DrawDigit(memdc, _Ene[i].x + 15, _Ene[i].y + 10, (255 - _Ene[i].alpha) / 50, _hDigit);
 			}
 
 			else // 방향(왼쪽을 보고 있을때)
 			{
 				objectdc.SelectObject(&_Ene[0]._hSnakeLeft);
+
 				BITMAP info;
 				_Ene[0]._hSnakeLeft.GetBitmap(&info);
 				memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, (_iAni / 5 % 2) * 50, 0, info.bmWidth / 2, info.bmHeight, RGB(0, 0, 0));
@@ -571,17 +565,13 @@ void CGame::GamePlay()
 					objectdc.SelectObject(&_Map._hMap);
 					memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, _Ene[i].x, _Ene[i].y, SRCCOPY); //기존의 것을 지우기
 
-					BLENDFUNCTION bf;
-					bf.BlendOp = AC_SRC_OVER;
-					bf.BlendFlags = 0;
-					bf.SourceConstantAlpha = _Ene[i].alpha;
-					bf.AlphaFormat = 0;
-
 					objectdc.SelectObject(&_Ene[0]._hGhostRight);
 
 					BITMAP info;
 					_Ene[0]._hGhostRight.GetBitmap(&info);
-					memdc.AlphaBlend(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, 0, 0, info.bmWidth, info.bmHeight, bf);
+					memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
+
+					DrawDigit(memdc, _Ene[i].x + 15, _Ene[i].y + 10, (255 - _Ene[i].alpha) / 50, _hDigit);
 				}
 				else
 				{
@@ -596,17 +586,13 @@ void CGame::GamePlay()
 				objectdc.SelectObject(&_Map._hMap);
 				memdc.BitBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, _Ene[i].x, _Ene[i].y, SRCCOPY); //기존의 것을 지우기
 
-				BLENDFUNCTION bf;
-				bf.BlendOp = AC_SRC_OVER;
-				bf.BlendFlags = 0;
-				bf.SourceConstantAlpha = _Ene[i].alpha;
-				bf.AlphaFormat = 0;
-
 				objectdc.SelectObject(&_Ene[0]._hGhostLeft);
 
 				BITMAP info;
 				_Ene[0]._hGhostLeft.GetBitmap(&info);
-				memdc.AlphaBlend(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, 0, 0, info.bmWidth, info.bmHeight, bf);
+				memdc.TransparentBlt(_Ene[i].x, _Ene[i].y, 50, 50, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
+
+				DrawDigit(memdc, _Ene[i].x + 15, _Ene[i].y + 10, (255 - _Ene[i].alpha) / 50, _hDigit);
 			}
 
 			else // 방향(왼쪽을 보고 있을때)
