@@ -174,7 +174,7 @@ void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemSco
 
 				PlaySound(MAKEINTRESOURCE(IDR_RAC_EAT), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 
-				if (_Item[i].ch >= 'Q') Item::_iEat++;
+				if (_Item[i].ch >= 'Q' && _Item[i].ch != 'Z') Item::_iEat++;
 
 				if (_Item[i].ch == 'N' || _Item[i].ch == 'M'){
 					PlaySound(MAKEINTRESOURCE(IDR_SNAKE), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
