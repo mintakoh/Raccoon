@@ -358,13 +358,13 @@ void Map::MakeRadder()
 		}
 	}
 	
-	for (int i = 0; i < m_game->_iLevel; i++)
-	{
-		BITMAP info;
-		m_game->_Item[0]._hFruit[i].GetBitmap(&info);
-		objectdc.SelectObject(&m_game->_Item[0]._hFruit[i]);
-		memdc.TransparentBlt((670 - (m_game->_iLevel - 1) * 55) + i * 55, 70, info.bmWidth, info.bmHeight, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
-	}
+	//for (int i = 0; i < m_game->_iLevel; i++)
+	//{
+	//	BITMAP info;
+	//	m_game->_Item[0]._hFruit[i].GetBitmap(&info);
+	//	objectdc.SelectObject(&m_game->_Item[0]._hFruit[i]);
+	//	memdc.TransparentBlt((670 - (m_game->_iLevel - 1) * 55) + i * 55, 70, info.bmWidth, info.bmHeight, &objectdc, 0, 0, info.bmWidth, info.bmHeight, RGB(0, 0, 0));
+	//}
 
 
 	// 'SCORE'
