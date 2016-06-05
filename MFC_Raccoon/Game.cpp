@@ -21,6 +21,7 @@ CGame::CGame()
 	, _OnMagma(false)
 	, _Magma_time(0)
 	, _Magma_index(0)
+	, _level_up_time(0)
 {
 	//LETS
 	_hLets.LoadBitmapW(IDB_LETS);
@@ -217,10 +218,11 @@ void CGame::GamePlay()
 	//// _ScoreShow == 1 을 한 이유는 마지막으로 먹은 과일 점수 까지 보여주려고 
 	if (Item::_iEat == 8 && _ScoreShow == 1) {
 		Sleep(500);
+		_level_up_time = 50;
 		_iAni = 0;
 		//_iScore = 0;
 		_iItemScoreRate += 500;
-		_iLevel++;
+		_iLevel = _iLevel % 4 + 1;
 		Item::_iEat = 0;
 		_iTime += 100;
 		//_GameState = 2;		// 잠시 게임 스테이지 클리어 기능 정지
@@ -332,8 +334,11 @@ void CGame::GamePlay()
 			memdc.BitBlt(_Ene[i].x, _Ene[i].y, 55, 55, &objectdc, _Ene[i].x, _Ene[i].y, SRCCOPY);
 		}
 
-
+		// 무적 시간 지우기
 		memdc.BitBlt(_Rac.x - 5, _Rac.y - 15, 70, 12, &objectdc, _Rac.x - 5, _Rac.y - 15, SRCCOPY);
+
+		// 레벨 업 지우기
+		memdc.BitBlt(_Rac.x - 10, _Rac.y - 25, 100, 20, &objectdc, _Rac.x - 10, _Rac.y - 25, SRCCOPY);
 
 		//용암영역
 		if (_OnMagma == false){
@@ -943,6 +948,14 @@ void CGame::GamePlay()
 			DrawDigit(memdc, _Rac.x + 26, _Rac.y - 15, 150 - _Rac.ghost_time, _hDigit_sm);
 		else if (150 - _Rac.ghost_time > 100)
 			DrawDigit(memdc, _Rac.x + 28, _Rac.y - 15, 150 - _Rac.ghost_time, _hDigit_sm);
+	}
+
+	if (_level_up_time)
+	{
+		memdc.SetBkMode(TRANSPARENT);
+		memdc.SetTextColor(RGB(255, 255, 255));
+		memdc.TextOutW(_Rac.x - 5, _Rac.y - 25, _T("LEVEL UP!"));
+		_level_up_time--;
 	}
 
 	pView->Invalidate(FALSE);

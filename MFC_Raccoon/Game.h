@@ -106,5 +106,6 @@ public:
 	int _Magma_index;
 	// ¿ë¾Ï¹Ù´Ú
 	CBitmap _hotfloor[2];
+	int _level_up_time;
 };
 
