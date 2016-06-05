@@ -456,6 +456,50 @@ void CGame::GamePlay()
 				memdc.BitBlt(_Item[i].x, _Item[i].y, 50, 50, &objectdc, _Item[i].x, _Item[i].y, SRCCOPY);
 			}
 		}
+		else if (_Item[i].ch == '=') {
+			
+			if (_ScoreShow == 0) {
+				objectdc.SelectObject(&_Map._hMap);
+				memdc.BitBlt(_Item[i].x, _Item[i].y, 50, 50, &objectdc, _Item[i].x, _Item[i].y, SRCCOPY);
+			}
+			CBitmap bitmap;
+			bitmap.LoadBitmapW(IDB_ITEM_P);
+			objectdc.SelectObject(&bitmap);
+			memdc.TransparentBlt(_Item[i].x, _Item[i].y, 48, 48, &objectdc, 0, 0, 48, 48, RGB(0, 0, 0));
+
+			//점수를 10프레임 동안 보여짐 			
+			if (++_ScoreShow == 11) {
+				objectdc.SelectObject(&_Map._hMap);
+				memdc.BitBlt(_Item[i].x, _Item[i].y + 25, 40, 14, &objectdc, 200, 0, SRCCOPY);
+				_Item[i].ch = '.';
+				_ScoreShow = 0;
+
+				objectdc.SelectObject(&_Map._hMap);
+				memdc.BitBlt(_Item[i].x, _Item[i].y, 50, 50, &objectdc, _Item[i].x, _Item[i].y, SRCCOPY);
+			}
+		}
+		else if (_Item[i].ch == '+') {
+
+			if (_ScoreShow == 0) {
+				objectdc.SelectObject(&_Map._hMap);
+				memdc.BitBlt(_Item[i].x, _Item[i].y, 50, 50, &objectdc, _Item[i].x, _Item[i].y, SRCCOPY);
+			}
+			CBitmap bitmap;
+			bitmap.LoadBitmapW(IDB_ITEM_Z);
+			objectdc.SelectObject(&bitmap);
+			memdc.TransparentBlt(_Item[i].x, _Item[i].y, 48, 48, &objectdc, 0, 0, 48, 48, RGB(0, 0, 0));
+
+			//점수를 10프레임 동안 보여짐 			
+			if (++_ScoreShow == 11) {
+				objectdc.SelectObject(&_Map._hMap);
+				memdc.BitBlt(_Item[i].x, _Item[i].y + 25, 40, 14, &objectdc, 200, 0, SRCCOPY);
+				_Item[i].ch = '.';
+				_ScoreShow = 0;
+
+				objectdc.SelectObject(&_Map._hMap);
+				memdc.BitBlt(_Item[i].x, _Item[i].y, 50, 50, &objectdc, _Item[i].x, _Item[i].y, SRCCOPY);
+			}
+		}
 		else if (_Item[i].ch == '#') {
 			objectdc.SelectObject(&_Map._hMap);
 			memdc.BitBlt(_Item[i].x, _Item[i].y, 50, 50, &objectdc, 200, 0, SRCCOPY);

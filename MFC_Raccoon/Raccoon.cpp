@@ -200,13 +200,13 @@ void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemSco
 				else if (_Item[i].ch == 'P'){
 					//사다리 충전
 					ladder_count++;
-					_Item[i].ch = '*';
+					_Item[i].ch = '=';
 
 				}
 				else if (_Item[i].ch == 'Z'){
 					//체력 충전
 					_iTime += 50;
-					_Item[i].ch = '*';
+					_Item[i].ch = '+';
 				}
 				else{
 					//점수 표시 준비

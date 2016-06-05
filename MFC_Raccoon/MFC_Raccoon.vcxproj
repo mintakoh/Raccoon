@@ -144,8 +144,10 @@
     <Image Include="res\baby.bmp" />
     <Image Include="res\bitmap1.bmp" />
     <Image Include="res\bitmap2.bmp" />
+    <Image Include="res\bitmap4.bmp" />
     <Image Include="res\bmp00001.bmp" />
     <Image Include="res\bmp00002.bmp" />
+    <Image Include="res\bmp00003.bmp" />
     <Image Include="res\bonus.bmp" />
     <Image Include="res\die.bmp" />
     <Image Include="res\digit.bmp" />
