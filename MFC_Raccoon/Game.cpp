@@ -402,6 +402,8 @@ void CGame::GamePlay()
 	objectdc.SelectObject(&_Map._hMapEle[5]);
 	memdc.BitBlt(810, 510, 25, 25, &objectdc, 0, 0, SRCCOPY);
 	
+	objectdc.SelectObject(&_Map._hMap);
+	memdc.BitBlt(840, 510, 100, 100, &objectdc, 200, 0, SRCCOPY);
 	DrawDigit(memdc, 840, 510, _Rac.ladder_count, _hDigit);
 
 	// 항아리 & 과일 표시 
