@@ -44,8 +44,8 @@ public:
 
 	Map _Map;
 	Raccoon _Rac;
-	Enemy	_Ene[100];
-	Item	_Item[100];
+	Enemy	_Ene[500];
+	Item	_Item[500];
 
 	//더블 버퍼링을 위해  
 	CBitmap		_cBit;
