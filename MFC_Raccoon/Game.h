@@ -6,6 +6,9 @@
 #include "Enemy.h"
 #include "Item.h"
 #include "Map.h"
+#include "Logger.h"
+#include "afxwin.h"
+
 
 // 게임에서 사용하는 키 지정 
 #define LEFT		VK_LEFT
@@ -41,8 +44,8 @@ public:
 
 	Map _Map;
 	Raccoon _Rac;
-	Enemy	_Ene[7];
-	Item	_Item[12];
+	Enemy	_Ene[500];
+	Item	_Item[500];
 
 	//더블 버퍼링을 위해  
 	CBitmap		_cBit;
@@ -81,5 +84,28 @@ public:
 
 	// 너구리가 죽어서 떨어질때 음악 연주 상태
 	BOOL _bIsDrop_Sound;
+	
+	// 너구리 맵 상대위치 보정값
+	int			_adjY;
+
+	// Logger
+	CLogger		_log;
+
+
+	
+	//마그마함수
+	void Magma();
+	//용암이미지
+	CBitmap _hLava;
+	//경고 이미지
+	CBitmap _hWarn;
+	// 마그마 활성화됐니 안됐니
+	bool _OnMagma;
+	int _Magma_time;	//현재 남은시간과의 비교를 위해
+	// 용암 랜덤 인덱스
+	int _Magma_index;
+	// 용암바닥
+	CBitmap _hotfloor[2];
+	int _level_up_time;
 };
 

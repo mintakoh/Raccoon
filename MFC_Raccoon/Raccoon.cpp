@@ -5,13 +5,16 @@
 #include "Enemy.h"
 #include "Item.h"
 #include "Map.h"
-#include "Game.h"
 
 // static 변수 사용을 위해 초기화
-char Raccoon::_iLive = 0;
+//char Raccoon::_iLive = 0;
 
 Raccoon::Raccoon()
 : _JumpFrame(0)
+, ghost_time(0)
+, is_ghost(false)
+, is_collision(false)
+, ladder_count(3)
 {
 	// 제자리 점프 
 	_StandJump[0] = { 1, -5, 0 };
@@ -59,11 +62,17 @@ Raccoon::Raccoon()
 
 	// 너구리
 	_hLeft.LoadBitmapW(IDB_LEFT);
+	_hSuperLeft.LoadBitmapW(IDB_SUPER_LEFT);
 	_hStand.LoadBitmapW(IDB_STAND);
+	_hSuperStand.LoadBitmapW(IDB_SUPER_STAND);
 	_hRight.LoadBitmapW(IDB_RIGHT);
+	_hSuperRight.LoadBitmapW(IDB_SUPER_RIGHT);
 	_hUpDown.LoadBitmapW(IDB_UPDOWN);
+	_hSuperUpDown.LoadBitmapW(IDB_SUPER_UPDOWN);
 	_hLeftJump.LoadBitmapW(IDB_LEFT_JUMP);
+	_hSuperLeftJump.LoadBitmapW(IDB_SUPER_LEFT_JUMP);
 	_hRightJump.LoadBitmapW(IDB_RIGHT_JUMP);
+	_hSuperRightJump.LoadBitmapW(IDB_SUPER_RIGHT_JUMP);
 	_hDrop.LoadBitmapW(IDB_DROP);
 	_hDie.LoadBitmapW(IDB_DIE);
 
@@ -77,8 +86,11 @@ Raccoon::~Raccoon()
 }
 
 
-void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemScoreRate, int& _iScore)
+void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemScoreRate,int& _iTime, int& _iScore, char& _iLevel, const int& _adjY)
 {
+	if (state == 10 || state == 11)
+		return;
+		
 	static int x1, y1, x2, y2;
 	static int xx1, yy1, xx2, yy2;
 
@@ -96,50 +108,80 @@ void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemSco
 		y2 = y + 40;
 	}
 
-	if (state == 2 || state == 3){
-		if (_Map._cMap[y2 / 25][x1 / 25] == 'E' || _Map._cMap[y2 / 25 + 1][x1 / 25] == '.'){
-			xx1 = (x1 / 25 * 25) + 5;
-			xx2 = ((x1 / 25 + 1) * 25) - 5;
-			if ((xx1 > x1 && xx1 <x2) || (xx2 > x1 && xx2 < x2)){
-				state = 10;
-				return;
+	y1 -= _adjY;
+	y2 -= _adjY;
+
+	if (is_ghost == false)
+	{
+		if (state == 2 || state == 3){
+			// 떨어질 때 바로 죽음
+			if (_Map._cMap[y2 / 25 + 1][x1 / 25] == '.'){
+				xx1 = (x1 / 25 * 25) + 5;
+				xx2 = ((x1 / 25 + 1) * 25) - 5;
+				if ((xx1 > x1 && xx1 <x2) || (xx2 > x1 && xx2 < x2)){
+					state = 10;
+					return;
+				}
+			}
+
+			// 압정 밟을 때 체력 감소
+			else if (_Map._cMap[y2 / 25][x1 / 25] == 'E')
+			{
+				xx1 = (x1 / 25 * 25) + 5;
+				xx2 = ((x1 / 25 + 1) * 25) - 5;
+				if ((xx1 > x1 && xx1 <x2) || (xx2 > x1 && xx2 < x2)){
+					is_collision = true;
+					return;
+				}
+			}
+
+			if (_Map._cMap[y2 / 25 + 1][x2 / 25] == '.') {
+				xx1 = (x2 / 25 * 25) + 5;
+				xx2 = ((x2 / 25 + 1) * 25) - 5;
+				if ((xx1 > x1 && xx1 < x2) || (xx2 > x1 && xx2 < x2)) {
+					state = 10;
+					return;
+				}
+			}
+
+			else if (_Map._cMap[y2 / 25][x2 / 25] == 'E')
+			{
+				xx1 = (x2 / 25 * 25) + 5;
+				xx2 = ((x2 / 25 + 1) * 25) - 5;
+				if ((xx1 > x1 && xx1 < x2) || (xx2 > x1 && xx2 < x2)) {
+					is_collision = true;
+					return;
+				}
 			}
 		}
-		if (_Map._cMap[y2 / 25][x2 / 25] == 'E' || _Map._cMap[y2 / 25 + 1][x2 / 25] == '.') {
-			xx1 = (x2 / 25 * 25) + 5;
-			xx2 = ((x2 / 25 + 1) * 25) - 5;
-			if ((xx1 > x1 && xx1 < x2) || (xx2 > x1 && xx2 < x2)) {
-				state = 10;
-				return;
-			}
-		}
+		
 	}
 
 	//과일, 항아리 충돌 검사
 	char i;
 
-	for (i = 0; i < 12; i++){
+	for (i = 0; i < Item::_ItemCount; i++){
 		if (_Item[i].ch >= 'M'){
 			xx1 = _Item[i].x + 10;
 			yy1 = _Item[i].y + 30;
 			xx2 = _Item[i].x + 40;
 			yy2 = _Item[i].y + 40;
 
-			if ((xx1 > x1 && xx1 < x2 && yy1 > y1 && yy1 < y2) ||
-				(xx1 > x1 && xx1 < x2 && yy2 > y1 && yy2 < y2) ||
-				(xx2 > x1 && xx2 < x2 && yy1 > y1 && yy1 < y2) ||
-				(xx2 > x1 && xx2 < x2 && yy2 > y1 && yy2 < y2)){
+			if ((xx1 >= x1 && xx1 <= x2 && yy1 >= y1 && yy1 <= y2) ||
+				(xx1 >= x1 && xx1 <= x2 && yy2 >= y1 && yy2 <= y2) ||
+				(xx2 >= x1 && xx2 <= x2 && yy1 >= y1 && yy1 <= y2) ||
+				(xx2 >= x1 && xx2 <= x2 && yy2 >= y1 && yy2 <= y2)){
 
 				PlaySound(MAKEINTRESOURCE(IDR_RAC_EAT), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 
-				if (_Item[i].ch >= 'Q') Item::_iEat++;
+				if (_Item[i].ch >= 'Q' && _Item[i].ch != 'Z') Item::_iEat++;
 
 				if (_Item[i].ch == 'N' || _Item[i].ch == 'M'){
 					PlaySound(MAKEINTRESOURCE(IDR_SNAKE), AfxGetInstanceHandle(), SND_RESOURCE | SND_ASYNC);
 
 					_Ene[Enemy::_EnemyCount].x = _Item[i].x;
 					_Ene[Enemy::_EnemyCount].y = _Item[i].y;
-					_Ene[Enemy::_EnemyCount].type = FALSE;
+					_Ene[Enemy::_EnemyCount].type = 1;
 					_Ene[Enemy::_EnemyCount].alpha = 10;
 
 					if (_Item[i].ch == 'N') {
@@ -155,12 +197,23 @@ void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemSco
 					_Item[i].ch = '.';
 					Enemy::_EnemyCount++;
 				}
+				else if (_Item[i].ch == 'P'){
+					//사다리 충전
+					ladder_count++;
+					_Item[i].ch = '=';
+
+				}
+				else if (_Item[i].ch == 'Z'){
+					//체력 충전
+					_iTime += 50;
+					_Item[i].ch = '+';
+				}
 				else{
 					//점수 표시 준비
 					//나중에 점수 표시하고 '.'으로 교체
 					_Item[i].ch = '*';
 					//점수 계산
-					_iItemScoreRate *= 2;
+					_iItemScoreRate *= 1;
 					_iScore += _iItemScoreRate;
 				}
 			}
@@ -170,6 +223,12 @@ void Raccoon::CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemSco
 
 void Raccoon::CheckCollision_Enemy(Enemy* _Ene)
 {
+	if (state == 10 || state == 11)
+		return;
+
+	if (is_ghost)
+		return;
+
 	static int x1, y1, x2, y2;
 	static int xx1, yy1, xx2, yy2;
 
@@ -207,8 +266,61 @@ void Raccoon::CheckCollision_Enemy(Enemy* _Ene)
 				(x1 > xx1 && x1 < xx2 && y2 > yy1 && y2 < yy2) ||
 				(x2 > xx1 && x2 < xx2 && y1 > yy1 && y2 < yy2) ||
 				(x2 > xx1 && x2 < xx2 && y2 > yy1 && y2 < yy2))
-				state = 10;
+				is_collision = true;
 
 		}
 	}
+}
+
+void Raccoon::CheckCollision_Magma(int& _Magma_index, bool& _OnMagma)
+{
+	static int x1, y1, x2, y2;
+	static int xx1, yy1, xx2, yy2;
+
+	if (state == 2 || state == 6 || state == 7){
+		x1 = x + 5;
+		y1 = y + 5;
+		x2 = x + 30;
+		y2 = y + 45;
+	}
+
+	else if (state == 3 || state == 8 || state == 9){
+		x1 = x + 17;
+		y1 = y + 5;
+		x2 = x + 47;
+		y2 = y + 45;
+	}
+
+	else{
+		x1 = x + 5;
+		y1 = y + 5;
+		x2 = x + 40;
+		y2 = y + 45;
+	}
+	if (_OnMagma == true){
+		for (int i = 6; i < 26; i++){
+			
+				xx1 = _Magma_index * 25 ;
+				yy1 = (i * 25) - 8;
+				xx2 = (_Magma_index+1) * 25 ;
+				yy2 = ((i + 1) * 25) - 8;
+				//용암부분
+			
+				//xx1 = (x1 / 25 * 25) + 5;
+				//xx2 = ((x1 / 25 + 1) * 25) - 5;
+				if ((x1 >= xx1 && x1 <= xx2 && y1 >= yy1 && y1 <= yy2) ||
+					(x1 >= xx1 && x1 <= xx2 && y2 >= yy1 && y2 <= yy2) ||
+					(x2 >= xx1 && x2 <= xx2 && y1 >= yy1 && y2 <= yy2) ||
+					(x2 >= xx1 && x2 <= xx2 && y2 >= yy1 && y2 <= yy2)){
+					
+					state = 10;
+					
+					//return;
+				}
+			
+		}
+	}
+	//밑으로 가면 주근다
+	if (y2 >= 550)
+		state = 10;
 }

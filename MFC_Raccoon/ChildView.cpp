@@ -53,6 +53,10 @@ void CChildView::OnPaint()
 	CRect rect;
 	GetClientRect(&rect);
 
+
+	//dc.BitBlt(0, 0, rect.Width(), rect.Height(), &memdc, 0, 0, SRCCOPY);
+	
+	
 	switch (game._GameState) {
 	case 0:
 		// 171은 너구리가 자리를 다 잡고 춤추기 시작하는 시점 
@@ -72,26 +76,26 @@ void CChildView::OnPaint()
 		if (game._bIsDrawAll == TRUE || game._iAni == 1)
 			dc.BitBlt(0, 0, rect.Width(), rect.Height(), &memdc, 0, 0, SRCCOPY);
 		else {
+			dc.BitBlt(0, 0, rect.Width(), rect.Height(), &memdc, 0, 0, SRCCOPY);
+			////점수
+			//dc.BitBlt(25, 50, 100, 25, &memdc, 25, 50, SRCCOPY);
 
-			//점수
-			dc.BitBlt(25, 50, 100, 25, &memdc, 25, 50, SRCCOPY);
+			////시간 
+			//dc.BitBlt(150, 25, 500, 25, &memdc, 150, 25, SRCCOPY);
 
-			//시간 
-			dc.BitBlt(150, 25, 500, 25, &memdc, 150, 25, SRCCOPY);
+			////먹은과일 
+			//dc.BitBlt(750, 110, 50, 440, &memdc, 750, 110, SRCCOPY);
 
-			//먹은과일 
-			dc.BitBlt(750, 110, 50, 440, &memdc, 750, 110, SRCCOPY);
+			////너구리 주위 
+			//dc.BitBlt(game._Rac.x - 10, game._Rac.y - 10, 70, 70, &memdc, game._Rac.x - 10, game._Rac.y - 10, SRCCOPY);
 
-			//너구리 주위 
-			dc.BitBlt(game._Rac.x - 10, game._Rac.y - 10, 70, 70, &memdc, game._Rac.x - 10, game._Rac.y - 10, SRCCOPY);
+			////적 주위 
+			//for (int i = 0; i < Enemy::_EnemyCount; i++)
+			//	dc.BitBlt(game._Ene[i].x - 2, game._Ene[i].y + 5, 60, 50, &memdc, game._Ene[i].x - 2, game._Ene[i].y + 5, SRCCOPY);
 
-			//적 주위 
-			for (int i = 0; i < Enemy::_EnemyCount; i++)
-				dc.BitBlt(game._Ene[i].x - 2, game._Ene[i].y + 5, 60, 50, &memdc, game._Ene[i].x - 2, game._Ene[i].y + 5, SRCCOPY);
-
-			//아이템 주위 
-			for (int i = 0; i < 12; i++)
-				dc.BitBlt(game._Item[i].x, game._Item[i].y, 50, 50, &memdc, game._Item[i].x, game._Item[i].y, SRCCOPY);
+			////아이템 주위 
+			//for (int i = 0; i < 12; i++)
+			//	dc.BitBlt(game._Item[i].x, game._Item[i].y, 50, 50, &memdc, game._Item[i].x, game._Item[i].y, SRCCOPY);
 		}
 		break;
 
@@ -114,6 +118,6 @@ void CChildView::OnPaint()
 		}
 		break;
 	}
-
+	
 	// 그리기 메시지에 대해서는 CWnd::OnPaint()를 호출하지 마십시오.
 }

@@ -5,9 +5,6 @@ class Map;
 class Enemy;
 class Item;
 
-// 처음에 주어지는 너구리 수 
-#define	LIVE		7
-
 // 아래의 점프 좌표들은 너구리가 점프할때 공중 동작을 보여주기 위함
 // 공중 동작의 움직임을 특정 공식을 이용해서 계산하는 것보다
 // 아래와 같이 패턴을 기술하는 것이 좀더 자연스러운 모습을 보임
@@ -45,16 +42,19 @@ public:
 	// 점프를 보여줄때 필요한 카운터
 	char _JumpFrame;
 
-	// 남은 너구리 수
-	static char		_iLive;
-
 	// 너구리 이미지 
 	CBitmap		_hLeft;
+	CBitmap		_hSuperLeft;
 	CBitmap		_hRight;
+	CBitmap		_hSuperRight;
 	CBitmap		_hUpDown;
+	CBitmap		_hSuperUpDown;
 	CBitmap		_hStand;
+	CBitmap		_hSuperStand;
 	CBitmap		_hLeftJump;
+	CBitmap		_hSuperLeftJump;
 	CBitmap		_hRightJump;
+	CBitmap		_hSuperRightJump;
 	CBitmap		_hDrop;
 	CBitmap		_hDie;
 
@@ -62,7 +62,18 @@ public:
 	CBitmap _hSurprise;
 
 	// 충돌 검사
-	void CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemScoreRate, int& _iScore);
+	void CheckCollision(Map& _Map, Item* _Item, Enemy* _Ene, int& _iItemScoreRate, int& _iTime, int& _iScore, char& _iLevel, const int& _adjY);
 	void CheckCollision_Enemy(Enemy* _Ene);
+
+	// 무적
+	int ghost_time;
+	bool is_ghost;
+	bool is_collision;
+
+	// 사다리 개수
+	int ladder_count;
+
+	void CheckCollision_Magma(int& _Magma_index, bool& _OnMagma);
+
 };
 

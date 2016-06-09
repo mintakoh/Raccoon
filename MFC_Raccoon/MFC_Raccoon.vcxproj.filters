@@ -52,6 +52,9 @@
     <ClInclude Include="Map.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFC_Raccoon.cpp">
@@ -81,6 +84,9 @@
     <ClCompile Include="Map.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MFC_Raccoon.rc">
@@ -99,5 +105,190 @@
     <Image Include="res\Toolbar.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="res\bitmap1.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Raccoon.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\baby.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\bonus.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\die.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\digit.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\digit_sm.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\drop.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ending.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\EnemyLeft.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\EnemyLeftRed.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\EnemyRight.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\EnemyRightRed.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\GameOver.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\left.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\LeftJump.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Lets.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\map_a.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\map_b.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\map_c.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\map_d.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\map_e.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\map_f.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\map_n.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\map_q.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\map_r.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\map_s.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\map_t.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\next.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\right.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\RightJump.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\score.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\SnakeLeft.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\SnakeRight.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\stand.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\surprise.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\updown.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\bmp00001.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\bmp00002.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\super_left.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\super_right.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\super_LeftJump.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\super_RightJump.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\map_bg.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ghost_left.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\super_stand.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\super_updown.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\bitmap2.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\Magma_bg.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\hotfloor_top.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\bitmap4.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\bmp00003.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\clear.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+    <Media Include="res\gameover.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+    <Media Include="res\intro.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+    <Media Include="res\rac_die.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+    <Media Include="res\rac_drop.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+    <Media Include="res\rac_eat.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+    <Media Include="res\rac_jump.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+    <Media Include="res\rac_step.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+    <Media Include="res\snake.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
   </ItemGroup>
 </Project>

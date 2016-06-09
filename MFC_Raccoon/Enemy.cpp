@@ -16,6 +16,10 @@ Enemy::Enemy()
 	// ¹ì 
 	_hSnakeLeft.LoadBitmapW(IDB_SNAKE_LEFT);
 	_hSnakeRight.LoadBitmapW(IDB_SNAKE_RIGHT);
+
+	// À¯·É
+	_hGhostLeft.LoadBitmapW(IDB_GHOST_LEFT);
+	_hGhostRight.LoadBitmapW(IDB_GHOST_RIGHT);
 }
 
 

@@ -13,7 +13,10 @@ public:
 	int alpha;		//뱀 희미하다 선명하게
 	char speed;		//속도
 	bool state;		//방향(좌우)
-	bool type;		//일반적인 적, 뱀
+	char type;		//일반적인 적 0, 뱀 1, 유령 2
+
+	char speed_y;	// y 속도 (유령)
+	bool state_y;	// y 방향 (유령)
 
 	// 적
 	CBitmap		_hEnemyRight;
@@ -24,6 +27,10 @@ public:
 	//뱀
 	CBitmap		_hSnakeLeft;
 	CBitmap		_hSnakeRight;
+
+	//유령
+	CBitmap		_hGhostRight;
+	CBitmap		_hGhostLeft;
 
 	static int _EnemyCount;
 
